@@ -152,21 +152,6 @@
   .lamp i { width: 8px; height: 8px; border-radius: 50%; background: var(--rule); display: block; }
   .lamp i:first-child { background: var(--accent); }
 
-  /* ---------- the "ee" in "see", built from the Observable mark ----------
-     The logo is a circle with an ellipse through it. Rotate that ellipse to
-     horizontal, open the circle at the lower right, and it becomes a lowercase
-     e — same two-part construction, doing a different job. The two glyphs are
-     variations: the second has the ellipse rotated, as if the mark is turning. */
-  .obs-e {
-    display: inline-block; width: .62em; height: .62em;
-    vertical-align: -.012em; margin-inline: .015em;
-  }
-  .obs-e svg { width: 100%; height: 100%; display: block; }
-  .vh {
-    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-  }
-
   /* ---------- logo marquee ---------- */
   .logos { padding-block: 40px 44px; border-top: 1px solid var(--rule); }
   .logos .lead {
@@ -639,7 +624,7 @@
 <header class="hero">
   <div class="shell">
     <div class="eyebrow">Observable Notebooks</div>
-    <h1>What do you want to <em><span class="vh">see</span><span aria-hidden="true">s<i class="obs-e"><svg viewBox="0 0 100 100" fill="none"><defs><linearGradient id="ee1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5478c9"/><stop offset="1" stop-color="#63a5bd"/></linearGradient></defs><g stroke="url(#ee1)" stroke-width="11" stroke-linecap="round"><path d="M 88 50 A 38 38 0 1 0 69 82.9"/><ellipse cx="50" cy="50" rx="26" ry="6.5" transform="rotate(0 50 50)" stroke-width="8"/></g></svg></i><i class="obs-e"><svg viewBox="0 0 100 100" fill="none"><defs><linearGradient id="ee2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#63a5bd"/><stop offset="1" stop-color="#6cc5b0"/></linearGradient></defs><g stroke="url(#ee2)" stroke-width="11" stroke-linecap="round"><path d="M 88 50 A 38 38 0 1 0 69 82.9"/><ellipse cx="50" cy="50" rx="26" ry="6.5" transform="rotate(9 50 50)" stroke-width="8"/></g></svg></i></span></em> today?</h1>
+    <h1>What do you want to <em>see</em> today?</h1>
     <p class="lede">The world's most trusted visualization products.</p>
     <div class="cta-row">
       <a href="#" class="btn">Start a notebook — free</a>
