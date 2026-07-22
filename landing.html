@@ -181,7 +181,7 @@
   }
 
   /* ---------- logo marquee ---------- */
-  .logos { padding-block: 40px 44px; border-top: 1px solid var(--rule); }
+  .logos { padding-block: 44px 52px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--paper-dim); }
   .logos .lead {
     text-align: center; margin-bottom: 26px;
     font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
@@ -196,10 +196,10 @@
   .marquee:hover { animation-play-state: paused; }
   .marquee ul { display: flex; align-items: center; gap: 64px; margin: 0; padding-inline: 32px; list-style: none; }
   .marquee img {
-    height: 26px; width: auto; opacity: .48; filter: grayscale(1);
+    height: 34px; width: auto; opacity: .82; filter: grayscale(1) contrast(1.25);
     transition: opacity .25s ease, filter .25s ease;
   }
-  .marquee img:hover { opacity: 1; filter: grayscale(0); }
+  .marquee img:hover { opacity: 1; filter: grayscale(0) contrast(1); }
   @keyframes slide { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 
   /* ---------- bands: a zigzag, not a stack ----------
@@ -553,6 +553,7 @@
   .nbcard h4 { font-size: 15.5px; margin: 13px 0 7px; font-weight: 600; letter-spacing: -.015em; }
   .nbmeta { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); }
   .nbmeta img { width: 20px; height: 20px; border-radius: 50%; background: var(--rule-soft); }
+  .nbdate { color: var(--ink-faint); font-family: var(--mono); font-size: 11.5px; }
   .nbmeta .stars { margin-left: auto; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
   @media (max-width: 900px) { .nbgrid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .nbgrid { grid-template-columns: 1fr; } }
@@ -672,6 +673,8 @@
 </header>
 
 <div class="shell">
+  <div class="frame">
+  <div class="frame-tab">Live notebook</div>
   <div class="stage">
     <div class="stage-bar">
       <span>@d3/stacked-to-grouped-bars — live, editable, yours in one click</span>
@@ -694,6 +697,7 @@
           <a class="byline-fork" href="https://observablehq.com/@d3/stacked-to-grouped-bars" target="_blank" rel="noopener">Fork</a>
         </div>
   </div>
+  </div>
 </div>
 
 <!-- ======================= LOGOS ======================= -->
@@ -703,43 +707,6 @@
 </section>
 
 <!-- ======================= BANDS ======================= -->
-<main id="bands">
-
-  <section class="band rise" id="data" data-label="See your data" style="--accent:var(--blue)">
-    <div class="shell band-inner">
-      <div class="band-head">
-        <div class="band-mark"><span></span>Series 01</div>
-        <h2>See your data</h2>
-        <a class="band-link" href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">@d3/bar-chart-race ↗</a>
-      </div>
-      <div class="band-figure">
-      <div class="frame">
-        <div class="frame-tab">Live notebook</div>
-          <div class="stage">
-            <div class="stage-bar"><span>@d3/bar-chart-race</span><span class="lamp"><i></i><i></i><i></i></span></div>
-            <div class="clip" style="height:540px">
-              <iframe height="700" title="Bar chart race" loading="lazy"
-                src="https://observablehq.com/embed/@d3/bar-chart-race?cells=viewof+replay,chart"></iframe>
-            </div>
-          <div class="byline">
-            <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
-            <div class="byline-who">
-              <b>D3</b>
-              <span>@d3 · @d3/bar-chart-race</span>
-            </div>
-            <div class="byline-stats">
-              <span><i>♥</i> 285</span>
-              <span><i>⑂</i> 878</span>
-            </div>
-            <a class="byline-fork" href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">Fork</a>
-          </div>
-          </div>
-      </div>
-      </div>
-    </div>
-  </section>
-
-
 <!-- ======================= OPEN SOURCE ======================= -->
 <section class="os rise" id="opensource" data-label="Open source" style="--accent:var(--blue)">
   <div class="shell">
@@ -778,18 +745,6 @@
     </div>
   </div>
 </section>
-
-
-
-
-</main>
-
-
-
-<!-- ======================= EXPLAINER ======================= -->
-
-
-
 <!-- ======================= COMMUNITY ======================= -->
 <section class="community rise" id="community" style="--accent:var(--blue)">
   <div class="shell">
@@ -802,32 +757,32 @@
       <a class="nbcard" href="https://new.observablehq.com/d/453b3c621eb477d5" target="_blank" rel="noopener">
         <div class="nbcard-img"><img src="https://static.observableusercontent.com/thumbnail/97b90cf411c55c3868165c80f5313438812a907ee98f3c365891f26bcdcd59e2.jpg" alt="" loading="lazy"></div>
         <h4>Lichtenberg Edge Bundling</h4>
-        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/aeddc181df6ca80a347940ba62e17601ac6395e9d2c21142887eca5fd277326a" alt="" loading="lazy">Lao<span class="stars">☆ 15</span></div>
+        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/aeddc181df6ca80a347940ba62e17601ac6395e9d2c21142887eca5fd277326a" alt="" loading="lazy">Lao<span class="nbdate">Jul 19</span><span class="stars">☆ 15</span></div>
       </a>
       <a class="nbcard" href="https://new.observablehq.com/@fil/godzilla-el-nino" target="_blank" rel="noopener">
         <div class="nbcard-img"><img src="https://static.observableusercontent.com/thumbnail/dc9c9de818479a971fe40483b243c5bb78d59ee01a157583d0074a326cb4145f.jpg" alt="" loading="lazy"></div>
         <h4>Godzilla El Niño</h4>
-        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/d5b1777907117a2bdf2a07eb98600d7a9beb21639fde42b9753e95c88c7731a6" alt="" loading="lazy">Fil<span class="stars">☆ 13</span></div>
+        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/d5b1777907117a2bdf2a07eb98600d7a9beb21639fde42b9753e95c88c7731a6" alt="" loading="lazy">Fil<span class="nbdate">Jul 22</span><span class="stars">☆ 13</span></div>
       </a>
       <a class="nbcard" href="https://new.observablehq.com/@jwolondon/gallery-radial" target="_blank" rel="noopener">
         <div class="nbcard-img"><img src="https://static.observableusercontent.com/thumbnail/437f187b9620e644145f5908c164106cdb7001eead400332b66ff399f568650e.jpg" alt="" loading="lazy"></div>
         <h4>Plot Gallery: Radial Charts</h4>
-        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/27f72cecd1ac20853a533421fab228ce5f611cbc0986c1e420f7d3b1eb49ef50" alt="" loading="lazy">Jo Wood<span class="stars">☆ 7</span></div>
+        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/27f72cecd1ac20853a533421fab228ce5f611cbc0986c1e420f7d3b1eb49ef50" alt="" loading="lazy">Jo Wood<span class="nbdate">Jul 15</span><span class="stars">☆ 7</span></div>
       </a>
       <a class="nbcard" href="https://new.observablehq.com/d/15e996683f22a95f" target="_blank" rel="noopener">
         <div class="nbcard-img"><img src="https://static.observableusercontent.com/thumbnail/4e46769d83d9182327c14532d1537622b82f3406326a527ede70904e2d2e5891.jpg" alt="" loading="lazy"></div>
         <h4>Cover a sphere with equally spaced dots</h4>
-        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/f505a5f414e7c9ccdfc2bc34b5b157b49f8f76ad282495275be35a3d01caced7" alt="" loading="lazy">John Wiseman<span class="stars">☆ 5</span></div>
+        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/f505a5f414e7c9ccdfc2bc34b5b157b49f8f76ad282495275be35a3d01caced7" alt="" loading="lazy">John Wiseman<span class="nbdate">Jul 14</span><span class="stars">☆ 5</span></div>
       </a>
       <a class="nbcard" href="https://new.observablehq.com/@mthh/geoviz-plus-tricolore" target="_blank" rel="noopener">
         <div class="nbcard-img"><img src="https://static.observableusercontent.com/thumbnail/ff72d623fc2cba20649943f97abf5d921709422af86fe3f34f3b10ffffd28c37.jpg" alt="" loading="lazy"></div>
         <h4>Geoviz + Tricolore</h4>
-        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/911bd8720f0dbfd44850e291921253c0242ac77c4537d932fde7db5c82ebb267" alt="" loading="lazy">Matthieu Viry<span class="stars">☆ 3</span></div>
+        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/911bd8720f0dbfd44850e291921253c0242ac77c4537d932fde7db5c82ebb267" alt="" loading="lazy">Matthieu Viry<span class="nbdate">Jul 22</span><span class="stars">☆ 3</span></div>
       </a>
       <a class="nbcard" href="https://new.observablehq.com/d/3f4f6e1080d68e52" target="_blank" rel="noopener">
         <div class="nbcard-img"><img src="https://static.observableusercontent.com/thumbnail/392fc076c9d5b2ff2624f395fdc59e43757ff584ea53a2476fd4f040aac54862.jpg" alt="" loading="lazy"></div>
         <h4>Dithering</h4>
-        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/eb8abdb95e489f28cf4d47617e08a0fd3144a6ff793826240b937d6a0202f603" alt="" loading="lazy">Itay Niv<span class="stars">☆ 2</span></div>
+        <div class="nbmeta"><img src="https://avatars.observableusercontent.com/avatar/eb8abdb95e489f28cf4d47617e08a0fd3144a6ff793826240b937d6a0202f603" alt="" loading="lazy">Itay Niv<span class="nbdate">Jan 10, 2025</span><span class="stars">☆ 2</span></div>
       </a>
     </div>
 
@@ -848,6 +803,56 @@
     </div>
   </div>
 </section>
+
+<main id="bands">
+
+  <section class="band rise" id="data" data-label="See your data" style="--accent:var(--blue)">
+    <div class="shell band-inner">
+      <div class="band-head">
+        <div class="band-mark"><span></span>Series 01</div>
+        <h2>See your data</h2>
+        <a class="band-link" href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">@d3/bar-chart-race ↗</a>
+      </div>
+      <div class="band-figure">
+      <div class="frame">
+        <div class="frame-tab">Live notebook</div>
+          <div class="stage">
+            <div class="stage-bar"><span>@d3/bar-chart-race</span><span class="lamp"><i></i><i></i><i></i></span></div>
+            <div class="clip" style="height:540px">
+              <iframe height="700" title="Bar chart race" loading="lazy"
+                src="https://observablehq.com/embed/@d3/bar-chart-race?cells=viewof+replay,chart"></iframe>
+            </div>
+          <div class="byline">
+            <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
+            <div class="byline-who">
+              <b>D3</b>
+              <span>@d3 · @d3/bar-chart-race</span>
+            </div>
+            <div class="byline-stats">
+              <span><i>♥</i> 285</span>
+              <span><i>⑂</i> 878</span>
+            </div>
+            <a class="byline-fork" href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">Fork</a>
+          </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+</main>
+
+
+
+<!-- ======================= EXPLAINER ======================= -->
+
+
+
 
 <!-- ======================= WHAT / GET STARTED ======================= -->
 <section class="explain rise" id="what" style="--accent:var(--blue)">
