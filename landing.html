@@ -77,19 +77,21 @@
   }
   .brand { font-weight: 600; letter-spacing: -.02em; margin-right: auto; font-size: 16.5px; display: flex; align-items: center; gap: 9px; }
   .brand svg { display: block; }
-  .nav a { color: var(--ink-soft); text-decoration: none; transition: color .15s ease; }
-  .nav a:hover { color: var(--ink); }
+  .nav a:not(.btn) { color: var(--ink-soft); text-decoration: none; transition: color .15s ease; }
+  .nav a:not(.btn):hover { color: var(--ink); }
 
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 11px 21px; border-radius: 7px;
-    background: var(--ink); color: #fff; text-decoration: none;
-    font-size: 14.5px; font-weight: 500; border: 1px solid var(--ink);
-    transition: transform .16s cubic-bezier(.2,.7,.3,1), box-shadow .16s ease, background .16s ease;
+    padding: 11px 21px; border-radius: 8px;
+    background: var(--coral); color: var(--ink); text-decoration: none;
+    font-size: 14.5px; font-weight: 600; border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 rgba(16,20,26,.16);
+    transition: transform .14s ease, box-shadow .14s ease;
   }
-  .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(16,20,26,.16); }
-  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
-  .btn-ghost:hover { border-color: var(--ink-faint); box-shadow: 0 6px 18px rgba(16,20,26,.07); }
+  .btn:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 rgba(16,20,26,.2); }
+  .btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 rgba(16,20,26,.2); }
+  .btn-ghost { background: var(--paper); color: var(--ink); border-color: var(--ink); }
+
   .btn-lg { padding: 15px 28px; font-size: 16px; }
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 
@@ -478,22 +480,34 @@
   .car-dots i { width: 22px; height: 3px; border-radius: 2px; background: var(--rule); display: block; transition: background .25s ease; }
   .car-dots i.on { background: var(--accent); }
 
-  /* ---------- explainer ---------- */
-  .explain { padding-block: clamp(64px, 8vw, 110px) 30px; }
+  /* ---------- explainer: dense capability grid, not a spaced-out list ---------- */
+  .explain { padding-block: clamp(60px, 8vw, 100px) 30px; }
+  .explain-top {
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 60px);
+    align-items: end; margin-bottom: clamp(30px, 4vw, 44px);
+  }
   .explain h2 {
-    font-size: clamp(30px, 3.6vw, 50px); line-height: 1.04; letter-spacing: -.042em;
-    font-weight: 600; margin: 24px 0 20px; max-width: 20ch;
+    font-size: clamp(30px, 3.6vw, 50px); line-height: 1.02; letter-spacing: -.044em;
+    font-weight: 600; margin: 20px 0 0;
   }
-  .explain .lede { font-size: clamp(17px, 1.6vw, 19.5px); line-height: 1.6; color: var(--ink-soft); max-width: 56ch; margin: 0 0 56px; }
-  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 4vw, 52px); }
-  .three h3 { font-size: 18.5px; margin: 0 0 10px; font-weight: 600; letter-spacing: -.022em; }
-  .three p { margin: 0; color: var(--ink-soft); font-size: 15.5px; line-height: 1.62; }
-  .three .step {
-    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; color: var(--ink-faint);
-    display: flex; align-items: center; gap: 9px; margin-bottom: 14px;
-    padding-bottom: 14px; border-bottom: 1px solid var(--rule);
+  .explain .lede { font-size: clamp(16px, 1.5vw, 18.5px); line-height: 1.55; color: var(--ink-soft); margin: 0; }
+  @media (max-width: 900px) { .explain-top { grid-template-columns: 1fr; align-items: start; } }
+
+  /* hairline-separated cells: reads as one designed object rather than six islands */
+  .caps {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden;
   }
-  .three .step::before { content: ""; width: 9px; height: 9px; border-radius: 2px; background: var(--accent); }
+  .cap { background: var(--paper); padding: 24px 22px 26px; }
+  .cap-k {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-faint); display: flex; align-items: center; gap: 8px; margin-bottom: 13px;
+  }
+  .cap-k::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--accent); flex: none; }
+  .cap h3 { font-size: 17px; margin: 0 0 7px; font-weight: 600; letter-spacing: -.02em; }
+  .cap p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+  @media (max-width: 900px) { .caps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .caps { grid-template-columns: 1fr; } }
 
   /* ---------- final ---------- */
   .final { text-align: center; padding-block: clamp(72px, 9vw, 118px); position: relative; }
@@ -611,6 +625,9 @@
   .thread:hover b { color: var(--accent); }
   .thread span { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); white-space: nowrap; }
 
+  .spotlight { margin-bottom: 52px; }
+  .spotlight .frame-tab { background: var(--coral); color: var(--ink); }
+
   /* ---------- follow / open source / social ---------- */
   .follow { padding-block: clamp(58px, 7vw, 96px); border-top: 1px solid var(--rule); }
   .follow-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(34px, 5vw, 68px); align-items: start; }
@@ -643,6 +660,37 @@
   .notes h4 { margin: 0 0 6px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #61728a; font-weight: 500; font-family: var(--mono); }
   .notes code { font-family: var(--mono); font-size: 12px; background: #1b2534; padding: 1px 5px; border-radius: 3px; color: #b9c6d6; }
   .notes b { color: #dbe4ee; font-weight: 600; }
+
+  .pods { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .pod {
+    display: block; text-decoration: none; border: 1px solid var(--rule);
+    border-radius: 11px; padding: 17px 18px 19px; background: var(--paper);
+    transition: border-color .18s ease, transform .18s ease;
+  }
+  .pod:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .pod-date { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); display: block; margin-bottom: 8px; }
+  .pod b { display: block; font-size: 15.5px; font-weight: 600; letter-spacing: -.015em; margin-bottom: 6px; }
+  .pod p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+  @media (max-width: 760px) { .pods { grid-template-columns: 1fr; } }
+
+  /* ---------- footer ---------- */
+  .foot { border-top: 1px solid var(--rule); background: var(--paper-dim); padding-block: 54px 30px; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 34px; }
+  .foot-brand .brand { font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 9px; }
+  .foot h4 {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .13em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 14px; font-weight: 500;
+  }
+  .foot a { display: block; font-size: 14.5px; color: var(--ink-soft); text-decoration: none; margin-bottom: 9px; }
+  .foot a:hover { color: var(--ink); }
+  .foot-legal {
+    display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap;
+    margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--rule);
+    font-size: 13.5px; color: var(--ink-faint);
+  }
+  .foot-legal nav { display: flex; gap: 22px; flex-wrap: wrap; }
+  .foot-legal a { display: inline; margin: 0; font-size: 13.5px; }
+  @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
 
   @media (max-width: 1120px) {
     .rail { display: none; }
@@ -821,6 +869,31 @@
     <h2>Explore the community</h2>
     <p class="lede">Some notebooks are like blog entries, thinking out loud; some are pedagogical examples, offering or seeking feedback; some are precision-honed masterpieces.</p>
 
+
+    <p class="sub">Spotlight <a href="https://new.observablehq.com/@laotzunami/3d-graphs-with-three-js" target="_blank" rel="noopener">Open the notebook →</a></p>
+    <div class="frame spotlight">
+      <div class="frame-tab">Drag it</div>
+      <div class="byline byline-top">
+        <img src="https://avatars.observableusercontent.com/avatar/9c14da488e1a68ca1868ed025eb7edcce3d300c8a9f3fbcdae66a3daa9ccca63" alt="" loading="lazy">
+        <div class="byline-who">
+          <b>Lao</b>
+          <span>@laotzunami · 3D Graphs with THREE.js</span>
+        </div>
+        <div class="byline-stats"><span><i>♥</i> 27</span></div>
+        <a class="byline-fork" href="https://new.observablehq.com/@laotzunami/3d-graphs-with-three-js" target="_blank" rel="noopener">Fork</a>
+      </div>
+      <div class="stage">
+        <div class="stage-bar">
+          <span>@laotzunami/3d-graphs-with-three-js</span>
+          <span class="lamp"><i></i><i></i><i></i></span>
+        </div>
+        <div class="clip" style="height:560px">
+          <iframe height="620" title="3D Graphs with THREE.js" loading="lazy"
+            src="https://observablehq.com/embed/@laotzunami/3d-graphs-with-three-js?cells=graph"></iframe>
+        </div>
+      </div>
+    </div>
+
     <p class="sub">Trending notebooks <a href="https://new.observablehq.com/public" target="_blank" rel="noopener">See all →</a></p>
     <div class="nbgrid">
       <a class="nbcard" href="https://new.observablehq.com/d/453b3c621eb477d5" target="_blank" rel="noopener">
@@ -956,24 +1029,43 @@
 <!-- ======================= WHAT / GET STARTED ======================= -->
 <section class="explain rise" id="what" style="--accent:var(--blue)">
   <div class="shell">
-    <div class="eyebrow">So what is a notebook?</div>
-    <h2>A document that runs.</h2>
-    <p class="lede">Observable Notebooks are lightweight computational documents that let you think, explore, and explain with code.</p>
-    <div class="three">
+    <div class="explain-top">
       <div>
-        <div class="step">First</div>
-        <h3>Think, explore, explain</h3>
-        <p>Analyze and visualize data. Weave prose and code into one document you can read top to bottom.</p>
+        <div class="eyebrow">So what is a notebook?</div>
+        <h2>A document that runs.</h2>
       </div>
-      <div style="--accent:var(--teal)">
-        <div class="step">Then</div>
-        <h3>Automatic reactivity</h3>
-        <p>Vanilla JavaScript and TypeScript with automatic reactivity, for easier development and simpler interaction.</p>
+      <p class="lede">Observable Notebooks are lightweight computational documents that let you think, explore, and explain with code.</p>
+    </div>
+    <div class="caps">
+      <div class="cap" style="--accent:var(--blue)">
+        <span class="cap-k">lightweight</span>
+        <h3>Nothing to install</h3>
+        <p>A notebook is a document, not a server. Open the URL and it is already running.</p>
       </div>
-      <div style="--accent:var(--coral)">
-        <div class="step">And</div>
-        <h3>Fork, import, publish</h3>
-        <p>Reuse code by forking or importing. Work privately, or publish to the world.</p>
+      <div class="cap" style="--accent:var(--teal)">
+        <span class="cap-k">fast</span>
+        <h3>No kernel, no restart</h3>
+        <p>Vanilla JavaScript and TypeScript in the browser you already have open.</p>
+      </div>
+      <div class="cap" style="--accent:var(--amber)">
+        <span class="cap-k">reactive</span>
+        <h3>Change one thing</h3>
+        <p>Cells know what they depend on. Move a slider and everything downstream follows.</p>
+      </div>
+      <div class="cap" style="--accent:var(--coral)">
+        <span class="cap-k">shareable</span>
+        <h3>Send a link, not a file</h3>
+        <p>It is already a web page. Whoever opens it gets the live thing, and can fork it.</p>
+      </div>
+      <div class="cap" style="--accent:var(--blue)">
+        <span class="cap-k">expressive</span>
+        <h3>Visualizations, not just charts</h3>
+        <p>Sankey diagrams, waffle charts, treemaps, advanced maps — not just another bar chart.</p>
+      </div>
+      <div class="cap" style="--accent:var(--teal)">
+        <span class="cap-k">ai-native</span>
+        <h3>An artifact an agent can hold</h3>
+        <p>Runtime-aware AI runs the code and inspects live values, so every claim is checkable.</p>
       </div>
     </div>
     <div class="doors">
@@ -1006,6 +1098,30 @@
         <a class="chip" href="https://www.youtube.com/@observablehq" target="_blank" rel="noopener">YouTube</a>
         <a class="chip" href="https://x.com/observablehq" target="_blank" rel="noopener">X</a>
       </div>
+
+    <p class="sub" style="margin-top:44px">Podcast <a href="https://youtube.com/playlist?list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">All episodes →</a></p>
+    <div class="pods">
+      <a class="pod" href="https://www.youtube.com/watch?v=8TV21Wzv7WM&list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">
+        <span class="pod-date">Jul 18</span>
+        <b>Seven classic moments in visualization research</b>
+        <p>Toph recounts seven moments in visualization history, in no particular order.</p>
+      </a>
+      <a class="pod" href="https://www.youtube.com/watch?v=4uDea3lK3Go&list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">
+        <span class="pod-date">Jul 13</span>
+        <b>Browsing the new notebook community</b>
+        <p>Visnu and Toph preview the new notebook listings and editor by surveying trending community notebooks.</p>
+      </a>
+      <a class="pod" href="https://www.youtube.com/watch?v=K_zzviwj8UA&list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">
+        <span class="pod-date">May 11</span>
+        <b>Three eras of Observable AI</b>
+        <p>Visnu and Toph reflect on three eras of building Observable features atop LLMs.</p>
+      </a>
+      <a class="pod" href="https://www.youtube.com/watch?v=0uBOL9NP8Iw&list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">
+        <span class="pod-date">Apr 29</span>
+        <b>What even is Observable?</b>
+        <p>A plain answer to the question, from the people building it.</p>
+      </a>
+    </div>
     </div>
     <div>
       <p class="sub">Open source <a href="https://github.com/observablehq" target="_blank" rel="noopener">github.com/observablehq →</a></p>
@@ -1031,19 +1147,58 @@
 
 <nav class="rail" aria-label="Sections"></nav>
 
-<div class="notes">
+<footer class="foot">
   <div class="shell">
-    <h3>Build notes</h3>
-    <div class="notes-grid">
-      <div><h4>Palette</h4>Not invented — these are Observable Plot's own categorical colors (<code>#4269d0</code>, <code>#6cc5b0</code>, <code>#efb118</code>, <code>#ff725c</code>). Each band owns one, so the page reads as <b>a chart with four series</b>. Neutrals carry a slight blue bias toward the accent instead of sitting at pure grey.</div>
-      <div><h4>Stagger</h4>Bands alternate: label left with the chart bleeding right, then mirrored, with opposing vertical offsets so they interlock rather than stack. The alternating background fill is gone — that grey/white banding was what made it read as slabs.</div>
-      <div><h4>Flourishes</h4>Hairline gridlines at the measure edges, a tick mark per band in its own hue, gradient scroll-axis, masked logo marquee that de-saturates on hover, scroll-reveal, and a rail whose active tick takes the current band's color. All reduced-motion aware.</div>
-      <div><h4>Numbering</h4>Two series left: <code>01</code> your data, <code>02</code> your blind spots. Not a sequence pretending to be one — they are series in a chart, which the color system already says.</div>
-      <div><h4>Type</h4>Instrument Sans against IBM Plex Mono — deliberately not Inter or Space Grotesk. The mono face carries the band titles, so the technical voice does the naming and the charts do the talking.</div>
-      <div><h4>One light page</h4>The agent blade used to be a dark slab, which is why it read as a different site. It is light now; only the code console stays dark, because code belongs on a dark ground. The five reasons became a rotating panel instead of a column that ran on forever.</div>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand">
+          <svg width="19" height="19" viewBox="0 0 19 19" aria-hidden="true">
+            <circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          </svg>
+          Observable
+        </div>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <a href="https://observablehq.com/">Observable Notebooks</a>
+        <a href="https://observablehq.com/pricing">Pricing</a>
+      </div>
+      <div>
+        <h4>Docs</h4>
+        <a href="https://observablehq.com/documentation/">Observable</a>
+        <a href="https://observablehq.com/framework/">Observable Framework</a>
+        <a href="https://observablehq.com/plot/">Observable Plot</a>
+        <a href="https://d3js.org/">D3</a>
+        <a href="https://observablehq.com/release-notes">Release notes</a>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <a href="https://observablehq.com/blog">Blog</a>
+        <a href="https://observablehq.com/webinars">Webinars</a>
+        <a href="https://www.youtube.com/@observablehq">Videos</a>
+        <a href="https://observablehq.com/customer-stories">Customer stories</a>
+        <a href="https://talk.observablehq.com/">Forum</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="https://new.observablehq.com/about">About</a>
+        <a href="https://observablehq.com/careers">Careers</a>
+        <a href="https://observablehq.com/contact">Contact us</a>
+        <a href="https://github.com/observablehq">GitHub</a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>© 2026 Observable, Inc.</span>
+      <nav>
+        <a href="https://observablehq.com/privacy-policy">Privacy</a>
+        <a href="https://observablehq.com/security">Security</a>
+        <a href="https://observablehq.com/terms-of-service">Terms of Service</a>
+        <a href="https://observablehq.com/vulnerability-disclosure">Vulnerability Disclosure</a>
+      </nav>
     </div>
   </div>
-</div>
+</footer>
 
 </div><!-- /layer -->
 
