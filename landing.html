@@ -153,24 +153,31 @@
   .lamp i:first-child { background: var(--accent); }
 
   /* ---------- the rotating last word ----------
-     The container animates to each word's measured width so the period never
-     jumps. Screen readers get one static sentence, not a stream of updates. */
-  .rotator { display: inline-block; position: relative; vertical-align: bottom; }
-  .rotator i {
-    font-style: normal; display: inline-block; white-space: nowrap;
+     Every word is absolutely positioned inside a box sized by the longest one,
+     so swapping a word never reflows the line. An earlier version animated an
+     in-flow element, which shifted the whole sentence on every change. */
+  .rotator {
+    display: inline-block; position: relative; vertical-align: baseline;
+    text-align: left;
+  }
+  .rot-sizer { visibility: hidden; }
+  .rot-word {
+    position: absolute; left: 0; top: 0; white-space: nowrap;
+    opacity: 0; transform: translateY(.34em);
     font-weight: 500;
     background: linear-gradient(96deg, var(--blue), var(--teal));
     -webkit-background-clip: text; background-clip: text; color: transparent;
-    transition: opacity .3s ease, transform .3s cubic-bezier(.2,.7,.3,1);
+    transition: opacity .5s ease, transform .5s cubic-bezier(.2,.7,.3,1);
+    pointer-events: none;
   }
-  .rotator i.out { opacity: 0; transform: translateY(-.5em); }
-  .rotator i.in  { opacity: 0; transform: translateY(.5em); }
+  .rot-word.is-on { opacity: 1; transform: none; }
+  .rot-word.is-out { opacity: 0; transform: translateY(-.34em); }
   .vh {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
   }
   @media (prefers-reduced-motion: reduce) {
-    .rotator, .rotator i { transition: none; }
+    .rot-word { transition: none; }
   }
 
   /* ---------- logo marquee ---------- */
@@ -656,7 +663,7 @@
   <div class="shell">
     <div class="eyebrow">Observable Notebooks</div>
     <h1>What do you want to <em>see</em> today?</h1>
-    <p class="lede">The world's most trusted visualization <span class="vh">products.</span><span class="rotator" id="rotator" aria-hidden="true"><i id="rotword">products</i></span><span aria-hidden="true">.</span></p>
+    <p class="lede">The world's most trusted visualization <span class="vh">products.</span><span class="rotator" aria-hidden="true"><span class="rot-sizer">state-of-the-art.</span><span class="rot-word is-on">products.</span><span class="rot-word">company.</span><span class="rot-word">community.</span><span class="rot-word">tools.</span><span class="rot-word">platform.</span><span class="rot-word">state-of-the-art.</span></span></p>
     <div class="cta-row">
       <a href="#" class="btn">Start a notebook — free</a>
       <a href="https://observablehq.com/@d3/stacked-to-grouped-bars" class="btn btn-ghost" target="_blank" rel="noopener">Fork this one</a>
@@ -1052,24 +1059,17 @@
   addEventListener('scroll', onScroll, {passive: true});
   onScroll();
 
-  /* ---------- rotate the last word of the hero line ----------
-     No width management: the span sizes to its own content. An earlier version
-     tweened a measured width and clipped the longest word. */
-  const WORDS = ['products', 'company', 'community', 'tools', 'platform', 'state-of-the-art'];
-  const rotw = document.getElementById('rotword');
-  if (rotw) {
+  /* ---------- rotate the last word: crossfade between stacked spans ---------- */
+  const rotWords = [...document.querySelectorAll('.rot-word')];
+  if (rotWords.length) {
     let ri = 0, loop = null;
     const step = () => {
-      ri = (ri + 1) % WORDS.length;
-      rotw.classList.add('out');
-      setTimeout(() => {
-        rotw.textContent = WORDS[ri];
-        rotw.classList.remove('out');
-        rotw.classList.add('in');
-        requestAnimationFrame(() => requestAnimationFrame(() => rotw.classList.remove('in')));
-      }, 300);
+      const cur = rotWords[ri], nxt = rotWords[ri = (ri + 1) % rotWords.length];
+      cur.classList.remove('is-on'); cur.classList.add('is-out');
+      nxt.classList.remove('is-out'); nxt.classList.add('is-on');
+      setTimeout(() => cur.classList.remove('is-out'), 520);
     };
-    const play = () => { if (!loop) loop = setInterval(step, 2600); };
+    const play = () => { if (!loop) loop = setInterval(step, 2800); };
     const stop = () => { clearInterval(loop); loop = null; };
     addEventListener('visibilitychange', () => document.hidden ? stop() : play());
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) play();
