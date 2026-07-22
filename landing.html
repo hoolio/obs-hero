@@ -528,9 +528,8 @@
   }
   .gate {
     display: flex; align-items: center; justify-content: space-between;
-    gap: 20px; flex-wrap: wrap; margin-top: 16px;
-    border: 1px solid var(--rule); border-radius: 12px;
-    padding: 16px 20px; background: var(--paper);
+    gap: 20px; flex-wrap: wrap; margin-top: 14px;
+    border-top: 1px solid var(--rule); padding: 18px 4px 4px;
   }
   .gate > span { font-size: 16px; color: var(--ink-soft); }
   .gate-cta { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -920,38 +919,35 @@
           <h2>A Decade of NYC City Employee Pay</h2>
           <p class="by">by Matt Khinda · NYC Open Data</p>
         </div>
-      <div class="byline byline-top">
-          <img src="https://avatars.observableusercontent.com/avatar/381c8bb4edddbcd7e2319cbd390f7477b1b4934289bf039a4e881d2d3711d20e" alt="" loading="lazy">
-          <div class="byline-who">
-            <b>Matt Khinda</b>
-            <span>@mpkhinda · @mpkhinda/nyc-city-pay</span>
-          </div>
-          <div class="byline-stats"><span><i>♥</i> 1</span><span><i>⑂</i> 0</span></div>
-          <a class="byline-fork" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Fork</a>
-        </div>
-      </div>
         <a class="btn btn-ghost" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Open in Observable ↗</a>
+      </div>
+      <div class="byline byline-top">
+        <img src="https://avatars.observableusercontent.com/avatar/381c8bb4edddbcd7e2319cbd390f7477b1b4934289bf039a4e881d2d3711d20e" alt="" loading="lazy">
+        <div class="byline-who">
+          <b>Matt Khinda</b>
+          <span>@mpkhinda · @mpkhinda/nyc-city-pay</span>
+        </div>
+        <div class="byline-stats"><span><i>♥</i> 1</span><span><i>⑂</i> 0</span></div>
+        <a class="byline-fork" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Fork</a>
       </div>
       <div class="stage">
         <div class="stage-bar">
           <span>@mpkhinda/nyc-city-pay</span>
           <span class="lamp"><i></i><i></i><i></i></span>
         </div>
-        <!-- clipped deliberately: the notebook is cut at the source line and the
-             frame takes over with a sign-in prompt. scrolling="no" stops the
-             iframe scrolling on past the cut. -->
+        <!-- clipped deliberately: cut past the source line, with the gate below.
+             scrolling="no" stops the iframe scrolling on past the cut. -->
         <div class="clip cut" style="height:760px">
           <iframe height="1000" scrolling="no" title="A Decade of NYC City Employee Pay" loading="lazy"
             src="https://observablehq.com/embed/@mpkhinda/nyc-city-pay"></iframe>
         </div>
+      </div>
+      <div class="gate">
+        <span>Read the rest, fork it, and publish your own.</span>
+        <div class="gate-cta">
+          <a href="#" class="btn">Create a free account</a>
+          <a href="#" class="btn btn-ghost">Sign in</a>
         </div>
-    </div>
-
-    <div class="gate">
-      <span>Read the rest, fork it, and publish your own.</span>
-      <div class="gate-cta">
-        <a href="#" class="btn">Create a free account</a>
-        <a href="#" class="btn btn-ghost">Sign in</a>
       </div>
     </div>
   </div>
