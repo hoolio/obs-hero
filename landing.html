@@ -351,6 +351,7 @@
   @media (max-width: 900px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 
   /* ---------- creator caption: the community, credited ---------- */
+  .byline-top { border-top: 0; border-bottom: 1px solid var(--rule); border-radius: 9px 9px 0 0; margin-bottom: 14px; }
   .byline {
     display: flex; align-items: center; gap: 12px;
     padding: 13px 16px; border-top: 1px solid var(--rule);
@@ -702,64 +703,64 @@
 
 <div class="shell">
   <div class="frame hero-carousel" id="herocar">
-    <div class="frame-tab">Live notebooks</div>
+    <div class="frame-tab">Notebooks</div>
     <div class="hc-tabs" role="tablist">
-        <button class="hc-tab is-on" role="tab" aria-selected="true" data-i="0">Stacked → grouped</button>
-        <button class="hc-tab" role="tab" aria-selected="false" data-i="1">See your data</button>
-        <button class="hc-tab" role="tab" aria-selected="false" data-i="2">See your blind spots</button>
+        <button class="hc-tab is-on" role="tab" aria-selected="true" data-i="0">Stacked bars</button>
+        <button class="hc-tab" role="tab" aria-selected="false" data-i="1">Bar chart race</button>
+        <button class="hc-tab" role="tab" aria-selected="false" data-i="2">Circle packing</button>
     </div>
     <div class="hc-viewport">
       <button class="hc-arrow hc-prev" id="hc-prev" aria-label="Previous notebook">&#8249;</button>
       <button class="hc-arrow hc-next" id="hc-next" aria-label="Next notebook">&#8250;</button>
-      <div class="slide is-on" data-i="0" role="tabpanel" aria-label="Stacked → grouped">
+      <div class="slide is-on" data-i="0" role="tabpanel" aria-label="Stacked bars">
         <div class="stage">
           <div class="stage-bar">
             <span>@d3/stacked-to-grouped-bars</span>
             <a href="https://observablehq.com/@d3/stacked-to-grouped-bars" target="_blank" rel="noopener">Open the notebook ↗</a>
           </div>
           <div class="clip" style="height:520px">
-            <iframe height="700" title="Stacked → grouped" loading="eager"
+            <iframe height="700" title="Stacked bars" loading="eager"
               src="https://observablehq.com/embed/@d3/stacked-to-grouped-bars?cells=viewof+layout,chart,update"></iframe>
           </div>
           <div class="byline">
-            <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
-            <div class="byline-who"><b>D3</b><span>@d3 · @d3/stacked-to-grouped-bars</span></div>
+            <img src="https://avatars.observableusercontent.com/avatar/7dbba99ced40bd5ab8013c99b1a11da61231bce321ba1148a9d16ad0f121550a" alt="" loading="lazy">
+            <div class="byline-who"><b>Mike Bostock</b><span>@mbostock · @d3/stacked-to-grouped-bars</span></div>
             <div class="byline-stats"><span><i>♥</i> 127</span><span><i>⑂</i> 170</span></div>
             <a class="byline-fork" href="https://observablehq.com/@d3/stacked-to-grouped-bars" target="_blank" rel="noopener">Fork</a>
           </div>
         </div>
       </div>
-      <div class="slide" data-i="1" role="tabpanel" aria-label="See your data">
+      <div class="slide" data-i="1" role="tabpanel" aria-label="Bar chart race">
         <div class="stage">
           <div class="stage-bar">
             <span>@d3/bar-chart-race</span>
             <a href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">Open the notebook ↗</a>
           </div>
           <div class="clip" style="height:520px">
-            <iframe height="700" title="See your data" loading="lazy"
+            <iframe height="700" title="Bar chart race" loading="lazy"
               src="https://observablehq.com/embed/@d3/bar-chart-race?cells=viewof+replay,chart"></iframe>
           </div>
           <div class="byline">
-            <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
-            <div class="byline-who"><b>D3</b><span>@d3 · @d3/bar-chart-race</span></div>
+            <img src="https://avatars.observableusercontent.com/avatar/7dbba99ced40bd5ab8013c99b1a11da61231bce321ba1148a9d16ad0f121550a" alt="" loading="lazy">
+            <div class="byline-who"><b>Mike Bostock</b><span>@mbostock · @d3/bar-chart-race</span></div>
             <div class="byline-stats"><span><i>♥</i> 285</span><span><i>⑂</i> 878</span></div>
             <a class="byline-fork" href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">Fork</a>
           </div>
         </div>
       </div>
-      <div class="slide" data-i="2" role="tabpanel" aria-label="See your blind spots">
+      <div class="slide" data-i="2" role="tabpanel" aria-label="Circle packing">
         <div class="stage">
           <div class="stage-bar">
             <span>@d3/zoomable-circle-packing</span>
             <a href="https://observablehq.com/@d3/zoomable-circle-packing" target="_blank" rel="noopener">Open the notebook ↗</a>
           </div>
           <div class="clip" style="height:520px">
-            <iframe height="700" title="See your blind spots" loading="lazy"
+            <iframe height="700" title="Circle packing" loading="lazy"
               src="https://observablehq.com/embed/@d3/zoomable-circle-packing?cells=chart"></iframe>
           </div>
           <div class="byline">
-            <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
-            <div class="byline-who"><b>D3</b><span>@d3 · @d3/zoomable-circle-packing</span></div>
+            <img src="https://avatars.observableusercontent.com/avatar/7dbba99ced40bd5ab8013c99b1a11da61231bce321ba1148a9d16ad0f121550a" alt="" loading="lazy">
+            <div class="byline-who"><b>Mike Bostock</b><span>@mbostock · @d3/zoomable-circle-packing</span></div>
             <div class="byline-stats"><span><i>♥</i> 351</span><span><i>⑂</i> 660</span></div>
             <a class="byline-fork" href="https://observablehq.com/@d3/zoomable-circle-packing" target="_blank" rel="noopener">Fork</a>
           </div>
@@ -858,7 +859,7 @@
     <p class="sub">Featured authors <a href="https://new.observablehq.com/public/authors" target="_blank" rel="noopener">See all →</a></p>
     <div class="authors">
       <a class="author" href="https://new.observablehq.com/@laotzunami?sort=stars" target="_blank" rel="noopener"><img src="https://avatars.observableusercontent.com/avatar/aeddc181df6ca80a347940ba62e17601ac6395e9d2c21142887eca5fd277326a" alt="" loading="lazy"><b>Lao</b></a>
-      <a class="author" href="https://new.observablehq.com/@mpkhinda?sort=stars" target="_blank" rel="noopener"><img src="https://avatars.observableusercontent.com/avatar/d3ce820bb0a0da07120f1d18fc5462f4d2dda95075bbb7bd7ac6113a256128dd" alt="" loading="lazy"><b>Matt Khinda</b></a>
+      <a class="author" href="https://new.observablehq.com/@mpkhinda?sort=stars" target="_blank" rel="noopener"><img src="https://avatars.observableusercontent.com/avatar/381c8bb4edddbcd7e2319cbd390f7477b1b4934289bf039a4e881d2d3711d20e" alt="" loading="lazy"><b>Matt Khinda</b></a>
       <a class="author" href="https://new.observablehq.com/@neocartocnrs?sort=stars" target="_blank" rel="noopener"><span class="mono">NL</span><b>Nicolas Lambert</b></a>
       <a class="author" href="https://new.observablehq.com/@meetamit?sort=stars" target="_blank" rel="noopener"><span class="mono">AS</span><b>Amit Sch</b></a>
     </div>
@@ -880,6 +881,81 @@
 
 
 
+
+<!-- ======================= AGENT ======================= -->
+<section class="agent rise" id="agent" style="--accent:var(--teal)">
+  <div class="shell">
+    <div class="eyebrow">See what your agent is doing</div>
+    <h2>Your agent should show its work.</h2>
+    <p class="lede">The integrated agent can run code and inspect live values — letting it see how data is distributed, the rendered output of a chart, and what part of a histogram you brushed.</p>
+
+    <div class="agent-grid">
+      <div>
+        <div class="console">
+          <div class="console-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span>q3-churn-analysis</span>
+            <span class="stat" id="agent-status">working</span>
+          </div>
+          <div class="console-body" id="agent-body"></div>
+        </div>
+        <button class="replay" id="agent-replay">↻ Replay</button>
+      </div>
+
+      <div class="carousel">
+        <div class="car-tabs" role="tablist" id="car-tabs"></div>
+        <div class="car-panel" id="car-panel"></div>
+        <div class="car-dots" id="car-dots"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ======================= FEATURED NOTEBOOK ======================= -->
+<section class="featured rise" id="featured" style="--accent:var(--blue)">
+  <div class="shell">
+    <div class="frame">
+      <div class="frame-tab">Featured notebook</div>
+      <div class="frame-head">
+        <div>
+          <h2>A Decade of NYC City Employee Pay</h2>
+          <p class="by">by Matt Khinda · NYC Open Data</p>
+        </div>
+      <div class="byline byline-top">
+          <img src="https://avatars.observableusercontent.com/avatar/381c8bb4edddbcd7e2319cbd390f7477b1b4934289bf039a4e881d2d3711d20e" alt="" loading="lazy">
+          <div class="byline-who">
+            <b>Matt Khinda</b>
+            <span>@mpkhinda · @mpkhinda/nyc-city-pay</span>
+          </div>
+          <div class="byline-stats"><span><i>♥</i> 1</span><span><i>⑂</i> 0</span></div>
+          <a class="byline-fork" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Fork</a>
+        </div>
+      </div>
+        <a class="btn btn-ghost" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Open in Observable ↗</a>
+      </div>
+      <div class="stage">
+        <div class="stage-bar">
+          <span>@mpkhinda/nyc-city-pay</span>
+          <span class="lamp"><i></i><i></i><i></i></span>
+        </div>
+        <!-- clipped deliberately: the notebook is cut at the source line and the
+             frame takes over with a sign-in prompt. scrolling="no" stops the
+             iframe scrolling on past the cut. -->
+        <div class="clip cut" style="height:760px">
+          <iframe height="1000" scrolling="no" title="A Decade of NYC City Employee Pay" loading="lazy"
+            src="https://observablehq.com/embed/@mpkhinda/nyc-city-pay"></iframe>
+        </div>
+        </div>
+    </div>
+
+    <div class="gate">
+      <span>Read the rest, fork it, and publish your own.</span>
+      <div class="gate-cta">
+        <a href="#" class="btn">Create a free account</a>
+        <a href="#" class="btn btn-ghost">Sign in</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ======================= WHAT / GET STARTED ======================= -->
 <section class="explain rise" id="what" style="--accent:var(--blue)">
@@ -917,80 +993,7 @@
   </div>
 </section>
 
-<!-- ======================= FEATURED NOTEBOOK ======================= -->
-<section class="featured rise" id="featured" style="--accent:var(--blue)">
-  <div class="shell">
-    <div class="frame">
-      <div class="frame-tab">Featured notebook</div>
-      <div class="frame-head">
-        <div>
-          <h2>A Decade of NYC City Employee Pay</h2>
-          <p class="by">by Matt Khinda · NYC Open Data</p>
-        </div>
-        <a class="btn btn-ghost" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Open in Observable ↗</a>
-      </div>
-      <div class="stage">
-        <div class="stage-bar">
-          <span>@mpkhinda/nyc-city-pay</span>
-          <span class="lamp"><i></i><i></i><i></i></span>
-        </div>
-        <!-- clipped deliberately: the notebook is cut at the source line and the
-             frame takes over with a sign-in prompt. scrolling="no" stops the
-             iframe scrolling on past the cut. -->
-        <div class="clip cut" style="height:760px">
-          <iframe height="1000" scrolling="no" title="A Decade of NYC City Employee Pay" loading="lazy"
-            src="https://observablehq.com/embed/@mpkhinda/nyc-city-pay"></iframe>
-        </div>
-        <div class="byline">
-          <img src="https://avatars.observableusercontent.com/avatar/d3ce820bb0a0da07120f1d18fc5462f4d2dda95075bbb7bd7ac6113a256128dd" alt="" loading="lazy">
-          <div class="byline-who">
-            <b>Matt Khinda</b>
-            <span>@mpkhinda · @mpkhinda/nyc-city-pay</span>
-          </div>
-          <div class="byline-stats"><span><i>♥</i> 1</span><span><i>⑂</i> 0</span></div>
-          <a class="byline-fork" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Fork</a>
-        </div>
-      </div>
-    </div>
 
-    <div class="gate">
-      <span>Read the rest, fork it, and publish your own.</span>
-      <div class="gate-cta">
-        <a href="#" class="btn">Create a free account</a>
-        <a href="#" class="btn btn-ghost">Sign in</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= AGENT ======================= -->
-<section class="agent rise" id="agent" style="--accent:var(--teal)">
-  <div class="shell">
-    <div class="eyebrow">See what your agent is doing</div>
-    <h2>Your agent should show its work.</h2>
-    <p class="lede">The integrated agent can run code and inspect live values — letting it see how data is distributed, the rendered output of a chart, and what part of a histogram you brushed.</p>
-
-    <div class="agent-grid">
-      <div>
-        <div class="console">
-          <div class="console-bar">
-            <span class="dots"><i></i><i></i><i></i></span>
-            <span>q3-churn-analysis</span>
-            <span class="stat" id="agent-status">working</span>
-          </div>
-          <div class="console-body" id="agent-body"></div>
-        </div>
-        <button class="replay" id="agent-replay">↻ Replay</button>
-      </div>
-
-      <div class="carousel">
-        <div class="car-tabs" role="tablist" id="car-tabs"></div>
-        <div class="car-panel" id="car-panel"></div>
-        <div class="car-dots" id="car-dots"></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 <!-- ======================= FOLLOW / OPEN SOURCE / SOCIAL ======================= -->
@@ -1013,7 +1016,7 @@
       <div class="oss-list">
         <a class="oss" href="https://observablehq.com/notebook-kit" target="_blank" rel="noopener"><b>Notebook Kit</b><span>Notebooks as regular files. Edit offline, build a static site, embed it, extend it.</span></a>
         <a class="oss" href="https://observablehq.com/plot" target="_blank" rel="noopener"><b>Plot</b><span>The JavaScript library for exploratory data visualization</span></a>
-        <a class="oss" href="https://d3js.org/" target="_blank" rel="noopener"><b>D3</b><span>The JavaScript library for bespoke data visualization</span></a>
+        <a class="oss" href="https://d3js.org/" target="_blank" rel="noopener"><b>Mike Bostock</b><span>The JavaScript library for bespoke data visualization</span></a>
       </div>
     </div>
   </div>
