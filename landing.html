@@ -152,6 +152,27 @@
   .lamp i { width: 8px; height: 8px; border-radius: 50%; background: var(--rule); display: block; }
   .lamp i:first-child { background: var(--accent); }
 
+  /* ---------- the rotating last word ----------
+     The container animates to each word's measured width so the period never
+     jumps. Screen readers get one static sentence, not a stream of updates. */
+  .rotator { display: inline-block; position: relative; vertical-align: bottom; }
+  .rotator i {
+    font-style: normal; display: inline-block; white-space: nowrap;
+    font-weight: 500;
+    background: linear-gradient(96deg, var(--blue), var(--teal));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    transition: opacity .3s ease, transform .3s cubic-bezier(.2,.7,.3,1);
+  }
+  .rotator i.out { opacity: 0; transform: translateY(-.5em); }
+  .rotator i.in  { opacity: 0; transform: translateY(.5em); }
+  .vh {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rotator, .rotator i { transition: none; }
+  }
+
   /* ---------- logo marquee ---------- */
   .logos { padding-block: 40px 44px; border-top: 1px solid var(--rule); }
   .logos .lead {
@@ -476,6 +497,16 @@
   .gate > span { font-size: 16px; color: var(--ink-soft); }
   .gate-cta { display: flex; gap: 10px; flex-wrap: wrap; }
 
+  .frame-head {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 22px; flex-wrap: wrap; padding: 10px 6px 20px;
+  }
+  .frame-head h2 { font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -.036em; font-weight: 600; margin: 0; }
+  .frame-head .by { font-size: 14.5px; color: var(--ink-soft); margin: 8px 0 0; }
+  /* the band frames are quieter than the featured one — same device, less weight */
+  .band-figure .frame { padding: 11px; border-radius: 15px; background: none; }
+  .band-figure .frame-tab { background: var(--paper); left: 22px; }
+
   /* ---------- get started ---------- */
   .doors { margin-top: clamp(38px, 4.5vw, 56px); }
   .started h2 { font-size: clamp(28px, 3.2vw, 44px); letter-spacing: -.04em; font-weight: 600; margin: 22px 0 16px; }
@@ -625,7 +656,7 @@
   <div class="shell">
     <div class="eyebrow">Observable Notebooks</div>
     <h1>What do you want to <em>see</em> today?</h1>
-    <p class="lede">The world's most trusted visualization products.</p>
+    <p class="lede">The world's most trusted visualization <span class="vh">products.</span><span class="rotator" id="rotator" aria-hidden="true"><i id="rotword">products</i></span><span aria-hidden="true">.</span></p>
     <div class="cta-row">
       <a href="#" class="btn">Start a notebook — free</a>
       <a href="https://observablehq.com/@d3/stacked-to-grouped-bars" class="btn btn-ghost" target="_blank" rel="noopener">Fork this one</a>
@@ -675,25 +706,28 @@
         <a class="band-link" href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">@d3/bar-chart-race ↗</a>
       </div>
       <div class="band-figure">
-        <div class="stage">
-          <div class="stage-bar"><span>@d3/bar-chart-race</span><span class="lamp"><i></i><i></i><i></i></span></div>
-          <div class="clip" style="height:540px">
-            <iframe height="700" title="Bar chart race" loading="lazy"
-              src="https://observablehq.com/embed/@d3/bar-chart-race?cells=viewof+replay,chart"></iframe>
+      <div class="frame">
+        <div class="frame-tab">Live notebook</div>
+          <div class="stage">
+            <div class="stage-bar"><span>@d3/bar-chart-race</span><span class="lamp"><i></i><i></i><i></i></span></div>
+            <div class="clip" style="height:540px">
+              <iframe height="700" title="Bar chart race" loading="lazy"
+                src="https://observablehq.com/embed/@d3/bar-chart-race?cells=viewof+replay,chart"></iframe>
+            </div>
+          <div class="byline">
+            <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
+            <div class="byline-who">
+              <b>D3</b>
+              <span>@d3 · @d3/bar-chart-race</span>
+            </div>
+            <div class="byline-stats">
+              <span><i>♥</i> 285</span>
+              <span><i>⑂</i> 878</span>
+            </div>
+            <a class="byline-fork" href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">Fork</a>
           </div>
-        <div class="byline">
-          <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
-          <div class="byline-who">
-            <b>D3</b>
-            <span>@d3 · @d3/bar-chart-race</span>
           </div>
-          <div class="byline-stats">
-            <span><i>♥</i> 285</span>
-            <span><i>⑂</i> 878</span>
-          </div>
-          <a class="byline-fork" href="https://observablehq.com/@d3/bar-chart-race" target="_blank" rel="noopener">Fork</a>
-        </div>
-        </div>
+      </div>
       </div>
     </div>
   </section>
@@ -750,156 +784,11 @@
 
 
 <!-- ======================= COMMUNITY ======================= -->
-
-<!-- ======================= WHAT / GET STARTED ======================= -->
-<section class="explain rise" id="what" style="--accent:var(--blue)">
-  <div class="shell">
-    <div class="eyebrow">So what is a notebook?</div>
-    <h2>A document that runs.</h2>
-    <p class="lede">Prose, data and code in one place. Change anything, and everything downstream updates.</p>
-    <div class="three">
-      <div>
-        <div class="step">First</div>
-        <h3>Write a little code</h3>
-        <p>JavaScript, SQL, Markdown, HTML — one document. Files, databases and APIs, no setup.</p>
-      </div>
-      <div style="--accent:var(--teal)">
-        <div class="step">Then</div>
-        <h3>It recalculates itself</h3>
-        <p>Cells know what they depend on. Move a slider; every chart follows.</p>
-      </div>
-      <div style="--accent:var(--coral)">
-        <div class="step">And</div>
-        <h3>Send the link</h3>
-        <p>It is already a web page. Share it, or let someone fork it and ask their own question.</p>
-      </div>
-    </div>
-    <div class="doors">
-      <a class="door" href="https://observablehq.com/documentation/" target="_blank" rel="noopener">
-        <h3>Documentation</h3>
-        <p>Reactivity, file attachments, databases, publishing.</p>
-      </a>
-      <a class="door" href="https://new.observablehq.com/@observablehq/-/collection/notebooks-2-0" target="_blank" rel="noopener" style="--accent:var(--teal)">
-        <h3>Examples</h3>
-        <p>Fork something that already runs. Fastest way in.</p>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= FEATURED NOTEBOOK ======================= -->
-<section class="featured rise" id="featured" style="--accent:var(--blue)">
-  <div class="shell">
-    <div class="featured-top">
-      <div>
-        <div class="eyebrow">Featured notebook</div>
-        <h2>A Decade of NYC City Employee Pay</h2>
-        <p class="by">by Matt Khinda · NYC Open Data</p>
-      </div>
-      <a class="btn btn-ghost" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Open in Observable ↗</a>
-    </div>
-    <p class="why">Not just a chart — the argument around it, published exactly as its author wrote it.</p>
-
-    <div class="frame">
-      <div class="frame-tab">Published notebook</div>
-      <div class="stage">
-        <div class="stage-bar">
-          <span>@mpkhinda/nyc-city-pay</span>
-          <span class="lamp"><i></i><i></i><i></i></span>
-        </div>
-        <!-- clipped deliberately: the notebook is cut at the source line and the
-             frame takes over with a sign-in prompt. scrolling="no" stops the
-             iframe scrolling on past the cut. -->
-        <div class="clip cut" style="height:760px">
-          <iframe height="1000" scrolling="no" title="A Decade of NYC City Employee Pay" loading="lazy"
-            src="https://observablehq.com/embed/@mpkhinda/nyc-city-pay"></iframe>
-        </div>
-        <div class="byline">
-          <img src="https://avatars.observableusercontent.com/avatar/d3ce820bb0a0da07120f1d18fc5462f4d2dda95075bbb7bd7ac6113a256128dd" alt="" loading="lazy">
-          <div class="byline-who">
-            <b>Matt Khinda</b>
-            <span>@mpkhinda · @mpkhinda/nyc-city-pay</span>
-          </div>
-          <div class="byline-stats"><span><i>♥</i> 1</span><span><i>⑂</i> 0</span></div>
-          <a class="byline-fork" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Fork</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="gate">
-      <span>Read the rest, fork it, and publish your own.</span>
-      <div class="gate-cta">
-        <a href="#" class="btn">Create a free account</a>
-        <a href="#" class="btn btn-ghost">Sign in</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= AGENT ======================= -->
-<section class="agent rise" id="agent" style="--accent:var(--teal)">
-  <div class="shell">
-    <div class="eyebrow">See what your agent is doing</div>
-    <h2>Your agent should show its work.</h2>
-    <p class="lede">Chat hands you an answer and throws away the reasoning. A notebook keeps every step.</p>
-
-    <div class="agent-grid">
-      <div>
-        <div class="console">
-          <div class="console-bar">
-            <span class="dots"><i></i><i></i><i></i></span>
-            <span>q3-churn-analysis</span>
-            <span class="stat" id="agent-status">working</span>
-          </div>
-          <div class="console-body" id="agent-body"></div>
-        </div>
-        <button class="replay" id="agent-replay">↻ Replay</button>
-      </div>
-
-      <div class="carousel">
-        <div class="car-tabs" role="tablist" id="car-tabs"></div>
-        <div class="car-panel" id="car-panel"></div>
-        <div class="car-dots" id="car-dots"></div>
-      </div>
-    </div>
-  </div>
-</section>
-  <section class="band rise" id="blindspots" data-label="See your blind spots" style="--accent:var(--coral)">
-    <div class="shell band-inner">
-      <div class="band-head">
-        <div class="band-mark"><span></span>Series 02</div>
-        <h2>See your blind spots</h2>
-        <a class="band-link" href="https://observablehq.com/@d3/zoomable-circle-packing" target="_blank" rel="noopener">@d3/zoomable-circle-packing ↗</a>
-      </div>
-      <div class="band-figure">
-        <div class="stage">
-          <div class="stage-bar"><span>@d3/zoomable-circle-packing</span><span class="lamp"><i></i><i></i><i></i></span></div>
-          <div class="clip" style="height:540px">
-            <iframe height="700" title="Zoomable circle packing" loading="lazy"
-              src="https://observablehq.com/embed/@d3/zoomable-circle-packing?cells=chart"></iframe>
-          </div>
-        <div class="byline">
-          <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
-          <div class="byline-who">
-            <b>D3</b>
-            <span>@d3 · @d3/zoomable-circle-packing</span>
-          </div>
-          <div class="byline-stats">
-            <span><i>♥</i> 351</span>
-            <span><i>⑂</i> 660</span>
-          </div>
-          <a class="byline-fork" href="https://observablehq.com/@d3/zoomable-circle-packing" target="_blank" rel="noopener">Fork</a>
-        </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 <section class="community rise" id="community" style="--accent:var(--blue)">
   <div class="shell">
     <div class="eyebrow">Explore the community</div>
-    <h2>Some notebooks are masterpieces.</h2>
-    <p class="lede">Some are blog entries thinking out loud. Some are teaching tools. Some are precision-honed masterpieces.</p>
+    <h2>Explore the community</h2>
+    <p class="lede">Some notebooks are like blog entries, thinking out loud; some are pedagogical examples, offering or seeking feedback; some are precision-honed masterpieces.</p>
 
     <p class="sub">Trending notebooks <a href="https://new.observablehq.com/public" target="_blank" rel="noopener">See all →</a></p>
     <div class="nbgrid">
@@ -953,13 +842,158 @@
   </div>
 </section>
 
+<!-- ======================= WHAT / GET STARTED ======================= -->
+<section class="explain rise" id="what" style="--accent:var(--blue)">
+  <div class="shell">
+    <div class="eyebrow">So what is a notebook?</div>
+    <h2>A document that runs.</h2>
+    <p class="lede">Observable Notebooks are lightweight computational documents that let you think, explore, and explain with code.</p>
+    <div class="three">
+      <div>
+        <div class="step">First</div>
+        <h3>Think, explore, explain</h3>
+        <p>Analyze and visualize data. Weave prose and code into one document you can read top to bottom.</p>
+      </div>
+      <div style="--accent:var(--teal)">
+        <div class="step">Then</div>
+        <h3>Automatic reactivity</h3>
+        <p>Vanilla JavaScript and TypeScript with automatic reactivity, for easier development and simpler interaction.</p>
+      </div>
+      <div style="--accent:var(--coral)">
+        <div class="step">And</div>
+        <h3>Fork, import, publish</h3>
+        <p>Reuse code by forking or importing. Work privately, or publish to the world.</p>
+      </div>
+    </div>
+    <div class="doors">
+      <a class="door" href="https://observablehq.com/documentation/" target="_blank" rel="noopener">
+        <h3>Documentation</h3>
+        <p>Learn the basics of working in Observable.</p>
+      </a>
+      <a class="door" href="https://new.observablehq.com/@observablehq/-/collection/notebooks-2-0" target="_blank" rel="noopener" style="--accent:var(--teal)">
+        <h3>Examples</h3>
+        <p>Peruse our examples and tutorials, or fork a notebook to start.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FEATURED NOTEBOOK ======================= -->
+<section class="featured rise" id="featured" style="--accent:var(--blue)">
+  <div class="shell">
+    <div class="frame">
+      <div class="frame-tab">Featured notebook</div>
+      <div class="frame-head">
+        <div>
+          <h2>A Decade of NYC City Employee Pay</h2>
+          <p class="by">by Matt Khinda · NYC Open Data</p>
+        </div>
+        <a class="btn btn-ghost" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Open in Observable ↗</a>
+      </div>
+      <div class="stage">
+        <div class="stage-bar">
+          <span>@mpkhinda/nyc-city-pay</span>
+          <span class="lamp"><i></i><i></i><i></i></span>
+        </div>
+        <!-- clipped deliberately: the notebook is cut at the source line and the
+             frame takes over with a sign-in prompt. scrolling="no" stops the
+             iframe scrolling on past the cut. -->
+        <div class="clip cut" style="height:760px">
+          <iframe height="1000" scrolling="no" title="A Decade of NYC City Employee Pay" loading="lazy"
+            src="https://observablehq.com/embed/@mpkhinda/nyc-city-pay"></iframe>
+        </div>
+        <div class="byline">
+          <img src="https://avatars.observableusercontent.com/avatar/d3ce820bb0a0da07120f1d18fc5462f4d2dda95075bbb7bd7ac6113a256128dd" alt="" loading="lazy">
+          <div class="byline-who">
+            <b>Matt Khinda</b>
+            <span>@mpkhinda · @mpkhinda/nyc-city-pay</span>
+          </div>
+          <div class="byline-stats"><span><i>♥</i> 1</span><span><i>⑂</i> 0</span></div>
+          <a class="byline-fork" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Fork</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate">
+      <span>Read the rest, fork it, and publish your own.</span>
+      <div class="gate-cta">
+        <a href="#" class="btn">Create a free account</a>
+        <a href="#" class="btn btn-ghost">Sign in</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= AGENT ======================= -->
+<section class="agent rise" id="agent" style="--accent:var(--teal)">
+  <div class="shell">
+    <div class="eyebrow">See what your agent is doing</div>
+    <h2>Your agent should show its work.</h2>
+    <p class="lede">The integrated agent can run code and inspect live values — letting it see how data is distributed, the rendered output of a chart, and what part of a histogram you brushed.</p>
+
+    <div class="agent-grid">
+      <div>
+        <div class="console">
+          <div class="console-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span>q3-churn-analysis</span>
+            <span class="stat" id="agent-status">working</span>
+          </div>
+          <div class="console-body" id="agent-body"></div>
+        </div>
+        <button class="replay" id="agent-replay">↻ Replay</button>
+      </div>
+
+      <div class="carousel">
+        <div class="car-tabs" role="tablist" id="car-tabs"></div>
+        <div class="car-panel" id="car-panel"></div>
+        <div class="car-dots" id="car-dots"></div>
+      </div>
+    </div>
+  </div>
+</section>
+  <section class="band rise" id="blindspots" data-label="See your blind spots" style="--accent:var(--coral)">
+    <div class="shell band-inner">
+      <div class="band-head">
+        <div class="band-mark"><span></span>Series 02</div>
+        <h2>See your blind spots</h2>
+        <a class="band-link" href="https://observablehq.com/@d3/zoomable-circle-packing" target="_blank" rel="noopener">@d3/zoomable-circle-packing ↗</a>
+      </div>
+      <div class="band-figure">
+      <div class="frame">
+        <div class="frame-tab">Live notebook</div>
+          <div class="stage">
+            <div class="stage-bar"><span>@d3/zoomable-circle-packing</span><span class="lamp"><i></i><i></i><i></i></span></div>
+            <div class="clip" style="height:540px">
+              <iframe height="700" title="Zoomable circle packing" loading="lazy"
+                src="https://observablehq.com/embed/@d3/zoomable-circle-packing?cells=chart"></iframe>
+            </div>
+          <div class="byline">
+            <img src="https://avatars.observableusercontent.com/avatar/5af16e327a90b2873351dda8a596c0d2d3bf954f64523deefe80177c9764d0f7" alt="" loading="lazy">
+            <div class="byline-who">
+              <b>D3</b>
+              <span>@d3 · @d3/zoomable-circle-packing</span>
+            </div>
+            <div class="byline-stats">
+              <span><i>♥</i> 351</span>
+              <span><i>⑂</i> 660</span>
+            </div>
+            <a class="byline-fork" href="https://observablehq.com/@d3/zoomable-circle-packing" target="_blank" rel="noopener">Fork</a>
+          </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+
 <!-- ======================= FOLLOW / OPEN SOURCE / SOCIAL ======================= -->
 <section class="follow rise" id="follow" style="--accent:var(--teal)">
   <div class="shell follow-grid">
     <div>
       <div class="eyebrow">Follow our development</div>
       <h2>We rely on you to help us prioritize.</h2>
-      <p class="lede">We build in the open, and we prioritize what you tell us matters.</p>
+      <p class="lede">Observable is constantly improving. We rely on you to help us prioritize what we build. Tell us what excites you the most.</p>
       <div class="chips">
         <a class="chip" href="https://youtube.com/playlist?list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">Podcast</a>
         <a class="chip" href="https://talk.observablehq.com/" target="_blank" rel="noopener">Forum</a>
@@ -971,9 +1005,9 @@
     <div>
       <p class="sub">Open source <a href="https://github.com/observablehq" target="_blank" rel="noopener">github.com/observablehq →</a></p>
       <div class="oss-list">
-        <a class="oss" href="https://observablehq.com/notebook-kit" target="_blank" rel="noopener"><b>Notebook Kit</b><span>Notebooks as plain files. Edit offline, build a site, embed it.</span></a>
-        <a class="oss" href="https://observablehq.com/plot" target="_blank" rel="noopener"><b>Plot</b><span>Advanced charts, made accessible</span></a>
-        <a class="oss" href="https://d3js.org/" target="_blank" rel="noopener"><b>D3</b><span>Complete control over every element</span></a>
+        <a class="oss" href="https://observablehq.com/notebook-kit" target="_blank" rel="noopener"><b>Notebook Kit</b><span>Notebooks as regular files. Edit offline, build a static site, embed it, extend it.</span></a>
+        <a class="oss" href="https://observablehq.com/plot" target="_blank" rel="noopener"><b>Plot</b><span>The JavaScript library for exploratory data visualization</span></a>
+        <a class="oss" href="https://d3js.org/" target="_blank" rel="noopener"><b>D3</b><span>The JavaScript library for bespoke data visualization</span></a>
       </div>
     </div>
   </div>
@@ -982,7 +1016,7 @@
 <section class="final rise">
   <div class="shell">
     <h2>See for yourself.</h2>
-    <p>Start from blank, or fork what you just used.</p>
+    <p>Learn the basics of working in Observable, or fork a notebook to start.</p>
     <div class="cta-row">
       <a href="#" class="btn btn-lg">Start a notebook — free</a>
       <a href="#" class="btn btn-ghost btn-lg">Browse the gallery</a>
@@ -1017,6 +1051,29 @@
   };
   addEventListener('scroll', onScroll, {passive: true});
   onScroll();
+
+  /* ---------- rotate the last word of the hero line ----------
+     No width management: the span sizes to its own content. An earlier version
+     tweened a measured width and clipped the longest word. */
+  const WORDS = ['products', 'company', 'community', 'tools', 'platform', 'state-of-the-art'];
+  const rotw = document.getElementById('rotword');
+  if (rotw) {
+    let ri = 0, loop = null;
+    const step = () => {
+      ri = (ri + 1) % WORDS.length;
+      rotw.classList.add('out');
+      setTimeout(() => {
+        rotw.textContent = WORDS[ri];
+        rotw.classList.remove('out');
+        rotw.classList.add('in');
+        requestAnimationFrame(() => requestAnimationFrame(() => rotw.classList.remove('in')));
+      }, 300);
+    };
+    const play = () => { if (!loop) loop = setInterval(step, 2600); };
+    const stop = () => { clearInterval(loop); loop = null; };
+    addEventListener('visibilitychange', () => document.hidden ? stop() : play());
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) play();
+  }
 
   /* ---------- logo marquee: real assets from Observable's Contentful CDN ---------- */
   const CDN = 'https://images.ctfassets.net/uklh5xrq1p2j/';
@@ -1090,11 +1147,11 @@
 
   /* ---------- the five reasons, as one rotating panel ---------- */
   const REASONS = [
-    ['persistent', 'A document with a URL. Still there in six months, when someone asks how you got the number.'],
-    ['auditable',  'The actual code that produced the actual output. Check the one step you don\'t believe.'],
-    ['extensible', 'Edit a cell. Everything downstream recomputes on its own.'],
-    ['shareable',  'Send a link, not a screenshot and a paragraph of caveats.'],
-    ['quick',      'No install, no server. It writes into a page that is already running.']
+    ['persistent', 'A notebook is a document with a URL. Work privately, or publish to the world.'],
+    ['auditable',  'The agent runs code and inspects live values. You see the same output it did.'],
+    ['extensible', 'Edit any cell. Automatic reactivity recomputes everything downstream.'],
+    ['shareable',  'Reuse code by forking or importing. Send the notebook, not a screenshot.'],
+    ['quick',      'Lightweight computational documents. No install, no server to babysit.']
   ];
   const tabsEl = document.getElementById('car-tabs');
   const panelEl = document.getElementById('car-panel');
