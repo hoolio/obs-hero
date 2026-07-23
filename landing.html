@@ -335,7 +335,8 @@
     content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
     background: radial-gradient(ellipse 1000px 420px at 50% 50%, rgba(66,105,208,.07), transparent 72%);
   }
-  .os-top { max-width: 62ch; margin-bottom: clamp(34px, 4.5vw, 54px); }
+  .os-top { max-width: 62ch; margin-bottom: clamp(28px, 3.5vw, 44px); }
+  .os-sub { font-size: 16px; line-height: 1.55; color: var(--ink-soft); margin: 16px 0 0; max-width: 52ch; }
   .os h2 {
     font-size: clamp(34px, 5vw, 66px); line-height: 1.0; letter-spacing: -.046em;
     font-weight: 600; margin: 0 0 32px; max-width: 15ch;
@@ -347,36 +348,58 @@
   }
   .os .lede { font-size: clamp(16.5px, 1.5vw, 19px); line-height: 1.6; color: var(--ink-soft); margin: 0; }
 
-  /* the live counter — the one number that moves */
-  .ticker {
-    border: 1px solid var(--rule); border-radius: 14px; background: var(--paper);
-    padding: clamp(24px, 3vw, 34px); margin-bottom: 18px;
-    display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
-    box-shadow: 0 1px 2px rgba(16,20,26,.04), 0 12px 40px -22px rgba(16,20,26,.2);
-  }
-  .ticker-n {
-    font-family: var(--mono); font-weight: 500;
-    font-size: clamp(38px, 6vw, 76px); letter-spacing: -.05em; line-height: 1;
-    font-variant-numeric: tabular-nums; font-feature-settings: "tnum";
-    background: linear-gradient(96deg, var(--blue), var(--teal));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .ticker-l { font-size: 16px; color: var(--ink-soft); }
-  .ticker-l b { color: var(--ink); font-weight: 600; display: block; font-size: 17px; }
+  /* ---------- branded flip cards ---------- */
+  .flipgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .flipgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .flipgrid { grid-template-columns: 1fr; } }
 
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-  .stat-card {
-    border: 1px solid var(--rule); border-radius: 12px; padding: 22px 22px 24px;
-    background: var(--paper); transition: transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s ease;
+  .flipcard { perspective: 1200px; height: 232px; cursor: default; outline: none; }
+  .flip-inner {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d; transition: transform .62s cubic-bezier(.5,.05,.2,1);
   }
-  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px -20px rgba(16,20,26,.3); }
-  .stat-n {
-    font-family: var(--mono); font-size: clamp(24px, 2.6vw, 34px); font-weight: 500;
-    letter-spacing: -.04em; font-variant-numeric: tabular-nums;
-    color: var(--accent); display: block; margin-bottom: 8px;
+  .flipcard:hover .flip-inner, .flipcard:focus-visible .flip-inner { transform: rotateY(180deg); }
+  .flip-face {
+    position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border: 1px solid var(--rule); border-radius: 15px; background: var(--paper);
+    padding: 22px; display: flex; flex-direction: column;
+    box-shadow: 0 1px 2px rgba(16,20,26,.04);
   }
-  .stat-l { font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
-  @media (max-width: 900px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .flip-front { justify-content: flex-start; }
+  .flip-back {
+    transform: rotateY(180deg); justify-content: center;
+    /* the accent whispers on the back, tying card to metric */
+    background:
+      radial-gradient(120% 120% at 100% 0%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 60%),
+      var(--paper);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--rule));
+  }
+  .fc-logo { height: 34px; display: flex; align-items: center; margin-bottom: auto; }
+  .fc-d3 svg { height: 30px; width: auto; display: block; }
+  .fc-obs svg { height: 26px; width: 26px; color: var(--accent); display: block; }
+  .fc-name { font-size: 16.5px; font-weight: 600; letter-spacing: -.02em; margin-top: 14px; }
+  .fc-role { font-size: 13px; line-height: 1.4; color: var(--ink-soft); margin-top: 4px; }
+  .fc-hint {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-faint); margin-top: 14px; display: flex; align-items: center; gap: 7px;
+  }
+  .fc-hint::before { content: ""; width: 6px; height: 6px; border-radius: 2px; background: var(--accent); }
+
+  /* the numbers: display sans, tight tracking, tabular — not the clunky mono */
+  .fc-num {
+    font-family: var(--sans); font-weight: 600; letter-spacing: -.045em; line-height: .95;
+    font-size: clamp(30px, 3.4vw, 44px); font-variant-numeric: tabular-nums; font-feature-settings: "tnum";
+    color: var(--accent);
+  }
+  .fc-unit { font-size: 14px; line-height: 1.45; color: var(--ink); margin-top: 10px; font-weight: 500; }
+  .fc-extra { font-size: 12.5px; color: var(--ink-soft); margin-top: 8px; }
+  @media (prefers-reduced-motion: reduce) {
+    .flip-inner { transition: none; }
+    .flipcard:hover .flip-inner, .flipcard:focus-visible .flip-inner { transform: none; }
+    .flip-back { transform: none; opacity: 0; transition: opacity .2s ease; pointer-events: none; }
+    .flipcard:hover .flip-back, .flipcard:focus-visible .flip-back { opacity: 1; }
+    .flip-front { backface-visibility: visible; }
+  }
 
   /* ---------- creator caption: the community, credited ---------- */
   .byline-top { border-top: 0; border-bottom: 1px solid var(--rule); border-radius: 9px 9px 0 0; margin-bottom: 14px; }
@@ -898,34 +921,69 @@
   <div class="shell">
     <div class="os-top">
       <h2>The backbone of modern <em>data visualization</em>.</h2>
+      <p class="os-sub">Free and open source — used on more of the top 1M sites than any other charting library.</p>
     </div>
 
-    <div class="ticker">
-      <div>
-        <div class="ticker-n" id="nbcount">1,200,000+</div>
+    <div class="flipgrid">
+      <div class="flipcard" tabindex="0" style="--accent:var(--coral)" aria-label="D3: 306M npm downloads a week">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="fc-logo"><span class="fc-d3"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 116 111"> <clipPath id="d3l-clip"> <path d="M0,0h7.75a45.5,45.5 0 1 1 0,91h-7.75v-20h7.75a25.5,25.5 0 1 0 0,-51h-7.75zm36.2510,0h32a27.75,27.75 0 0 1 21.331,45.5a27.75,27.75 0 0 1 -21.331,45.5h-32a53.6895,53.6895 0 0 0 18.7464,-20h13.2526a7.75,7.75 0 1 0 0,-15.5h-7.75a53.6895,53.6895 0 0 0 0,-20h7.75a7.75,7.75 0 1 0 0,-15.5h-13.2526a53.6895,53.6895 0 0 0 -18.7464,-20z"/> </clipPath> <linearGradient id="d3l-gradient-1" gradientUnits="userSpaceOnUse" x1="7" y1="64" x2="50" y2="107"> <stop offset="0" stop-color="#f9a03c"/> <stop offset="1" stop-color="#f7974e"/> </linearGradient> <linearGradient id="d3l-gradient-2" gradientUnits="userSpaceOnUse" x1="2" y1="-2" x2="87" y2="84"> <stop offset="0" stop-color="#f26d58"/> <stop offset="1" stop-color="#f9a03c"/> </linearGradient> <linearGradient id="d3l-gradient-3" gradientUnits="userSpaceOnUse" x1="45" y1="-10" x2="108" y2="53"> <stop offset="0" stop-color="#b84e51"/> <stop offset="1" stop-color="#f68e48"/> </linearGradient> <g clip-path="url(#d3l-clip)"> <path d="M-100,-102m-28,0v300h300z" fill="url(#d3l-gradient-1)"/> <path d="M-100,-102m28,0h300v300z" fill="url(#d3l-gradient-3)"/> <path d="M-100,-102l300,300" fill="none" stroke="url(#d3l-gradient-2)" stroke-width="40"/> </g> </svg></span></div>
+            <div class="fc-name">D3</div>
+            <div class="fc-role">The foundation of modern dataviz</div>
+            <div class="fc-hint">Hover for the numbers</div>
+          </div>
+          <div class="flip-face flip-back">
+            <div class="fc-num">306M</div>
+            <div class="fc-unit">npm downloads a week</div>
+            <div class="fc-extra">144K★ across our open source</div>
+          </div>
+        </div>
       </div>
-      <div class="ticker-l">
-        <b>notebooks created</b>
-        on Observable, and counting
+      <div class="flipcard" tabindex="0" style="--accent:var(--teal)" aria-label="Observable Plot: 5.7M downloads · 2× year over year">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="fc-logo"><span class="fc-obs"><svg viewBox="0 0 19 19" aria-hidden="true"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span></div>
+            <div class="fc-name">Observable Plot</div>
+            <div class="fc-role">Expressive charts, concise code</div>
+            <div class="fc-hint">Hover for the numbers</div>
+          </div>
+          <div class="flip-face flip-back">
+            <div class="fc-num">5.7M</div>
+            <div class="fc-unit">downloads · 2× year over year</div>
+            
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat-card">
-        <span class="stat-n">306M+</span>
-        <span class="stat-l">open-source downloads every week</span>
+      <div class="flipcard" tabindex="0" style="--accent:var(--blue)" aria-label="Observable Notebooks: 1,200,000+ created, and counting">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="fc-logo"><span class="fc-obs"><svg viewBox="0 0 19 19" aria-hidden="true"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span></div>
+            <div class="fc-name">Observable Notebooks</div>
+            <div class="fc-role">Reactive documents that run</div>
+            <div class="fc-hint">Hover for the numbers</div>
+          </div>
+          <div class="flip-face flip-back">
+            <div class="fc-num" id="nbcount">1,200,000+</div>
+            <div class="fc-unit">created, and counting</div>
+            
+          </div>
+        </div>
       </div>
-      <div class="stat-card" style="--accent:var(--teal)">
-        <span class="stat-n">144K+</span>
-        <span class="stat-l">GitHub stars across our projects</span>
-      </div>
-      <div class="stat-card" style="--accent:var(--amber)">
-        <span class="stat-n">#1</span>
-        <span class="stat-l">charting library on the top 1M sites</span>
-      </div>
-      <div class="stat-card" style="--accent:var(--coral)">
-        <span class="stat-n">500K+</span>
-        <span class="stat-l">people here every month</span>
+      <div class="flipcard" tabindex="0" style="--accent:var(--amber)" aria-label="In the wild: 500K people a month · #1 on the top 1M sites">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <div class="fc-logo"><span class="fc-obs"><svg viewBox="0 0 19 19" aria-hidden="true"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span></div>
+            <div class="fc-name">In the wild</div>
+            <div class="fc-role">Everywhere data is explained</div>
+            <div class="fc-hint">Hover for the numbers</div>
+          </div>
+          <div class="flip-face flip-back">
+            <div class="fc-num">500K</div>
+            <div class="fc-unit">people a month · #1 on the top 1M sites</div>
+            
+          </div>
+        </div>
       </div>
     </div>
   </div>
