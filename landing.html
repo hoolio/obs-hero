@@ -6,7 +6,7 @@
 <title>Observable — What do you want to see today?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Fugaz+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
      Observable — landing page
@@ -136,43 +136,6 @@
      the frame is drawn taller than its window and the window clips it. */
   .clip { overflow: hidden; position: relative; background: var(--paper); }
   .clip iframe { width: 100%; border: 0; display: block; }
-
-  /* ---------- retro "Observable Agent is here!" sticker ---------- */
-  .agent-burst {
-    position: absolute; top: -26px; right: clamp(8px, 3vw, 40px); z-index: 40;
-    width: 148px; height: 148px; text-decoration: none;
-    display: grid; place-items: center; transform: rotate(-9deg);
-    transition: transform .28s cubic-bezier(.34,1.4,.5,1);
-    animation: burstIn .7s cubic-bezier(.34,1.5,.5,1) .4s both;
-  }
-  .agent-burst:hover { transform: rotate(-4deg) scale(1.06); }
-  @keyframes burstIn { from { transform: rotate(-9deg) scale(0); } to { transform: rotate(-9deg) scale(1); } }
-  .burst-shape {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    filter: drop-shadow(2px 3px 0 rgba(16,20,26,.18));
-    animation: burstSpin 22s linear infinite;
-  }
-  @keyframes burstSpin { to { transform: rotate(360deg); } }
-  .burst-text {
-    position: relative; text-align: center; color: #fff6ea; line-height: 1;
-    transform: rotate(2deg);
-  }
-  .burst-text em {
-    display: block; font-family: var(--mono); font-style: normal; font-weight: 500;
-    font-size: 8.5px; letter-spacing: .16em; text-transform: uppercase; opacity: .95; margin-bottom: 3px;
-  }
-  .burst-text b {
-    display: block; font-family: "Fugaz One", var(--sans); font-weight: 400;
-    font-size: 27px; letter-spacing: .01em; text-transform: uppercase;
-    text-shadow: 1px 1px 0 rgba(16,20,26,.25);
-  }
-  .burst-text i {
-    display: block; font-family: "Fugaz One", var(--sans); font-style: italic;
-    font-size: 16px; text-transform: lowercase; margin-top: 2px; color: #fff;
-    text-shadow: 1px 1px 0 rgba(16,20,26,.25);
-  }
-  @media (max-width: 720px) { .agent-burst { width: 116px; height: 116px; top: -14px; } .burst-text b { font-size: 21px } .burst-text i { font-size: 13px } }
-  @media (prefers-reduced-motion: reduce) { .burst-shape, .agent-burst { animation: none; } }
 
   /* ---------- hero ---------- */
   .hero { position: relative; padding-block: clamp(56px, 7vw, 92px) 40px; }
@@ -861,18 +824,6 @@
 <!-- ======================= HERO ======================= -->
 <header class="hero">
 
-  <a class="agent-burst" href="#agent" aria-label="Observable Agent is here — jump to it">
-    <svg class="burst-shape" viewBox="0 0 120 120" aria-hidden="true">
-      <polygon points="60.0,2.0 67.6,16.7 79.8,5.5 82.0,21.9 97.3,15.6 93.7,31.7 110.2,31.0 101.3,45.0 117.1,49.9 104.0,60.0 117.1,70.1 101.3,75.0 110.2,89.0 93.7,88.3 97.3,104.4 82.0,98.1 79.8,114.5 67.6,103.3 60.0,118.0 52.4,103.3 40.2,114.5 38.0,98.1 22.7,104.4 26.3,88.3 9.8,89.0 18.7,75.0 2.9,70.1 16.0,60.0 2.9,49.9 18.7,45.0 9.8,31.0 26.3,31.7 22.7,15.6 38.0,21.9 40.2,5.5 52.4,16.7" fill="var(--coral)"/>
-      <polygon points="60.0,2.0 67.6,16.7 79.8,5.5 82.0,21.9 97.3,15.6 93.7,31.7 110.2,31.0 101.3,45.0 117.1,49.9 104.0,60.0 117.1,70.1 101.3,75.0 110.2,89.0 93.7,88.3 97.3,104.4 82.0,98.1 79.8,114.5 67.6,103.3 60.0,118.0 52.4,103.3 40.2,114.5 38.0,98.1 22.7,104.4 26.3,88.3 9.8,89.0 18.7,75.0 2.9,70.1 16.0,60.0 2.9,49.9 18.7,45.0 9.8,31.0 26.3,31.7 22.7,15.6 38.0,21.9 40.2,5.5 52.4,16.7" fill="var(--amber)" transform="rotate(10 60 60) scale(0.86)" transform-origin="60 60"/>
-      <circle cx="60" cy="60" r="41" fill="none" stroke="#fff6ea" stroke-width="1.6" stroke-dasharray="2 4"/>
-    </svg>
-    <span class="burst-text">
-      <em>Observable</em>
-      <b>Agent</b>
-      <i>is here!</i>
-    </span>
-  </a>
   <div class="shell">
     <h1>What do you want to <em>see</em> today?</h1>
     <p class="lede">The world's most trusted visualization <span class="vh">products.</span><span class="rotator" aria-hidden="true"><span class="rot-sizer">state-of-the-art.</span><span class="rot-word is-on">products.</span><span class="rot-word">company.</span><span class="rot-word">community.</span><span class="rot-word">tools.</span><span class="rot-word">platform.</span><span class="rot-word">creators.</span><span class="rot-word">state-of-the-art.</span></span></p>
