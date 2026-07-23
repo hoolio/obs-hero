@@ -169,6 +169,21 @@
   .art-badge.on { opacity:1; transform:none; color:var(--accent); background:color-mix(in srgb,var(--accent) 12%,var(--paper)); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent); }
   .art-body { position:relative; z-index:1; padding:16px; display:flex; flex-direction:column; gap:13px; min-height:326px; }
 
+  /* the real, live embed at Ship — the mockup becomes the actual product */
+  .rz-live { border:1px solid color-mix(in srgb,var(--accent) 35%,var(--rule)); border-radius:9px; overflow:hidden; background:var(--paper); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 10%,transparent); }
+  .rz-live-bar { display:flex; align-items:center; gap:8px; padding:7px 11px; border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); font-weight:600; background:color-mix(in srgb,var(--accent) 6%,var(--paper)); }
+  .live-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent); animation:livePulse 1.8s ease-out infinite; }
+  @keyframes livePulse { 0%{ box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent);} 70%{ box-shadow:0 0 0 7px transparent;} 100%{ box-shadow:0 0 0 0 transparent;} }
+  .rz-open { margin-left:auto; color:var(--ink-soft); text-decoration:none; }
+  .rz-open:hover { color:var(--accent); }
+  .rz-live-frame { position:relative; height:230px; overflow:hidden; background:var(--paper); }
+  .rz-live-frame iframe { width:100%; height:290px; border:0; display:block; }
+  .rz-live-hint { position:absolute; top:8px; right:10px; z-index:2; font-family:var(--mono); font-size:10px; color:var(--ink-faint); background:color-mix(in srgb,var(--paper) 86%,transparent); padding:3px 8px; border-radius:100px; border:1px solid var(--rule); pointer-events:none; animation:hintFade 5s ease forwards; }
+  @keyframes hintFade { 0%,70%{ opacity:1;} 100%{ opacity:0;} }
+  /* the reveal: mockup->real, a quick materialize when Ship activates */
+  .rz[data-s="5"].on .rz-live { animation:materialize .7s cubic-bezier(.34,1.2,.5,1); }
+  @keyframes materialize { 0%{ opacity:0; transform:scale(.96); filter:blur(3px);} 100%{ opacity:1; transform:none; filter:none;} }
+
   /* the query cell is constant — same data, escalating result */
   .art-const { border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:6px; overflow:hidden; background:var(--paper); }
   .art-tag { display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-faint); padding:5px 10px; border-bottom:1px solid var(--rule); background:var(--paper-dim); }
@@ -430,12 +445,14 @@
               <!-- 5 · SHIP: a real dashboard app -->
               <div class="rz" data-s="5">
                 <div class="rz-tiles"><div class="rz-tile"><b>6.9%</b><span>Today</span></div><div class="rz-tile"><b>7.8%</b><span>1-yr high</span></div><div class="rz-tile"><b>6.1%</b><span>1-yr low</span></div></div>
-                <svg class="rz-chart rz-chart-sm" viewBox="0 0 300 84">
-                  <g stroke="var(--rule)" stroke-width="1" opacity=".7"><line x1="0" y1="20" x2="300" y2="20"/><line x1="0" y1="46" x2="300" y2="46"/><line x1="0" y1="72" x2="300" y2="72"/></g>
-                  <polygon fill="var(--accent)" opacity=".08" points="0,74 0,66 40,60 80,50 120,36 160,22 200,14 240,20 300,10 300,74"/>
-                  <polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="0,66 40,60 80,50 120,36 160,22 200,14 240,20 300,10"/>
-                  <circle cx="300" cy="10" r="3.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>
-                </svg>
+                <div class="rz-live" id="rz-live">
+                  <div class="rz-live-bar"><span class="live-dot"></span>Live · a real Observable notebook<a class="rz-open" href="https://observablehq.com/@d3/bollinger-bands" target="_blank" rel="noopener">open ↗</a></div>
+                  <div class="rz-live-frame">
+                    <div class="rz-live-hint">drag the sliders — it's really running</div>
+                    <iframe id="rz-live-frame" title="A real live Observable notebook" loading="lazy"
+                      data-src="https://observablehq.com/embed/@d3/bollinger-bands?cells=viewof+N,viewof+K,chart"></iframe>
+                  </div>
+                </div>
                 <div class="art-embed"><span class="art-url">observablehq.com/@you/mortgage-rates</span><span class="art-embtag">&lt;/&gt; Embed</span></div>
               </div>
 
@@ -668,8 +685,8 @@
          flow:['🔎 app','⏰ schedule','💬 #finance'],
          chips:['scheduled report','Slack alert','live data']},
       5:{noun:'an app', name:'mortgage-rates.onb', badge:'Published',
-         voice:"Same notebook, now embedded in the exec dashboard. Ship it! 🚀",
-         scene:'The <b>exec dashboard</b> needs it live, right on the page.',
+         voice:"Everything above was a sketch. This one's real — go on, drag it. 🚀",
+         scene:'The <b>exec dashboard</b> embeds it live. And this? <b>Not a picture — a real notebook, running.</b>',
          flow:['🔎 app','&lt;/&gt; embed','📊 exec dashboard'],
          chips:['bespoke embed','prototype → prod','interactive toy']}
     };
@@ -690,6 +707,7 @@
       badge.textContent = st.badge; badge.classList.toggle('on', !!st.badge);
       chipsEl.innerHTML = st.chips.map(c=>`<span class="gc">${c}</span>`).join('');
       els.forEach(el=>{ el.classList.toggle('on', +el.dataset.s === i); });
+      if (i === 5) { const f = document.getElementById('rz-live-frame'); if (f && !f.src && f.dataset.src) f.src = f.dataset.src; }
     }
     nodes.forEach((n,idx)=> n.addEventListener('click', ()=>{ stopAuto(); set(idx+1); }));
     nodes.forEach((n,idx)=> n.addEventListener('mouseenter', ()=>{ stopAuto(); set(idx+1); }));
