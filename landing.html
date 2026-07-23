@@ -667,15 +667,19 @@
 
   .threads { display: grid; gap: 0; border-top: 1px solid var(--rule); }
   .thread {
-    display: flex; align-items: baseline; gap: 14px; padding: 15px 2px;
+    display: flex; align-items: baseline; gap: 18px; padding: 15px 4px;
     border-bottom: 1px solid var(--rule); text-decoration: none;
-    transition: padding-left .18s ease;
+    transition: background .16s ease, padding .16s ease;
   }
-  .thread:hover { padding-left: 8px; }
-  .thread-date { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); width: 52px; flex: none; font-variant-numeric: tabular-nums; }
-  .thread b { font-size: 15.5px; font-weight: 500; letter-spacing: -.012em; }
+  .thread:hover { background: var(--paper-dim); padding-left: 10px; padding-right: 10px; }
+  .thread-date {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-faint);
+    width: 54px; flex: none; font-variant-numeric: tabular-nums;
+  }
+  .thread b { font-size: 15.5px; font-weight: 500; letter-spacing: -.012em; color: var(--ink); }
   .thread:hover b { color: var(--accent); }
-  .thread span { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); white-space: nowrap; }
+  .thread-go { margin-left: auto; color: var(--ink-faint); font-size: 15px; opacity: 0; transition: opacity .16s ease; }
+  .thread:hover .thread-go { opacity: 1; color: var(--accent); }
 
   .spotlight { margin-bottom: 52px; }
   .spotlight .frame-tab { background: var(--coral); color: var(--ink); }
@@ -1001,10 +1005,10 @@
 
     <p class="sub sub-strong">Ask the community · live on the forum <a href="https://talk.observablehq.com/" target="_blank" rel="noopener">talk.observablehq.com →</a></p>
     <div class="threads">
-      <a class="thread" href="https://talk.observablehq.com/t/football-projections/10742" target="_blank" rel="noopener"><span class="thread-date">Jul 17</span><b>Football Projections</b><span>talk.observablehq.com</span></a>
-      <a class="thread" href="https://talk.observablehq.com/t/repeating-pattern-creator/10741" target="_blank" rel="noopener"><span class="thread-date">Jul 9</span><b>Repeating pattern creator</b><span>talk.observablehq.com</span></a>
-      <a class="thread" href="https://talk.observablehq.com/t/adaptive-piecewise-scale-keeping-outliers-on-screen-without-crushing-the-data/10740" target="_blank" rel="noopener"><span class="thread-date">Jul 7</span><b>Adaptive piecewise scale — keeping outliers on screen</b><span>talk.observablehq.com</span></a>
-      <a class="thread" href="https://talk.observablehq.com/t/the-plugin-registry-pattern/10739" target="_blank" rel="noopener"><span class="thread-date">Jul 7</span><b>The Plugin Registry Pattern</b><span>talk.observablehq.com</span></a>
+      <a class="thread" href="https://talk.observablehq.com/t/football-projections/10742" target="_blank" rel="noopener"><span class="thread-date">Jul 17</span><b>Football Projections</b><span class="thread-go">→</span></a>
+      <a class="thread" href="https://talk.observablehq.com/t/repeating-pattern-creator/10741" target="_blank" rel="noopener"><span class="thread-date">Jul 9</span><b>Repeating pattern creator</b><span class="thread-go">→</span></a>
+      <a class="thread" href="https://talk.observablehq.com/t/adaptive-piecewise-scale-keeping-outliers-on-screen-without-crushing-the-data/10740" target="_blank" rel="noopener"><span class="thread-date">Jul 7</span><b>Adaptive piecewise scale — keeping outliers on screen</b><span class="thread-go">→</span></a>
+      <a class="thread" href="https://talk.observablehq.com/t/the-plugin-registry-pattern/10739" target="_blank" rel="noopener"><span class="thread-date">Jul 7</span><b>The Plugin Registry Pattern</b><span class="thread-go">→</span></a>
     </div>
   </div>
 </section>
