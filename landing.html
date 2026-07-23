@@ -69,6 +69,27 @@
 
   .shell { max-width: var(--measure); margin: 0 auto; padding-inline: var(--gutter); }
 
+  /* ---------- announcement ticker (Hex-style) ---------- */
+  .anno {
+    background: var(--ink); color: #eef1f5; overflow: hidden; position: relative;
+    font-size: 13px; height: 40px; display: flex; align-items: center;
+  }
+  .anno::before, .anno::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 2; pointer-events: none;
+  }
+  .anno::before { left: 0; background: linear-gradient(90deg, var(--ink), transparent); }
+  .anno::after { right: 0; background: linear-gradient(270deg, var(--ink), transparent); }
+  .anno-track { display: flex; gap: 56px; white-space: nowrap; animation: annoscroll 42s linear infinite; padding-left: 56px; }
+  .anno:hover .anno-track { animation-play-state: paused; }
+  .anno-item { color: #c7cfda; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+  .anno-item:hover { color: #fff; }
+  .anno-item b {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink); background: var(--teal); padding: 3px 8px; border-radius: 100px; font-weight: 600;
+  }
+  @keyframes annoscroll { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+  @media (prefers-reduced-motion: reduce) { .anno-track { animation: none; } }
+
   /* ---------- nav ---------- */
   .nav {
     display: flex; align-items: center; gap: 30px;
@@ -311,8 +332,8 @@
   }
   .os-top { max-width: 62ch; margin-bottom: clamp(34px, 4.5vw, 54px); }
   .os h2 {
-    font-size: clamp(28px, 3.4vw, 46px); line-height: 1.04; letter-spacing: -.042em;
-    font-weight: 600; margin: 22px 0 18px;
+    font-size: clamp(34px, 5vw, 66px); line-height: 1.0; letter-spacing: -.046em;
+    font-weight: 600; margin: 20px 0 30px; max-width: 16ch;
   }
   .os h2 em {
     font-style: italic; font-weight: 400;
@@ -421,39 +442,62 @@
   .agent .lede { font-size: clamp(16.5px, 1.5vw, 19px); line-height: 1.6; color: var(--ink-soft); max-width: 52ch; margin: 0 0 42px; }
   .agent-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(30px, 4.5vw, 58px); align-items: start; }
 
-  .console {
-    background: #131a26; border: 1px solid #223047; border-radius: 12px; overflow: hidden;
-    font-family: var(--mono); font-size: 12.5px; line-height: 1.75;
-    box-shadow: 0 22px 60px -30px rgba(14,20,32,.55);
+  .chat {
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden;
+    box-shadow: 0 1px 2px rgba(16,20,26,.04), 0 18px 50px -26px rgba(16,20,26,.28);
+    display: flex; flex-direction: column;
   }
-  .console-bar {
-    display: flex; align-items: center; gap: 9px; padding: 11px 15px;
-    border-bottom: 1px solid #223047; color: #7b8b9e; font-size: 11px;
+  .chat-bar {
+    display: flex; align-items: center; gap: 9px; padding: 12px 15px;
+    border-bottom: 1px solid var(--rule); font-size: 13px; color: var(--ink);
   }
-  .console-bar .dots { display: flex; gap: 5px; }
-  .console-bar .dots i { width: 9px; height: 9px; border-radius: 50%; background: #2b3a52; display: block; }
-  .console-bar .dots i:first-child { background: var(--teal); }
-  .console-bar .stat { margin-left: auto; display: flex; align-items: center; gap: 7px; }
-  .console-bar .stat::before {
-    content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
-    animation: pulse 1.6s ease-in-out infinite;
+  .chat-logo { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .chat-bar .stat { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--ink-faint); display: flex; align-items: center; gap: 7px; }
+  .chat-bar .stat::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: .3 } 50% { opacity: 1 } }
+  .chat-body { padding: 16px 15px; min-height: 340px; display: flex; flex-direction: column; gap: 13px; }
+
+  .msg { max-width: 84%; font-size: 14px; line-height: 1.5; }
+  .msg.user {
+    align-self: flex-end; background: var(--blue); color: #fff;
+    padding: 9px 14px; border-radius: 14px 14px 4px 14px;
   }
-  @keyframes pulse { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
-  .console-body { padding: 17px 16px 20px; min-height: 286px; }
-  .cell { margin-bottom: 14px; }
-  .cell-tag { color: #56677f; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; display: block; margin-bottom: 6px; }
-  .cell pre { margin: 0; white-space: pre-wrap; word-break: break-word; color: #ccd7e4; }
-  .tok-k { color: #c9a2f5 } .tok-f { color: #7fb0ff } .tok-s { color: #9ede9a } .tok-n { color: var(--coral) } .tok-c { color: #5a6b83; font-style: italic }
-  .caret { display: inline-block; width: 7px; height: 15px; background: var(--teal); vertical-align: -3px; animation: blink 1.05s step-end infinite; }
-  @keyframes blink { 50% { opacity: 0 } }
-  .out { margin-top: 14px; border-top: 1px solid #223047; padding-top: 15px; }
-  .out svg { display: block; width: 100%; height: auto; }
-  .replay {
-    background: none; border: 1px solid var(--rule); color: var(--ink-soft);
-    font-family: var(--mono); font-size: 11px; padding: 7px 13px; border-radius: 6px;
-    cursor: pointer; margin-top: 14px; transition: all .16s ease;
+  .msg.bot { align-self: flex-start; color: var(--ink); }
+  .msg.bot .typing i {
+    display: inline-block; width: 6px; height: 6px; margin-right: 3px; border-radius: 50%;
+    background: var(--ink-faint); animation: blink 1.2s infinite;
   }
-  .replay:hover { color: var(--ink); border-color: var(--ink-faint); }
+  .msg.bot .typing i:nth-child(2) { animation-delay: .2s } .msg.bot .typing i:nth-child(3) { animation-delay: .4s }
+  @keyframes blink { 0%,60%,100% { opacity: .25 } 30% { opacity: 1 } }
+
+  .codecell { align-self: stretch; border: 1px solid var(--rule); border-radius: 9px; overflow: hidden; }
+  .codecell-h {
+    display: flex; align-items: center; gap: 7px; padding: 7px 12px;
+    border-bottom: 1px solid var(--rule); background: var(--paper-dim);
+    font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+  }
+  .codecell pre {
+    margin: 0; padding: 11px 12px; font-family: var(--mono); font-size: 12px; line-height: 1.7;
+    white-space: pre-wrap; word-break: break-word; color: #2b3440; background: var(--paper);
+  }
+  .codecell .out { margin: 0; border-top: 1px solid var(--rule); padding: 12px; background: var(--paper); }
+  .codecell .out svg { display: block; width: 100%; height: auto; }
+  .tok-k { color: #8250df } .tok-f { color: var(--blue) } .tok-s { color: #0a7d33 } .tok-n { color: var(--coral) } .tok-c { color: #8a93a0; font-style: italic }
+  .caret { display: inline-block; width: 6px; height: 13px; background: var(--blue); vertical-align: -2px; animation: caret 1.05s step-end infinite; }
+  @keyframes caret { 50% { opacity: 0 } }
+
+  .chat-input {
+    display: flex; align-items: center; gap: 10px; margin: 4px 12px 14px;
+    border: 1.5px solid var(--rule); border-radius: 10px; padding: 10px 12px;
+    font-size: 14px; color: var(--ink-faint);
+  }
+  .chat-input span { flex: 1; }
+  .chat-send {
+    width: 28px; height: 28px; border-radius: 50%; border: 0; cursor: pointer;
+    background: var(--ink); color: #fff; font-size: 15px; display: grid; place-items: center;
+    transition: background .16s ease;
+  }
+  .chat-send:hover { background: var(--blue); }
 
   /* the five reasons, condensed into one panel instead of a column that runs on */
   .carousel { padding-top: 4px; }
@@ -582,6 +626,8 @@
     font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
     color: var(--ink-faint); display: flex; align-items: center; gap: 10px; margin: 0 0 20px;
   }
+  .sub-strong { font-size: 13px !important; letter-spacing: .1em !important; color: var(--ink) !important; }
+  .sub-strong::before { content: ""; }
   .sub a { color: var(--ink-soft); text-decoration: none; margin-left: auto; text-transform: none; letter-spacing: 0; font-size: 13px; }
   .sub a:hover { color: var(--accent); }
 
@@ -621,6 +667,7 @@
     transition: padding-left .18s ease;
   }
   .thread:hover { padding-left: 8px; }
+  .thread-date { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); width: 52px; flex: none; font-variant-numeric: tabular-nums; }
   .thread b { font-size: 15.5px; font-weight: 500; letter-spacing: -.012em; }
   .thread:hover b { color: var(--accent); }
   .thread span { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); white-space: nowrap; }
@@ -668,7 +715,13 @@
     transition: border-color .18s ease, transform .18s ease;
   }
   .pod:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .pod-date { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); display: block; margin-bottom: 8px; }
+  .pod-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .pod-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--coral); font-weight: 600;
+  }
+  .pod-date { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
   .pod b { display: block; font-size: 15.5px; font-weight: 600; letter-spacing: -.015em; margin-bottom: 6px; }
   .pod p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
   @media (max-width: 760px) { .pods { grid-template-columns: 1fr; } }
@@ -718,6 +771,14 @@
 <body>
 
 <div id="scrollbar"></div>
+<div class="anno" id="anno">
+  <div class="anno-track" id="anno-track">
+    <a class="anno-item" href="https://observablehq.com/blog" target="_blank" rel="noopener"><b>New</b> Notebooks 2.0 is live on the web — reactive JavaScript, now with runtime-aware AI</a>
+    <a class="anno-item" href="#" target="_blank" rel="noopener"><b>Event</b> Observable Data Jam — a live notebook-building session, Thu Jul 30, 11am PT</a>
+    <a class="anno-item" href="https://talk.observablehq.com/" target="_blank" rel="noopener"><b>Community</b> 1.2M notebooks and counting — see what people shipped this week</a>
+    <a class="anno-item" href="https://observablehq.com/plot/" target="_blank" rel="noopener"><b>Open source</b> Observable Plot 0.7 — new marks, faster rendering</a>
+  </div>
+</div>
 <div class="plotgrid" aria-hidden="true"><div></div></div>
 
 <div class="layer">
@@ -743,8 +804,7 @@
     <p class="lede">The world's most trusted visualization <span class="vh">products.</span><span class="rotator" aria-hidden="true"><span class="rot-sizer">state-of-the-art.</span><span class="rot-word is-on">products.</span><span class="rot-word">company.</span><span class="rot-word">community.</span><span class="rot-word">tools.</span><span class="rot-word">platform.</span><span class="rot-word">creators.</span><span class="rot-word">state-of-the-art.</span></span></p>
     <div class="cta-row">
       <a href="#" class="btn">Start a notebook — free</a>
-      <a href="https://observablehq.com/@d3/stacked-to-grouped-bars" class="btn btn-ghost" target="_blank" rel="noopener">Fork this one</a>
-    </div>
+      </div>
   </div>
 </header>
 
@@ -828,7 +888,7 @@
 <section class="os rise" id="opensource" data-label="Open source" style="--accent:var(--blue)">
   <div class="shell">
     <div class="os-top">
-      <div class="eyebrow">Open source</div>
+      <div class="eyebrow">By the numbers</div>
       <h2>The backbone of the modern <em>visualization</em> ecosystem.</h2>
     </div>
 
@@ -872,7 +932,6 @@
 
     <p class="sub">Spotlight <a href="https://new.observablehq.com/@laotzunami/3d-graphs-with-three-js" target="_blank" rel="noopener">Open the notebook →</a></p>
     <div class="frame spotlight">
-      <div class="frame-tab">Drag it</div>
       <div class="byline byline-top">
         <img src="https://avatars.observableusercontent.com/avatar/9c14da488e1a68ca1868ed025eb7edcce3d300c8a9f3fbcdae66a3daa9ccca63" alt="" loading="lazy">
         <div class="byline-who">
@@ -936,12 +995,12 @@
       <a class="author" href="https://new.observablehq.com/@meetamit?sort=stars" target="_blank" rel="noopener"><span class="mono">AS</span><b>Amit Sch</b></a>
     </div>
 
-    <p class="sub">From the forum <a href="https://talk.observablehq.com/" target="_blank" rel="noopener">talk.observablehq.com →</a></p>
+    <p class="sub sub-strong">Ask the community · live on the forum <a href="https://talk.observablehq.com/" target="_blank" rel="noopener">talk.observablehq.com →</a></p>
     <div class="threads">
-      <a class="thread" href="https://talk.observablehq.com/t/football-projections/10742" target="_blank" rel="noopener"><b>Football Projections</b><span>talk.observablehq.com</span></a>
-      <a class="thread" href="https://talk.observablehq.com/t/repeating-pattern-creator/10741" target="_blank" rel="noopener"><b>Repeating pattern creator</b><span>talk.observablehq.com</span></a>
-      <a class="thread" href="https://talk.observablehq.com/t/adaptive-piecewise-scale-keeping-outliers-on-screen-without-crushing-the-data/10740" target="_blank" rel="noopener"><b>Adaptive piecewise scale — keeping outliers on screen</b><span>talk.observablehq.com</span></a>
-      <a class="thread" href="https://talk.observablehq.com/t/the-plugin-registry-pattern/10739" target="_blank" rel="noopener"><b>The Plugin Registry Pattern</b><span>talk.observablehq.com</span></a>
+      <a class="thread" href="https://talk.observablehq.com/t/football-projections/10742" target="_blank" rel="noopener"><span class="thread-date">Jul 17</span><b>Football Projections</b><span>talk.observablehq.com</span></a>
+      <a class="thread" href="https://talk.observablehq.com/t/repeating-pattern-creator/10741" target="_blank" rel="noopener"><span class="thread-date">Jul 9</span><b>Repeating pattern creator</b><span>talk.observablehq.com</span></a>
+      <a class="thread" href="https://talk.observablehq.com/t/adaptive-piecewise-scale-keeping-outliers-on-screen-without-crushing-the-data/10740" target="_blank" rel="noopener"><span class="thread-date">Jul 7</span><b>Adaptive piecewise scale — keeping outliers on screen</b><span>talk.observablehq.com</span></a>
+      <a class="thread" href="https://talk.observablehq.com/t/the-plugin-registry-pattern/10739" target="_blank" rel="noopener"><span class="thread-date">Jul 7</span><b>The Plugin Registry Pattern</b><span>talk.observablehq.com</span></a>
     </div>
   </div>
 </section>
@@ -963,15 +1022,23 @@
 
     <div class="agent-grid">
       <div>
-        <div class="console">
-          <div class="console-bar">
-            <span class="dots"><i></i><i></i><i></i></span>
-            <span>q3-churn-analysis</span>
-            <span class="stat" id="agent-status">working</span>
+        <div class="chat">
+          <div class="chat-bar">
+            <span class="chat-logo">
+              <svg width="15" height="15" viewBox="0 0 19 19" aria-hidden="true">
+                <circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+                <ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+              </svg>
+              Observable Chat
+            </span>
+            <span class="stat" id="agent-status">thinking</span>
           </div>
-          <div class="console-body" id="agent-body"></div>
+          <div class="chat-body" id="agent-body"></div>
+          <div class="chat-input">
+            <span>Ask Observable</span>
+            <button class="chat-send" id="agent-replay" aria-label="Replay">↑</button>
+          </div>
         </div>
-        <button class="replay" id="agent-replay">↻ Replay</button>
       </div>
 
       <div class="carousel">
@@ -1102,22 +1169,22 @@
     <p class="sub" style="margin-top:44px">Podcast <a href="https://youtube.com/playlist?list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">All episodes →</a></p>
     <div class="pods">
       <a class="pod" href="https://www.youtube.com/watch?v=8TV21Wzv7WM&list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">
-        <span class="pod-date">Jul 18</span>
+        <span class="pod-head"><span class="pod-tag"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 8.3l6 3.7-6 3.7z" fill="currentColor"/></svg>Podcast</span><span class="pod-date">Jul 18</span></span>
         <b>Seven classic moments in visualization research</b>
         <p>Toph recounts seven moments in visualization history, in no particular order.</p>
       </a>
       <a class="pod" href="https://www.youtube.com/watch?v=4uDea3lK3Go&list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">
-        <span class="pod-date">Jul 13</span>
+        <span class="pod-head"><span class="pod-tag"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 8.3l6 3.7-6 3.7z" fill="currentColor"/></svg>Podcast</span><span class="pod-date">Jul 13</span></span>
         <b>Browsing the new notebook community</b>
         <p>Visnu and Toph preview the new notebook listings and editor by surveying trending community notebooks.</p>
       </a>
       <a class="pod" href="https://www.youtube.com/watch?v=K_zzviwj8UA&list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">
-        <span class="pod-date">May 11</span>
+        <span class="pod-head"><span class="pod-tag"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 8.3l6 3.7-6 3.7z" fill="currentColor"/></svg>Podcast</span><span class="pod-date">May 11</span></span>
         <b>Three eras of Observable AI</b>
         <p>Visnu and Toph reflect on three eras of building Observable features atop LLMs.</p>
       </a>
       <a class="pod" href="https://www.youtube.com/watch?v=0uBOL9NP8Iw&list=PLOHIJAFwtkEdRcO2a2gOO0nDfioDBMKb8" target="_blank" rel="noopener">
-        <span class="pod-date">Apr 29</span>
+        <span class="pod-head"><span class="pod-tag"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 8.3l6 3.7-6 3.7z" fill="currentColor"/></svg>Podcast</span><span class="pod-date">Apr 29</span></span>
         <b>What even is Observable?</b>
         <p>A plain answer to the question, from the people building it.</p>
       </a>
@@ -1211,6 +1278,10 @@
   };
   addEventListener('scroll', onScroll, {passive: true});
   onScroll();
+
+  /* ---------- announcement ticker: duplicate items for a seamless loop ---------- */
+  const annoTrack = document.getElementById('anno-track');
+  if (annoTrack) annoTrack.innerHTML += annoTrack.innerHTML;
 
   /* ---------- hero carousel: tabs, arrows, keyboard ---------- */
   const hc = document.getElementById('herocar');
@@ -1352,66 +1423,83 @@
     addEventListener('visibilitychange', () => document.hidden && stop());
   }
 
-  /* ---------- agent console ----------
-     A hand-built depiction of an agent writing a notebook: cells type in,
-     then the last one renders a chart. Not an embed — no notebook does this. */
-  const SCRIPT = [
-    {tag: 'prompt', html: '<span class="tok-c">// why did Q3 churn jump in the mid-market segment?</span>'},
-    {tag: 'cell 1', html: '<span class="tok-k">const</span> churn = <span class="tok-k">await</span> <span class="tok-f">sql</span>`\n  <span class="tok-k">SELECT</span> segment, month, <span class="tok-f">count</span>(*) <span class="tok-k">AS</span> lost\n  <span class="tok-k">FROM</span> subscriptions\n  <span class="tok-k">WHERE</span> status = <span class="tok-s">\'churned\'</span>\n  <span class="tok-k">GROUP BY</span> <span class="tok-n">1</span>, <span class="tok-n">2</span>`'},
-    {tag: 'cell 2', html: 'Plot.<span class="tok-f">plot</span>({\n  marks: [Plot.<span class="tok-f">barY</span>(churn, {x: <span class="tok-s">"month"</span>, y: <span class="tok-s">"lost"</span>})]\n})'}
-  ];
-  const CHART = [34, 41, 38, 45, 52, 88, 71];
+  /* ---------- Observable Chat: a conversation that types itself out ---------- */
   const body = document.getElementById('agent-body');
   const statusEl = document.getElementById('agent-status');
+  const CHART = [34, 41, 38, 45, 52, 88, 71];
   let timers = [];
 
-  function renderChart() {
-    const w = 340, h = 96, n = CHART.length, gap = 7;
+  function chartSVG() {
+    const w = 320, h = 92, n = CHART.length, gap = 7;
     const bw = (w - gap * (n - 1)) / n, max = Math.max(...CHART);
     const bars = CHART.map((v, i) => {
-      const bh = (v / max) * h;
-      const fill = i === 5 ? '#ff725c' : '#33465f';
-      return `<rect x="${(i * (bw + gap)).toFixed(1)}" y="${(h - bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="2" fill="${fill}"><animate attributeName="height" from="0" to="${bh.toFixed(1)}" dur="0.55s" fill="freeze"/><animate attributeName="y" from="${h}" to="${(h - bh).toFixed(1)}" dur="0.55s" fill="freeze"/></rect>`;
+      const bh = (v / max) * h, fill = i === 5 ? '#ff725c' : '#4269d0';
+      return `<rect x="${(i*(bw+gap)).toFixed(1)}" y="${(h-bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="2" fill="${fill}"><animate attributeName="height" from="0" to="${bh.toFixed(1)}" dur="0.5s" fill="freeze"/><animate attributeName="y" from="${h}" to="${(h-bh).toFixed(1)}" dur="0.5s" fill="freeze"/></rect>`;
     }).join('');
-    return `<div class="out"><span class="cell-tag">output</span><svg viewBox="0 0 ${w} ${h + 4}">${bars}</svg></div>`;
+    return `<div class="out"><svg viewBox="0 0 ${w} ${h+4}">${bars}</svg></div>`;
   }
 
+  // conversation script: user turns, bot text, and code cells that type in
+  const TURNS = [
+    {t: 'user', html: 'Why did Q3 churn jump in the mid-market segment?'},
+    {t: 'bot',  html: 'Let me pull the numbers straight from the warehouse and chart them.'},
+    {t: 'code', tag: 'SQL', html: '<span class="tok-k">SELECT</span> segment, month, <span class="tok-f">count</span>(*) <span class="tok-k">AS</span> lost\n<span class="tok-k">FROM</span> subscriptions\n<span class="tok-k">WHERE</span> status = <span class="tok-s">\'churned\'</span>\n<span class="tok-k">GROUP BY</span> <span class="tok-n">1</span>, <span class="tok-n">2</span>'},
+    {t: 'code', tag: 'JavaScript', html: 'Plot.<span class="tok-f">barY</span>(churn, {x: <span class="tok-s">"month"</span>, y: <span class="tok-s">"lost"</span>})', chart: true},
+    {t: 'bot',  html: 'Churn is concentrated in one month — up 69% versus the prior quarter, entirely in mid-market. Want me to break it down by plan tier next?'}
+  ];
+
   function typeInto(el, html, done) {
-    // walk the markup so tags land intact while text reveals character by character
     const parts = html.split(/(<[^>]+>)/).filter(Boolean);
     let pi = 0, ci = 0, acc = '';
     const step = () => {
-      if (pi >= parts.length) { done && done(); return; }
+      if (pi >= parts.length) { el.innerHTML = acc; done && done(); return; }
       const p = parts[pi];
       if (p.startsWith('<')) { acc += p; pi++; }
       else if (ci < p.length) { acc += p[ci++]; }
       else { ci = 0; pi++; }
       el.innerHTML = acc + '<span class="caret"></span>';
-      timers.push(setTimeout(step, p.startsWith('<') ? 0 : 13));
+      timers.push(setTimeout(step, p.startsWith('<') ? 0 : 12));
     };
     step();
   }
 
+  function botThinking() {
+    const d = document.createElement('div');
+    d.className = 'msg bot';
+    d.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+    body.appendChild(d); return d;
+  }
+
+  let running = false;
   function runAgent() {
     timers.forEach(clearTimeout); timers = [];
     body.innerHTML = '';
-    statusEl.textContent = 'working';
+    statusEl.textContent = 'thinking';
     let i = 0;
     const next = () => {
-      if (i >= SCRIPT.length) {
-        body.insertAdjacentHTML('beforeend', renderChart());
-        statusEl.textContent = 'saved · shared · re-runnable';
-        return;
+      if (i >= TURNS.length) { statusEl.textContent = 'ready'; return; }
+      const turn = TURNS[i++];
+      if (turn.t === 'user') {
+        const d = document.createElement('div');
+        d.className = 'msg user'; d.textContent = turn.html;
+        body.appendChild(d);
+        timers.push(setTimeout(next, 620));
+      } else if (turn.t === 'bot') {
+        const ph = botThinking();
+        timers.push(setTimeout(() => {
+          ph.classList.remove('bot'); ph.className = 'msg bot';
+          typeInto(ph, turn.html, () => timers.push(setTimeout(next, 520)));
+        }, 700));
+      } else { // code
+        const d = document.createElement('div');
+        d.className = 'codecell';
+        d.innerHTML = `<div class="codecell-h">&lt;/&gt; ${turn.tag}</div><pre></pre>`;
+        body.appendChild(d);
+        typeInto(d.querySelector('pre'), turn.html, () => {
+          if (turn.chart) d.insertAdjacentHTML('beforeend', chartSVG());
+          timers.push(setTimeout(next, 520));
+        });
       }
-      const s = SCRIPT[i++];
-      const d = document.createElement('div');
-      d.className = 'cell';
-      d.innerHTML = `<span class="cell-tag">${s.tag}</span><pre></pre>`;
-      body.appendChild(d);
-      typeInto(d.querySelector('pre'), s.html, () => {
-        const c = d.querySelector('.caret'); if (c) c.remove();
-        timers.push(setTimeout(next, 380));
-      });
     };
     next();
   }
@@ -1419,7 +1507,7 @@
   let started = false;
   new IntersectionObserver((es, obs) => {
     if (es[0].isIntersecting && !started) { started = true; runAgent(); obs.disconnect(); }
-  }, {threshold: .25}).observe(document.querySelector('.console'));
+  }, {threshold: 0, rootMargin: '0px 0px -15% 0px'}).observe(document.querySelector('.chat'));
   document.getElementById('agent-replay').addEventListener('click', runAgent);
 </script>
 
