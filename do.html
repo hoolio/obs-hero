@@ -263,6 +263,64 @@
   .source h4 span { font-family:var(--mono); font-size:11px; color:var(--ink-faint); font-weight:400; margin-left:auto; }
   .source p { margin:0; font-size:13.5px; line-height:1.5; color:var(--ink-soft); }
 
+  /* ---------- live from the lab ---------- */
+  .lab { border-top:1px solid var(--rule); padding-block:clamp(56px,7vw,92px); }
+  .lab-masthead { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-bottom:16px; border-bottom:2px solid var(--ink); }
+  .lab-meta { display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:12px; color:var(--ink-soft); }
+  .lab-date { color:var(--ink); font-weight:500; }
+  .lab-dot { color:var(--ink-faint); }
+  .lab-count b { color:var(--ink); font-variant-numeric:tabular-nums; }
+  .lab-h { font-size:clamp(28px,3.4vw,44px); line-height:1.05; letter-spacing:-.04em; font-weight:600; margin:22px 0 12px; max-width:20ch; }
+  .lab-sub { font-size:clamp(16px,1.5vw,18px); line-height:1.55; color:var(--ink-soft); margin:0 0 34px; max-width:60ch; }
+
+  .lab-grid { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr); gap:22px; align-items:start; }
+  @media (max-width:860px){ .lab-grid { grid-template-columns:1fr; } }
+
+  /* featured — reinforced editorial pick, paper-cutout frame */
+  .featured { border:2px solid var(--ink); border-radius:14px; overflow:hidden; background:var(--paper); box-shadow:5px 5px 0 rgba(16,20,26,.12); }
+  .featured-tag { font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; color:#fff; background:var(--ink); padding:8px 16px; }
+  .featured-thumb { display:block; border-bottom:1px solid var(--rule); background:var(--paper-dim); }
+  .featured-thumb img { width:100%; aspect-ratio:16/8.5; object-fit:cover; display:block; }
+  .featured-body { padding:20px 22px 22px; }
+  .featured-body h3 { font-size:22px; letter-spacing:-.028em; font-weight:600; margin:0 0 12px; }
+  .featured-by { display:flex; align-items:center; gap:9px; font-size:13.5px; color:var(--ink-soft); margin-bottom:14px; }
+  .featured-by img { width:24px; height:24px; border-radius:50%; background:var(--rule-soft); }
+  .featured-by b { color:var(--ink); font-weight:600; }
+  .curator { position:relative; font-size:15px; line-height:1.6; color:var(--ink-soft); margin:0 0 18px; padding-left:2px; }
+  .curator em { color:var(--ink); font-style:italic; }
+  .curator-mark { font-family:Georgia,serif; font-size:26px; color:var(--ink-faint); line-height:0; margin-right:2px; vertical-align:-4px; }
+  .curator-sig { display:block; margin-top:8px; font-family:var(--mono); font-size:11px; color:var(--ink-faint); }
+  .featured-cta { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .featured-src { font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); }
+
+  /* activity feed — a lived-in timeline */
+  .feed { border:1px solid var(--rule); border-radius:12px; overflow:hidden; background:var(--paper); }
+  .feed-h { display:flex; align-items:center; justify-content:space-between; padding:13px 15px; border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); background:var(--paper-dim); }
+  .feed-live { color:var(--teal); font-size:10px; display:inline-flex; align-items:center; gap:5px; }
+  .feed-live::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--teal); animation:pulse 1.8s ease-in-out infinite; }
+  .feed-row { display:flex; align-items:center; gap:12px; padding:11px 15px; border-bottom:1px solid var(--rule-soft); text-decoration:none; transition:background .15s ease; }
+  .feed-row:hover { background:var(--paper-dim); }
+  .feed-thumb { width:52px; height:34px; border-radius:5px; object-fit:cover; border:1px solid var(--rule); flex:none; background:var(--paper-dim); }
+  .feed-main { min-width:0; flex:1; }
+  .feed-main b { display:block; font-size:14px; font-weight:600; letter-spacing:-.012em; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .feed-row:hover .feed-main b { color:var(--accent); }
+  .feed-by { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-faint); margin-top:2px; }
+  .feed-by img { width:15px; height:15px; border-radius:50%; }
+  .feed-likes { font-family:var(--mono); font-size:12px; color:var(--ink-soft); flex:none; }
+  .feed-all { display:block; padding:12px 15px; font-size:13px; color:var(--ink-soft); text-decoration:none; background:var(--paper-dim); }
+  .feed-all:hover { color:var(--accent); }
+
+  /* the regulars */
+  .regulars { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-top:30px; padding-top:24px; border-top:1px solid var(--rule); }
+  .regulars-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  .regulars-avatars { display:flex; }
+  .reg { display:block; margin-left:-8px; transition:transform .16s ease; }
+  .reg:first-child { margin-left:0; }
+  .reg:hover { transform:translateY(-3px); z-index:2; }
+  .reg img { width:34px; height:34px; border-radius:50%; border:2px solid var(--paper); background:var(--rule-soft); display:block; box-shadow:0 1px 3px rgba(16,20,26,.2); }
+  .regulars-note { font-size:13.5px; color:var(--ink-soft); }
+  @media (prefers-reduced-motion:reduce){ .feed-live::before { animation:none; } }
+
   .final { text-align:center; padding-block:clamp(64px,8vw,110px); border-top:1px solid var(--rule); }
   .final h2 { font-size:clamp(32px,4.4vw,60px); letter-spacing:-.04em; font-weight:600; margin:0 0 16px; }
   .final p { color:var(--ink-soft); font-size:18px; margin:0 auto 30px; max-width:46ch; line-height:1.55; }
@@ -285,7 +343,7 @@
       <svg width="19" height="19" viewBox="0 0 19 19" aria-hidden="true"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
       Observable
     </div>
-    <a href="#do">What you can do</a><a href="#why">Why</a><a href="#data">Public data</a><a href="#">Pricing</a>
+    <a href="#do">What you can do</a><a href="#why">Why</a><a href="#data">Public data</a><a href="#lab">Community</a><a href="#">Pricing</a>
     <a href="#" class="btn">Get started</a>
   </nav>
 </div>
@@ -527,6 +585,77 @@
   </div>
 </section>
 
+
+<!-- ============ LIVE FROM THE LAB ============ -->
+<section class="lab" id="lab">
+  <div class="shell">
+    <div class="lab-masthead">
+      <div class="eyebrow">Live from the lab</div>
+      <div class="lab-meta">
+        <span class="lab-date" id="lab-date">today</span>
+        <span class="lab-dot">·</span>
+        <span class="lab-count"><b id="lab-count">1,204,000</b> notebooks &amp; counting</span>
+      </div>
+    </div>
+    <h2 class="lab-h">A working data-viz research lab, out in the open.</h2>
+    <p class="lab-sub">Half a million people a month, a wonky and wonderful following, and new notebooks published every day — including the day you're reading this.</p>
+
+    <div class="lab-grid">
+      <article class="featured">
+        <div class="featured-tag">Featured this week · editor's pick</div>
+        <a class="featured-thumb" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">
+          <img src="https://static.observableusercontent.com/thumbnail/3f269dd9d5de282e3873733fa7caaa56c4176d0dd7f1d7eb752255effe276494.jpg" alt="A Decade of NYC City Employee Pay" loading="lazy">
+        </a>
+        <div class="featured-body">
+          <h3>A Decade of NYC City Employee Pay</h3>
+          <div class="featured-by"><img src="https://avatars.observableusercontent.com/avatar/381c8bb4edddbcd7e2319cbd390f7477b1b4934289bf039a4e881d2d3711d20e" alt="" loading="lazy"><span><b>Matt Khinda</b> · @mpkhinda</span></div>
+          <p class="curator"><span class="curator-mark">“</span>A masterclass in public-data storytelling — a decade of every city agency's pay, with the caveats written right into the prose. This is what an <em>explorable explanation</em> looks like done right.<span class="curator-sig">— the editors</span></p>
+          <div class="featured-cta">
+            <a class="btn" href="https://observablehq.com/@mpkhinda/nyc-city-pay" target="_blank" rel="noopener">Open the live notebook ↗</a>
+            <span class="featured-src">NYC Open Data</span>
+          </div>
+        </div>
+      </article>
+
+      <aside class="feed">
+        <div class="feed-h">Fresh this week <span class="feed-live">● live</span></div>
+        <a class="feed-row" href="https://observablehq.com/@fil/godzilla-el-nino" target="_blank" rel="noopener" data-date="2026-07-22">
+          <img class="feed-thumb" src="https://static.observableusercontent.com/thumbnail/dc9c9de818479a971fe40483b243c5bb78d59ee01a157583d0074a326cb4145f.jpg" alt="" loading="lazy">
+          <div class="feed-main"><b>Godzilla El Niño</b><span class="feed-by"><img src="https://avatars.observableusercontent.com/avatar/d5b1777907117a2bdf2a07eb98600d7a9beb21639fde42b9753e95c88c7731a6" alt="" loading="lazy">Fil · <time class="feed-time">recently</time></span></div>
+          <span class="feed-likes">♥ 13</span>
+        </a>
+        <a class="feed-row" href="https://observablehq.com/@mthh/geoviz-plus-tricolore" target="_blank" rel="noopener" data-date="2026-07-22">
+          <img class="feed-thumb" src="https://static.observableusercontent.com/thumbnail/ff72d623fc2cba20649943f97abf5d921709422af86fe3f34f3b10ffffd28c37.jpg" alt="" loading="lazy">
+          <div class="feed-main"><b>Geoviz + Tricolore</b><span class="feed-by"><img src="https://avatars.observableusercontent.com/avatar/911bd8720f0dbfd44850e291921253c0242ac77c4537d932fde7db5c82ebb267" alt="" loading="lazy">Matthieu Viry · <time class="feed-time">recently</time></span></div>
+          <span class="feed-likes">♥ 4</span>
+        </a>
+        <a class="feed-row" href="https://observablehq.com/@laotzunami/3d-graphs-with-three-js" target="_blank" rel="noopener" data-date="2026-07-21">
+          <img class="feed-thumb" src="https://static.observableusercontent.com/thumbnail/077f2332d1c801bef70db5f6f0e020a9e0d813188a19edaa418bfba846dbc766.jpg" alt="" loading="lazy">
+          <div class="feed-main"><b>3D Graphs with THREE.js</b><span class="feed-by"><img src="https://avatars.observableusercontent.com/avatar/9c14da488e1a68ca1868ed025eb7edcce3d300c8a9f3fbcdae66a3daa9ccca63" alt="" loading="lazy">Lao · <time class="feed-time">recently</time></span></div>
+          <span class="feed-likes">♥ 27</span>
+        </a>
+        <a class="feed-row" href="https://observablehq.com/d/453b3c621eb477d5" target="_blank" rel="noopener" data-date="2026-07-19">
+          <img class="feed-thumb" src="https://static.observableusercontent.com/thumbnail/97b90cf411c55c3868165c80f5313438812a907ee98f3c365891f26bcdcd59e2.jpg" alt="" loading="lazy">
+          <div class="feed-main"><b>Lichtenberg Edge Bundling</b><span class="feed-by"><img src="https://avatars.observableusercontent.com/avatar/9c14da488e1a68ca1868ed025eb7edcce3d300c8a9f3fbcdae66a3daa9ccca63" alt="" loading="lazy">Lao · <time class="feed-time">recently</time></span></div>
+          <span class="feed-likes">♥ 15</span>
+        </a>
+        <a class="feed-row" href="https://observablehq.com/@jwolondon/gallery-radial" target="_blank" rel="noopener" data-date="2026-07-15">
+          <img class="feed-thumb" src="https://static.observableusercontent.com/thumbnail/437f187b9620e644145f5908c164106cdb7001eead400332b66ff399f568650e.jpg" alt="" loading="lazy">
+          <div class="feed-main"><b>Plot Gallery: Radial Charts</b><span class="feed-by"><img src="https://avatars.observableusercontent.com/avatar/27f72cecd1ac20853a533421fab228ce5f611cbc0986c1e420f7d3b1eb49ef50" alt="" loading="lazy">Jo Wood · <time class="feed-time">recently</time></span></div>
+          <span class="feed-likes">♥ 7</span>
+        </a>
+        <a class="feed-all" href="https://new.observablehq.com/public" target="_blank" rel="noopener">Browse the public feed →</a>
+      </aside>
+    </div>
+
+    <div class="regulars">
+      <span class="regulars-lbl">The regulars</span>
+      <div class="regulars-avatars"><a class="reg" href="https://observablehq.com/@" target="_blank" rel="noopener" title="Mike Bostock"><img src="https://avatars.observableusercontent.com/avatar/7dbba99ced40bd5ab8013c99b1a11da61231bce321ba1148a9d16ad0f121550a" alt="Mike Bostock"></a><a class="reg" href="https://observablehq.com/@fil" target="_blank" rel="noopener" title="Fil"><img src="https://avatars.observableusercontent.com/avatar/d5b1777907117a2bdf2a07eb98600d7a9beb21639fde42b9753e95c88c7731a6" alt="Fil"></a><a class="reg" href="https://observablehq.com/@lao" target="_blank" rel="noopener" title="Lao"><img src="https://avatars.observableusercontent.com/avatar/9c14da488e1a68ca1868ed025eb7edcce3d300c8a9f3fbcdae66a3daa9ccca63" alt="Lao"></a><a class="reg" href="https://observablehq.com/@" target="_blank" rel="noopener" title="Jo Wood"><img src="https://avatars.observableusercontent.com/avatar/27f72cecd1ac20853a533421fab228ce5f611cbc0986c1e420f7d3b1eb49ef50" alt="Jo Wood"></a><a class="reg" href="https://observablehq.com/@" target="_blank" rel="noopener" title="Matthieu Viry"><img src="https://avatars.observableusercontent.com/avatar/911bd8720f0dbfd44850e291921253c0242ac77c4537d932fde7db5c82ebb267" alt="Matthieu Viry"></a><a class="reg" href="https://observablehq.com/@" target="_blank" rel="noopener" title="Itay Niv"><img src="https://avatars.observableusercontent.com/avatar/eb8abdb95e489f28cf4d47617e08a0fd3144a6ff793826240b937d6a0202f603" alt="Itay Niv"></a><a class="reg" href="https://observablehq.com/@" target="_blank" rel="noopener" title="John Wiseman"><img src="https://avatars.observableusercontent.com/avatar/f505a5f414e7c9ccdfc2bc34b5b157b49f8f76ad282495275be35a3d01caced7" alt="John Wiseman"></a><a class="reg" href="https://observablehq.com/@" target="_blank" rel="noopener" title="Matt Khinda"><img src="https://avatars.observableusercontent.com/avatar/381c8bb4edddbcd7e2319cbd390f7477b1b4934289bf039a4e881d2d3711d20e" alt="Matt Khinda"></a></div>
+      <span class="regulars-note">…and half a million more, every month.</span>
+    </div>
+  </div>
+</section>
+
 <section class="final">
   <div class="shell">
     <h2>Ask your first question.</h2>
@@ -704,6 +833,36 @@
     set(1);
     new IntersectionObserver((es,obs)=>{ if(es[0].isIntersecting){ startAuto(); } else { stopAuto(); } },{threshold:.3}).observe(grow);
   })();
+
+  /* ---------- Live from the lab: real dates, live today ---------- */
+  (function(){
+    const dateEl = document.getElementById('lab-date');
+    if (dateEl) {
+      const now = new Date();
+      dateEl.textContent = now.toLocaleDateString('en-US',{weekday:'long', month:'long', day:'numeric', year:'numeric'});
+    }
+    // relative time from each notebook's real publish date, against the visitor's clock
+    document.querySelectorAll('.feed-row[data-date]').forEach(row=>{
+      const t = row.querySelector('.feed-time'); if(!t) return;
+      const then = new Date(row.dataset.date + 'T12:00:00');
+      const days = Math.round((Date.now() - then.getTime()) / 86400000);
+      t.textContent = days<=0 ? 'today' : days===1 ? 'yesterday' : days<14 ? days+' days ago'
+        : then.toLocaleDateString('en-US',{month:'short', day:'numeric'});
+    });
+    // the counter ticks — the lab is alive right now
+    const cEl = document.getElementById('lab-count');
+    if (cEl) {
+      let n = 1204000; const fmt = new Intl.NumberFormat('en-US');
+      cEl.textContent = fmt.format(n);
+      let loop = null;
+      const play = ()=>{ if(!loop) loop = setInterval(()=>{ n++; cEl.textContent = fmt.format(n); }, 1400); };
+      const stop = ()=>{ clearInterval(loop); loop=null; };
+      addEventListener('visibilitychange', ()=> document.hidden ? stop() : play());
+      new IntersectionObserver(es=> es[0].isIntersecting ? play() : stop(), {threshold:0}).observe(cEl);
+      play();
+    }
+  })();
+
 </script>
 
 </body>
