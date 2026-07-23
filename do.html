@@ -126,6 +126,27 @@
   .grow-arrow { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); }
   .grow-becomes b { font-family:var(--sans); font-size:clamp(30px,3.4vw,46px); font-weight:600; letter-spacing:-.038em; line-height:1; display:block; margin-top:8px; background:linear-gradient(96deg,var(--accent),color-mix(in srgb,var(--accent) 55%,var(--ink))); -webkit-background-clip:text; background-clip:text; color:transparent; }
   #grow-desc { font-size:16.5px; line-height:1.6; color:var(--ink-soft); margin:0 0 22px; min-height:84px; }
+  /* the anthropomorphized narrator */
+  .narrator { display:flex; align-items:flex-start; gap:12px; margin-bottom:22px; }
+  .mascot { flex:none; width:42px; height:42px; border-radius:50%; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; color:var(--accent); box-shadow:0 4px 12px -6px rgba(16,20,26,.3); animation:bob 3s ease-in-out infinite; }
+  .mascot svg { width:26px; height:26px; }
+  .mascot .eyes { animation:blink 4.5s infinite; transform-origin:center; transform-box:fill-box; }
+  @keyframes bob { 0%,100%{ transform:translateY(0) rotate(-2deg);} 50%{ transform:translateY(-4px) rotate(2deg);} }
+  @keyframes blink { 0%,92%,100%{ transform:scaleY(1);} 96%{ transform:scaleY(.1);} }
+  @media (prefers-reduced-motion:reduce){ .mascot,.mascot .eyes { animation:none; } }
+  .bubble { position:relative; background:var(--ink); color:#fff; font-size:14px; line-height:1.45; padding:11px 15px; border-radius:4px 14px 14px 14px; max-width:38ch; box-shadow:0 8px 22px -12px rgba(16,20,26,.5); }
+  .bubble::before { content:""; position:absolute; left:-6px; top:11px; border:6px solid transparent; border-right-color:var(--ink); border-left:0; }
+
+  .grow-becomes { margin-bottom:12px; }
+  .grow-scene { font-size:15.5px; line-height:1.55; color:var(--ink-soft); margin:0 0 18px; min-height:48px; }
+  .grow-scene b { color:var(--ink); font-weight:600; }
+
+  /* the workflow ribbon: from -> tool -> outcome */
+  .grow-flow { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-bottom:20px; }
+  .grow-flow .fn { font-family:var(--mono); font-size:11px; color:var(--ink-soft); border:1px solid var(--rule); border-radius:7px; padding:5px 10px; background:var(--paper); white-space:nowrap; }
+  .grow-flow .fn.hot { border-color:color-mix(in srgb,var(--accent) 45%,var(--rule)); background:color-mix(in srgb,var(--accent) 8%,var(--paper)); color:var(--ink); }
+  .grow-flow .fa { color:var(--ink-faint); font-size:12px; }
+
   .grow-chips { display:flex; flex-wrap:wrap; gap:8px; }
   .grow-chips .gc { font-family:var(--mono); font-size:11px; color:var(--ink-soft); border:1px solid color-mix(in srgb,var(--accent) 22%,var(--rule)); border-radius:100px; padding:6px 12px; background:color-mix(in srgb,var(--accent) 5%,var(--paper)); }
 
@@ -339,8 +360,15 @@
 
       <div class="grow-body">
         <div class="grow-copy">
-          <div class="grow-becomes"><span class="grow-arrow">it becomes</span> <b id="grow-noun">a query</b></div>
-          <p id="grow-desc">Write a quick query to test a theory. Unlike a scratch query in TablePlus, a notebook keeps the commentary and stays shareable and persistent.</p>
+          <div class="narrator">
+            <div class="mascot" aria-hidden="true">
+              <svg viewBox="0 0 19 19"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><g class="eyes" fill="var(--ink)"><circle cx="7.4" cy="7.2" r="1"/><circle cx="11.6" cy="7.2" r="1"/></g></svg>
+            </div>
+            <div class="bubble" id="grow-voice">One query, one number: 6.9%. That took ten seconds. ✨</div>
+          </div>
+          <div class="grow-becomes"><span class="grow-arrow">it becomes</span> <b id="grow-noun">an answer</b></div>
+          <p class="grow-scene" id="grow-scene">Priya in <b>#finance</b>: “how have mortgage rates moved?”</p>
+          <div class="grow-flow" id="grow-flow"></div>
           <div class="grow-chips" id="grow-chips"></div>
         </div>
 
@@ -609,7 +637,9 @@
     const nodes = [...grow.querySelectorAll('.grow-node')];
     const fill = document.getElementById('grow-fill');
     const noun = document.getElementById('grow-noun');
-    const desc = document.getElementById('grow-desc');
+    const voice = document.getElementById('grow-voice');
+    const scene = document.getElementById('grow-scene');
+    const flow = document.getElementById('grow-flow');
     const chipsEl = document.getElementById('grow-chips');
     const badge = document.getElementById('art-badge');
     const name = document.getElementById('art-name');
@@ -617,11 +647,31 @@
     const ACCENTS = ['','var(--blue)','var(--teal)','var(--amber)','var(--coral)','var(--blue)'];
 
     const STAGES = {
-      1:{noun:'an answer', name:'untitled.onb', badge:'', desc:'Write a quick query and get a number back. Unlike a scratch query in TablePlus, the notebook keeps your commentary — and is automatically a shareable, persistent artifact.', chips:['ad-hoc query','test a theory']},
-      2:{noun:'a report', name:'mortgage-rates.onb', badge:'', desc:'Turn the number into a story: a chart with annotations and prose for a wider audience. Google Docs, but with code and data.', chips:['analysis report','explorable explanation','tell a story']},
-      3:{noun:'a dashboard', name:'mortgage-rates.onb', badge:'Interactive', desc:'Add inputs and the chart becomes a living interface anyone can operate — brush it, switch measures, filter the range. A self-service explorer.', chips:['dashboard','data app','explorer']},
-      4:{noun:'a pipeline', name:'mortgage-rates.onb', badge:'Scheduled', desc:'Schedule it to run itself, then post the number and chart to Slack or email. Replace the manually assembled spreadsheet, screenshot, and slide deck.', chips:['scheduled report','Slack alert','live data']},
-      5:{noun:'an app', name:'mortgage-rates.onb', badge:'Published', desc:'Migrate the sketch to production and embed the whole dashboard anywhere — or just share a cool interactive toy. Like Gist, but live.', chips:['bespoke embed','prototype → prod','interactive toy']}
+      1:{noun:'an answer', name:'untitled.onb', badge:'',
+         voice:"One query, one number: 6.9%. That took ten seconds. ✨",
+         scene:'Priya in <b>#finance</b> asks: “how have mortgage rates moved?”',
+         flow:['🙋 a question','📓 notebook','6.9%'],
+         chips:['ad-hoc query','test a theory']},
+      2:{noun:'a report', name:'mortgage-rates.onb', badge:'',
+         voice:"Add a note and — poof — it's a doc your team actually reads. 📖",
+         scene:'You annotate <b>why</b> it spiked, so next-quarter-you remembers.',
+         flow:['6.9%','✍️ + prose','📄 shared report'],
+         chips:['analysis report','explorable explanation','tell a story']},
+      3:{noun:'a dashboard', name:'mortgage-rates.onb', badge:'Interactive',
+         voice:"Give them a knob to turn. Now they self-serve — no ticket to you. 🎛️",
+         scene:'Marketing wants to slice it by year — <b>themselves</b>.',
+         flow:['📄 report','🎛️ + input','🔎 self-serve'],
+         chips:['dashboard','data app','explorer']},
+      4:{noun:'a pipeline', name:'mortgage-rates.onb', badge:'Scheduled',
+         voice:"I'll re-run this every Monday so you don't have to. You sleep in. 😴",
+         scene:'Tired of the Monday re-run? Let it <b>run itself</b>.',
+         flow:['🔎 app','⏰ schedule','💬 #finance'],
+         chips:['scheduled report','Slack alert','live data']},
+      5:{noun:'an app', name:'mortgage-rates.onb', badge:'Published',
+         voice:"Same notebook, now embedded in the exec dashboard. Ship it! 🚀",
+         scene:'The <b>exec dashboard</b> needs it live, right on the page.',
+         flow:['🔎 app','&lt;/&gt; embed','📊 exec dashboard'],
+         chips:['bespoke embed','prototype → prod','interactive toy']}
     };
 
     let cur = 1, timer = null;
@@ -633,7 +683,10 @@
       fill.style.width = w + '%';
       nodes.forEach((n,idx)=>{ const ni=idx+1; n.classList.toggle('is-on', ni===i); n.classList.toggle('done', ni<i); });
       const st = STAGES[i];
-      noun.textContent = st.noun; desc.textContent = st.desc; name.textContent = st.name;
+      noun.textContent = st.noun; name.textContent = st.name;
+      voice.textContent = st.voice;
+      scene.innerHTML = st.scene;
+      flow.innerHTML = st.flow.map((f,k)=>`<span class="fn${k===st.flow.length-1?' hot':''}">${f}</span>`+(k<st.flow.length-1?'<span class="fa">→</span>':'')).join('');
       badge.textContent = st.badge; badge.classList.toggle('on', !!st.badge);
       chipsEl.innerHTML = st.chips.map(c=>`<span class="gc">${c}</span>`).join('');
       els.forEach(el=>{ el.classList.toggle('on', +el.dataset.s === i); });
