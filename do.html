@@ -126,18 +126,7 @@
   .grow-arrow { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); }
   .grow-becomes b { font-family:var(--sans); font-size:clamp(30px,3.4vw,46px); font-weight:600; letter-spacing:-.038em; line-height:1; display:block; margin-top:8px; background:linear-gradient(96deg,var(--accent),color-mix(in srgb,var(--accent) 55%,var(--ink))); -webkit-background-clip:text; background-clip:text; color:transparent; }
   #grow-desc { font-size:16.5px; line-height:1.6; color:var(--ink-soft); margin:0 0 22px; min-height:84px; }
-  /* the anthropomorphized narrator */
-  .narrator { display:flex; align-items:flex-start; gap:12px; margin-bottom:22px; }
-  .mascot { flex:none; width:42px; height:42px; border-radius:50%; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; color:var(--accent); box-shadow:0 4px 12px -6px rgba(16,20,26,.3); animation:bob 3s ease-in-out infinite; }
-  .mascot svg { width:26px; height:26px; }
-  .mascot .eyes { animation:blink 4.5s infinite; transform-origin:center; transform-box:fill-box; }
-  @keyframes bob { 0%,100%{ transform:translateY(0) rotate(-2deg);} 50%{ transform:translateY(-4px) rotate(2deg);} }
-  @keyframes blink { 0%,92%,100%{ transform:scaleY(1);} 96%{ transform:scaleY(.1);} }
-  @media (prefers-reduced-motion:reduce){ .mascot,.mascot .eyes { animation:none; } }
-  .bubble { position:relative; background:var(--ink); color:#fff; font-size:14px; line-height:1.45; padding:11px 15px; border-radius:4px 14px 14px 14px; max-width:38ch; box-shadow:0 8px 22px -12px rgba(16,20,26,.5); }
-  .bubble::before { content:""; position:absolute; left:-6px; top:11px; border:6px solid transparent; border-right-color:var(--ink); border-left:0; }
-
-  .grow-becomes { margin-bottom:12px; }
+  .grow-becomes { margin-bottom:12px; margin-top:4px; }
   .grow-scene { font-size:15.5px; line-height:1.55; color:var(--ink-soft); margin:0 0 18px; min-height:48px; }
   .grow-scene b { color:var(--ink); font-weight:600; }
 
@@ -162,33 +151,29 @@
     background-size:22px 22px;
     -webkit-mask-image:radial-gradient(120% 80% at 80% 10%,#000,transparent 75%); mask-image:radial-gradient(120% 80% at 80% 10%,#000,transparent 75%);
   }
-  .art-bar { position:relative; z-index:1; display:flex; align-items:center; gap:9px; padding:11px 14px; border-bottom:1px solid var(--rule); background:color-mix(in srgb,var(--paper) 88%,transparent); backdrop-filter:blur(4px); font-family:var(--mono); font-size:11.5px; }
-  .art-mark { color:var(--ink); display:flex; } .art-mark svg { width:15px; height:15px; }
-  .art-name { color:var(--ink-soft); }
-  .art-badge { margin-left:auto; font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; padding:3px 9px; border-radius:100px; opacity:0; transform:scale(.9); transition:all .3s cubic-bezier(.34,1.4,.5,1); }
-  .art-badge.on { opacity:1; transform:none; color:var(--accent); background:color-mix(in srgb,var(--accent) 12%,var(--paper)); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent); }
-  .art-body { position:relative; z-index:1; padding:16px; display:flex; flex-direction:column; gap:13px; min-height:326px; }
+  /* System-7-era title bar: faint pinstripes, filename in a white notch */
+  .art-bar { position:relative; z-index:1; display:flex; align-items:center; gap:10px; padding:9px 12px; border-bottom:1px solid var(--rule);
+    background:
+      repeating-linear-gradient(180deg, color-mix(in srgb,var(--ink) 7%,transparent) 0 1px, transparent 1px 3px),
+      var(--paper-dim);
+    background-clip:padding-box;
+  }
+  .art-title { display:inline-flex; align-items:center; gap:8px; background:var(--paper); border:1px solid var(--rule); border-radius:6px; padding:4px 11px 4px 8px; box-shadow:0 1px 0 rgba(255,255,255,.9) inset; }
+  .art-mark { color:var(--ink); display:flex; } .art-mark svg { width:14px; height:14px; }
+  .art-name { font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); }
+  .art-badge { margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; padding:3px 9px; border-radius:6px; opacity:0; transform:translateX(4px); transition:all .3s cubic-bezier(.34,1.35,.5,1); }
+  .art-badge.on { opacity:1; transform:none; color:var(--accent); background:var(--paper); border:1px solid color-mix(in srgb,var(--accent) 35%,var(--rule)); box-shadow:1.5px 1.5px 0 color-mix(in srgb,var(--accent) 18%,transparent); }
+  .art-body { position:relative; z-index:1; padding:14px; display:flex; flex-direction:column; gap:0; min-height:340px; }
 
-  /* the real, live embed at Ship — the mockup becomes the actual product */
-  .rz-live { border:1px solid color-mix(in srgb,var(--accent) 35%,var(--rule)); border-radius:9px; overflow:hidden; background:var(--paper); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 10%,transparent); }
-  .rz-live-bar { display:flex; align-items:center; gap:8px; padding:7px 11px; border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); font-weight:600; background:color-mix(in srgb,var(--accent) 6%,var(--paper)); }
-  .live-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent); animation:livePulse 1.8s ease-out infinite; }
-  @keyframes livePulse { 0%{ box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent);} 70%{ box-shadow:0 0 0 7px transparent;} 100%{ box-shadow:0 0 0 0 transparent;} }
-  .rz-open { margin-left:auto; color:var(--ink-soft); text-decoration:none; }
-  .rz-open:hover { color:var(--accent); }
-  .rz-live-frame { position:relative; height:230px; overflow:hidden; background:var(--paper); }
-  .rz-live-frame iframe { width:100%; height:290px; border:0; display:block; }
-  .rz-live-hint { position:absolute; top:8px; right:10px; z-index:2; font-family:var(--mono); font-size:10px; color:var(--ink-faint); background:color-mix(in srgb,var(--paper) 86%,transparent); padding:3px 8px; border-radius:100px; border:1px solid var(--rule); pointer-events:none; animation:hintFade 5s ease forwards; }
-  @keyframes hintFade { 0%,70%{ opacity:1;} 100%{ opacity:0;} }
-  /* the reveal: mockup->real, a quick materialize when Ship activates */
-  .rz[data-s="5"].on .rz-live { animation:materialize .7s cubic-bezier(.34,1.2,.5,1); }
-  @keyframes materialize { 0%{ opacity:0; transform:scale(.96); filter:blur(3px);} 100%{ opacity:1; transform:none; filter:none;} }
-
-  /* the query cell is constant — same data, escalating result */
-  .art-const { border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:6px; overflow:hidden; background:var(--paper); }
-  .art-tag { display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-faint); padding:5px 10px; border-bottom:1px solid var(--rule); background:var(--paper-dim); }
-  .art-cell code { display:block; font-family:var(--mono); font-size:11.5px; color:#2b3440; padding:9px 11px; }
-  .art-cell code .k { color:#8250df; }
+  /* authentic Observable cell: left gutter with the pin/run circle */
+  .nb-cell { display:grid; grid-template-columns:22px 1fr; align-items:start; padding:9px 0; }
+  .nb-cell + .nb-cell { border-top:1px solid var(--rule-soft); }
+  .nb-pin { width:9px; height:9px; border-radius:50%; border:1.5px solid var(--ink-faint); margin-top:8px; justify-self:center; background:var(--paper); transition:all .3s ease; }
+  .nb-pin-live { border-color:var(--accent); background:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent); }
+  .nb-code { min-width:0; }
+  .art-const .art-tag, .nb-code .art-tag { display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px; }
+  .nb-code code { display:block; font-family:var(--mono); font-size:11.5px; color:#2b3440; }
+  .nb-code code .k { color:#8250df; }
 
   /* the result zone swaps its whole view per stage, with a spring cross-fade */
   .art-result { position:relative; }
@@ -375,29 +360,33 @@
 
       <div class="grow-body">
         <div class="grow-copy">
-          <div class="narrator">
-            <div class="mascot" aria-hidden="true">
-              <svg viewBox="0 0 19 19"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><g class="eyes" fill="var(--ink)"><circle cx="7.4" cy="7.2" r="1"/><circle cx="11.6" cy="7.2" r="1"/></g></svg>
-            </div>
-            <div class="bubble" id="grow-voice">One query, one number: 6.9%. That took ten seconds. ✨</div>
-          </div>
           <div class="grow-becomes"><span class="grow-arrow">it becomes</span> <b id="grow-noun">an answer</b></div>
-          <p class="grow-scene" id="grow-scene">Priya in <b>#finance</b>: “how have mortgage rates moved?”</p>
+          <p class="grow-scene" id="grow-scene">An ad-hoc query against FRED — one number back, kept as a versioned, shareable artifact.</p>
           <div class="grow-flow" id="grow-flow"></div>
           <div class="grow-chips" id="grow-chips"></div>
         </div>
 
-        <!-- the artifact, accumulating from the same base -->
+        <!-- the artifact: a real Observable notebook, escalating from one query -->
         <div class="grow-art">
-          <div class="art-bar">
-              <span class="art-mark"><svg viewBox="0 0 19 19" aria-hidden="true"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>
+          <div class="art-bar" aria-hidden="true">
+            <span class="art-title">
+              <span class="art-mark"><svg viewBox="0 0 19 19"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>
               <span class="art-name" id="art-name">rates.onb</span>
-              <span class="art-badge" id="art-badge"></span>
-            </div>
+            </span>
+            <span class="art-badge" id="art-badge"></span>
+          </div>
           <div class="art-body">
             <!-- the query is the constant: same data, escalating result -->
-            <div class="art-cell art-const"><span class="art-tag">&lt;/&gt; sql · fred.mortgage_30yr</span><code><span class="k">SELECT</span> date, rate <span class="k">FROM</span> fred.mortgage_30yr</code></div>
-            <div class="art-result" id="art-result">
+            <div class="nb-cell nb-const">
+              <span class="nb-pin"></span>
+              <div class="nb-code">
+                <span class="art-tag">sql · fred.mortgage_30yr</span>
+                <code><span class="k">SELECT</span> date, rate <span class="k">FROM</span> fred.mortgage_30yr</code>
+              </div>
+            </div>
+            <div class="nb-cell nb-outcell">
+              <span class="nb-pin nb-pin-live"></span>
+              <div class="art-result" id="art-result">
 
               <!-- 1 · ASK: the raw answer -->
               <div class="rz" data-s="1">
@@ -456,6 +445,7 @@
                 <div class="art-embed"><span class="art-url">observablehq.com/@you/mortgage-rates</span><span class="art-embtag">&lt;/&gt; Embed</span></div>
               </div>
 
+            </div>
             </div>
           </div>
         </div>
@@ -654,7 +644,6 @@
     const nodes = [...grow.querySelectorAll('.grow-node')];
     const fill = document.getElementById('grow-fill');
     const noun = document.getElementById('grow-noun');
-    const voice = document.getElementById('grow-voice');
     const scene = document.getElementById('grow-scene');
     const flow = document.getElementById('grow-flow');
     const chipsEl = document.getElementById('grow-chips');
@@ -665,29 +654,24 @@
 
     const STAGES = {
       1:{noun:'an answer', name:'untitled.onb', badge:'',
-         voice:"One query, one number: 6.9%. That took ten seconds. ✨",
-         scene:'Priya in <b>#finance</b> asks: “how have mortgage rates moved?”',
-         flow:['🙋 a question','📓 notebook','6.9%'],
+         scene:'An ad-hoc query against FRED — one number back, kept as a versioned, shareable artifact.',
+         flow:['SQL query','notebook.onb','6.9%'],
          chips:['ad-hoc query','test a theory']},
-      2:{noun:'a report', name:'mortgage-rates.onb', badge:'',
-         voice:"Add a note and — poof — it's a doc your team actually reads. 📖",
-         scene:'You annotate <b>why</b> it spiked, so next-quarter-you remembers.',
-         flow:['6.9%','✍️ + prose','📄 shared report'],
-         chips:['analysis report','explorable explanation','tell a story']},
-      3:{noun:'a dashboard', name:'mortgage-rates.onb', badge:'Interactive',
-         voice:"Give them a knob to turn. Now they self-serve — no ticket to you. 🎛️",
-         scene:'Marketing wants to slice it by year — <b>themselves</b>.',
-         flow:['📄 report','🎛️ + input','🔎 self-serve'],
+      2:{noun:'a report', name:'rates.onb', badge:'',
+         scene:'Annotate the result inline. Prose, code, and chart become one literate document.',
+         flow:['+ prose','literate doc','shared'],
+         chips:['analysis report','explorable explanation','narrative']},
+      3:{noun:'a dashboard', name:'rates.onb', badge:'Interactive',
+         scene:'Bind an input with viewof. The chart recomputes reactively — a self-serve interface, no rebuild.',
+         flow:['+ viewof','reactive','self-serve'],
          chips:['dashboard','data app','explorer']},
-      4:{noun:'a pipeline', name:'mortgage-rates.onb', badge:'Scheduled',
-         voice:"I'll re-run this every Monday so you don't have to. You sleep in. 😴",
-         scene:'Tired of the Monday re-run? Let it <b>run itself</b>.',
-         flow:['🔎 app','⏰ schedule','💬 #finance'],
-         chips:['scheduled report','Slack alert','live data']},
-      5:{noun:'an app', name:'mortgage-rates.onb', badge:'Published',
-         voice:"Everything above was a sketch. This one's real — go on, drag it. 🚀",
-         scene:'The <b>exec dashboard</b> embeds it live. And this? <b>Not a picture — a real notebook, running.</b>',
-         flow:['🔎 app','&lt;/&gt; embed','📊 exec dashboard'],
+      4:{noun:'a pipeline', name:'rates.onb', badge:'Scheduled',
+         scene:'Run it headless on a schedule. The notebook executes on cron and posts its output to Slack.',
+         flow:['cron','headless run','→ Slack'],
+         chips:['scheduled report','alerting','live data']},
+      5:{noun:'an app', name:'rates.onb', badge:'Published',
+         scene:'Publish and embed. The same file is a live web page — and the chart below is real, not a mockup.',
+         flow:['publish','embed','production'],
          chips:['bespoke embed','prototype → prod','interactive toy']}
     };
 
@@ -701,7 +685,6 @@
       nodes.forEach((n,idx)=>{ const ni=idx+1; n.classList.toggle('is-on', ni===i); n.classList.toggle('done', ni<i); });
       const st = STAGES[i];
       noun.textContent = st.noun; name.textContent = st.name;
-      voice.textContent = st.voice;
       scene.innerHTML = st.scene;
       flow.innerHTML = st.flow.map((f,k)=>`<span class="fn${k===st.flow.length-1?' hot':''}">${f}</span>`+(k<st.flow.length-1?'<span class="fa">→</span>':'')).join('');
       badge.textContent = st.badge; badge.classList.toggle('on', !!st.badge);
