@@ -71,18 +71,23 @@
 
   /* ---------- announcement ticker (Hex-style) ---------- */
   .anno {
-    background: var(--ink); color: #eef1f5; overflow: hidden; position: relative;
+    /* soft blue-grey with a faint grain, so the bar reads as part of the page */
+    --anno-bg: #e9edf2;
+    background-color: var(--anno-bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    color: var(--ink-soft); overflow: hidden; position: relative;
+    border-bottom: 1px solid var(--rule);
     font-size: 13px; height: 40px; display: flex; align-items: center;
   }
   .anno::before, .anno::after {
-    content: ""; position: absolute; top: 0; bottom: 0; width: 60px; z-index: 2; pointer-events: none;
+    content: ""; position: absolute; top: 0; bottom: 0; width: 56px; z-index: 2; pointer-events: none;
   }
-  .anno::before { left: 0; background: linear-gradient(90deg, var(--ink), transparent); }
-  .anno::after { right: 0; background: linear-gradient(270deg, var(--ink), transparent); }
+  .anno::before { left: 0; background: linear-gradient(90deg, var(--anno-bg), transparent); }
+  .anno::after { right: 0; background: linear-gradient(270deg, var(--anno-bg), transparent); }
   .anno-track { display: flex; gap: 56px; white-space: nowrap; animation: annoscroll 42s linear infinite; padding-left: 56px; }
   .anno:hover .anno-track { animation-play-state: paused; }
-  .anno-item { color: #c7cfda; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
-  .anno-item:hover { color: #fff; }
+  .anno-item { color: var(--ink-soft); text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+  .anno-item:hover { color: var(--ink); }
   .anno-item b {
     font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
     color: var(--ink); background: var(--teal); padding: 3px 8px; border-radius: 100px; font-weight: 600;
