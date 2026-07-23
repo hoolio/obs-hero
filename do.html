@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Observable — What do you want to know?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:#4269d0; --teal:#6cc5b0; --amber:#efb118; --coral:#ff725c;
+    --ink:#10141a; --ink-soft:#5b6673; --ink-faint:#97a2ae;
+    --rule:#e7ebef; --rule-soft:#f0f3f6; --paper:#fff; --paper-dim:#fafbfc; --deep:#0e1420;
+    --sans:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --accent:var(--blue); --gutter:clamp(20px,4vw,56px); --measure:1280px;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16px; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  a { color:inherit; }
+  h1,h2,h3 { text-wrap:balance; }
+  :focus-visible { outline:2px solid var(--blue); outline-offset:3px; border-radius:3px; }
+  .shell { max-width:var(--measure); margin:0 auto; padding-inline:var(--gutter); }
+
+  /* nav */
+  .nav { display:flex; align-items:center; gap:30px; padding-block:20px; font-size:14.5px; border-bottom:1px solid var(--rule); }
+  .brand { font-weight:600; letter-spacing:-.02em; margin-right:auto; font-size:16.5px; display:flex; align-items:center; gap:9px; }
+  .nav a:not(.btn) { color:var(--ink-soft); text-decoration:none; }
+  .nav a:not(.btn):hover { color:var(--ink); }
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:11px 21px; border-radius:8px; background:var(--coral); color:var(--ink); text-decoration:none; font-size:14.5px; font-weight:600; border:2px solid var(--ink); box-shadow:3px 3px 0 rgba(16,20,26,.16); transition:transform .14s ease, box-shadow .14s ease; }
+  .btn:hover { transform:translate(-1px,-1px); box-shadow:5px 5px 0 rgba(16,20,26,.2); }
+  .btn-ghost { background:var(--paper); }
+  .eyebrow { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); display:flex; align-items:center; gap:9px; }
+  .eyebrow::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); }
+
+  /* ---------- hero: the ask box ---------- */
+  .hero { position:relative; padding-block:clamp(48px,6vw,80px) 30px; }
+  .hero::before { content:""; position:absolute; z-index:-1; top:-20%; left:50%; transform:translateX(-50%); width:1100px; height:640px; background:radial-gradient(ellipse at center,rgba(66,105,208,.08),rgba(108,197,176,.05) 42%,transparent 68%); }
+  .hero h1 { font-size:clamp(38px,5.4vw,68px); line-height:1.0; letter-spacing:-.04em; font-weight:600; margin:20px 0 16px; max-width:17ch; }
+  .hero h1 em { font-style:italic; font-weight:400; background:linear-gradient(96deg,var(--blue),var(--teal)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero .lede { font-size:clamp(16.5px,1.6vw,19px); line-height:1.55; color:var(--ink-soft); margin:0 0 26px; max-width:52ch; }
+
+  /* the ask input, styled like Observable Chat */
+  .askbar { display:flex; align-items:center; gap:12px; border:2px solid var(--ink); border-radius:13px; background:var(--paper); padding:14px 16px; box-shadow:4px 4px 0 rgba(16,20,26,.1); max-width:640px; }
+  .askbar svg { flex:none; color:var(--ink-faint); }
+  .askbar input { flex:1; border:0; outline:0; font-family:var(--sans); font-size:16px; color:var(--ink); background:none; }
+  .askbar input::placeholder { color:var(--ink-faint); }
+  .ask-send { flex:none; width:32px; height:32px; border-radius:50%; border:0; background:var(--ink); color:#fff; font-size:16px; cursor:pointer; display:grid; place-items:center; transition:background .16s ease; }
+  .ask-send:hover { background:var(--blue); }
+  .ask-chips { display:flex; flex-wrap:wrap; gap:9px; margin-top:16px; align-items:center; }
+  .ask-chips .lbl { font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-right:4px; }
+  .chip { font-family:var(--sans); font-size:14px; padding:8px 15px; border-radius:100px; border:1px solid var(--rule); background:var(--paper); color:var(--ink-soft); cursor:pointer; transition:all .16s ease; }
+  .chip:hover { border-color:var(--ink-faint); color:var(--ink); transform:translateY(-1px); }
+  .chip[aria-pressed="true"] { background:var(--ink); border-color:var(--ink); color:#fff; }
+  .chip .src { color:var(--teal); font-family:var(--mono); font-size:11px; margin-left:6px; }
+  .chip[aria-pressed="true"] .src { color:var(--teal); }
+
+  /* the answer stage: transcript + live result, in a paper frame */
+  .answer { margin-top:26px; }
+  .frame { position:relative; padding:14px; border:2px solid var(--ink); border-radius:16px; background:var(--paper); box-shadow:5px 5px 0 rgba(16,20,26,.12); }
+  .frame-tab { position:absolute; top:-13px; left:22px; font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; color:#fff; background:var(--ink); padding:4px 13px; border:2px solid var(--ink); border-radius:100px; }
+  .answer-grid { display:grid; grid-template-columns:minmax(0,380px) 1fr; gap:14px; }
+  @media (max-width:840px){ .answer-grid { grid-template-columns:1fr; } }
+
+  .chatcol { border:1px solid var(--rule); border-radius:10px; background:var(--paper-dim); display:flex; flex-direction:column; overflow:hidden; }
+  .chatcol-h { display:flex; align-items:center; gap:8px; padding:11px 14px; border-bottom:1px solid var(--rule); font-size:12.5px; font-weight:600; }
+  .chatcol-h .stat { margin-left:auto; font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); display:flex; align-items:center; gap:6px; }
+  .chatcol-h .stat::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--teal); animation:pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+  .chatcol-body { padding:14px; display:flex; flex-direction:column; gap:11px; min-height:300px; }
+  .msg { font-size:13.5px; line-height:1.5; max-width:92%; }
+  .msg.user { align-self:flex-end; background:var(--blue); color:#fff; padding:8px 13px; border-radius:13px 13px 4px 13px; }
+  .msg.bot { color:var(--ink); }
+  .msg.bot .typing i { display:inline-block; width:6px; height:6px; margin-right:3px; border-radius:50%; background:var(--ink-faint); animation:blink 1.2s infinite; }
+  .msg.bot .typing i:nth-child(2){animation-delay:.2s} .msg.bot .typing i:nth-child(3){animation-delay:.4s}
+  @keyframes blink { 0%,60%,100%{opacity:.25} 30%{opacity:1} }
+  .codecell { border:1px solid var(--rule); border-radius:8px; overflow:hidden; background:var(--paper); }
+  .codecell-h { display:flex; align-items:center; gap:7px; padding:6px 11px; border-bottom:1px solid var(--rule); background:var(--paper-dim); font-family:var(--mono); font-size:10.5px; color:var(--ink-soft); }
+  .codecell pre { margin:0; padding:10px 11px; font-family:var(--mono); font-size:11.5px; line-height:1.65; white-space:pre-wrap; word-break:break-word; color:#2b3440; }
+  .tok-k{color:#8250df} .tok-f{color:var(--blue)} .tok-s{color:#0a7d33} .tok-n{color:var(--coral)} .tok-c{color:#8a93a0;font-style:italic}
+  .caret { display:inline-block; width:6px; height:12px; background:var(--blue); vertical-align:-2px; animation:caret 1s step-end infinite; }
+  @keyframes caret { 50%{opacity:0} }
+
+  .resultcol { border:1px solid var(--rule); border-radius:10px; overflow:hidden; background:var(--paper); display:flex; flex-direction:column; }
+  .resultcol-h { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:9px 13px; border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:11px; color:var(--ink-faint); }
+  .resultcol-h a { color:var(--ink-soft); text-decoration:none; }
+  .resultcol-h a:hover { color:var(--blue); }
+  .clip { overflow:hidden; position:relative; background:var(--paper); flex:1; }
+  .clip iframe { width:100%; border:0; display:block; }
+
+  /* ---------- band: what people do ---------- */
+  .band { border-top:1px solid var(--rule); padding-block:clamp(56px,7vw,92px); }
+  .band-head { max-width:60ch; margin-bottom:clamp(30px,4vw,46px); }
+  .band-head h2 { font-size:clamp(28px,3.4vw,46px); line-height:1.04; letter-spacing:-.042em; font-weight:600; margin:18px 0 14px; }
+  .band-head p { font-size:clamp(16px,1.5vw,18px); line-height:1.55; color:var(--ink-soft); margin:0; }
+
+  /* spectrum of actions */
+  .spectrum { display:grid; gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:14px; overflow:hidden; }
+  .stage-row { background:var(--paper); display:grid; grid-template-columns:200px 1fr auto; gap:24px; align-items:center; padding:22px 24px; transition:background .18s ease; }
+  .stage-row:hover { background:var(--paper-dim); }
+  .stage-k { display:flex; align-items:baseline; gap:12px; }
+  .stage-k .n { font-family:var(--mono); font-size:12px; color:var(--ink-faint); }
+  .stage-k b { font-size:20px; font-weight:600; letter-spacing:-.02em; }
+  .stage-k b::before { content:""; display:inline-block; width:9px; height:9px; border-radius:2px; background:var(--accent); margin-right:9px; vertical-align:2px; }
+  .stage-row p { margin:0; font-size:14.5px; line-height:1.5; color:var(--ink-soft); }
+  .stage-row .egs { display:flex; flex-wrap:wrap; gap:6px; justify-content:flex-end; max-width:280px; }
+  .eg { font-family:var(--mono); font-size:11px; color:var(--ink-soft); border:1px solid var(--rule); border-radius:6px; padding:4px 9px; white-space:nowrap; }
+  @media (max-width:820px){ .stage-row { grid-template-columns:1fr; gap:12px; } .stage-row .egs { justify-content:flex-start; max-width:none; } }
+
+  /* build actions strip */
+  .builds { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .build { display:inline-flex; align-items:center; gap:8px; font-size:14px; padding:10px 16px; border-radius:9px; border:1px solid var(--rule); background:var(--paper); color:var(--ink); text-decoration:none; transition:all .16s ease; }
+  .build:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 22px -12px rgba(16,20,26,.3); }
+  .build::before { content:"+"; color:var(--accent); font-weight:700; }
+
+  /* ---------- band: why ---------- */
+  .why { border-top:1px solid var(--rule); background:var(--paper-dim); padding-block:clamp(56px,7vw,92px); }
+  .whygrid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:900px){ .whygrid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .whygrid { grid-template-columns:1fr; } }
+  .whycard { background:var(--paper); border:1px solid var(--rule); border-radius:13px; padding:22px; }
+  .whycard .k { font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+  .whycard .k::before { content:""; width:8px; height:8px; border-radius:2px; background:var(--accent); }
+  .whycard h3 { font-size:17px; font-weight:600; letter-spacing:-.02em; margin:0 0 7px; }
+  .whycard p { margin:0; font-size:14.5px; line-height:1.55; color:var(--ink-soft); }
+  .versus { margin-top:30px; font-size:14px; color:var(--ink-soft); font-family:var(--mono); }
+  .versus b { color:var(--ink); font-weight:500; }
+
+  /* ---------- band: public data ---------- */
+  .data { border-top:1px solid var(--rule); padding-block:clamp(56px,7vw,92px); }
+  .sources { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:8px; }
+  @media (max-width:820px){ .sources { grid-template-columns:1fr 1fr; } }
+  @media (max-width:520px){ .sources { grid-template-columns:1fr; } }
+  .source { display:block; text-decoration:none; border:1px solid var(--rule); border-radius:12px; padding:20px; background:var(--paper); transition:all .18s ease; }
+  .source:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 14px 40px -22px rgba(16,20,26,.34); }
+  .source h4 { margin:0 0 5px; font-size:16px; font-weight:600; letter-spacing:-.015em; display:flex; align-items:center; gap:8px; }
+  .source h4 span { font-family:var(--mono); font-size:11px; color:var(--ink-faint); font-weight:400; margin-left:auto; }
+  .source p { margin:0; font-size:13.5px; line-height:1.5; color:var(--ink-soft); }
+
+  .final { text-align:center; padding-block:clamp(64px,8vw,110px); border-top:1px solid var(--rule); }
+  .final h2 { font-size:clamp(32px,4.4vw,60px); letter-spacing:-.04em; font-weight:600; margin:0 0 16px; }
+  .final p { color:var(--ink-soft); font-size:18px; margin:0 auto 30px; max-width:46ch; line-height:1.55; }
+  .final .cta-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+  .note { background:#16181d; color:#99a2ab; padding:26px 0 34px; font-size:13px; line-height:1.6; }
+  .note h3 { color:#fff; font-family:var(--mono); font-size:13px; margin:0 0 12px; }
+  .note-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px 32px; }
+  .note h4 { margin:0 0 5px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#61728a; font-family:var(--mono); font-weight:500; }
+  .note code { font-family:var(--mono); font-size:12px; background:#1b2534; padding:1px 5px; border-radius:3px; color:#b9c6d6; }
+
+  @media (prefers-reduced-motion:reduce){ *{animation-duration:.01ms!important; transition-duration:.01ms!important;} html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="nav">
+    <div class="brand">
+      <svg width="19" height="19" viewBox="0 0 19 19" aria-hidden="true"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      Observable
+    </div>
+    <a href="#do">What you can do</a><a href="#why">Why</a><a href="#data">Public data</a><a href="#">Pricing</a>
+    <a href="#" class="btn">Get started</a>
+  </nav>
+</div>
+
+<!-- ============ HERO: THE ASK ============ -->
+<header class="hero">
+  <div class="shell">
+    <div class="eyebrow">Ask. See. Share.</div>
+    <h1>What do you want to <em>know</em>?</h1>
+    <p class="lede">Ask a question of real data and watch Observable answer it — as a live, shareable notebook you can fork, annotate, and keep. Start with something public.</p>
+
+    <div class="askbar">
+      <svg width="18" height="18" viewBox="0 0 19 19" aria-hidden="true"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      <input id="ask-input" type="text" placeholder="Ask a question of public data…" aria-label="Ask a question">
+      <button class="ask-send" id="ask-go" aria-label="Ask">↑</button>
+    </div>
+
+    <div class="ask-chips" id="ask-chips">
+      <span class="lbl">Try</span>
+      <button class="chip" data-i="0" aria-pressed="true">Unemployment by US county<span class="src">data.gov</span></button>
+      <button class="chip" data-i="1" aria-pressed="false">Life expectancy by country<span class="src">WHO</span></button>
+      <button class="chip" data-i="2" aria-pressed="false">What NYC pays its employees<span class="src">NYC Open Data</span></button>
+      <button class="chip" data-i="3" aria-pressed="false">Population by state<span class="src">US Census</span></button>
+    </div>
+
+    <div class="answer">
+      <div class="frame">
+        <div class="frame-tab">Observable Agent</div>
+        <div class="answer-grid">
+          <div class="chatcol">
+            <div class="chatcol-h">
+              <svg width="14" height="14" viewBox="0 0 19 19" aria-hidden="true"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+              Chat
+              <span class="stat" id="ask-status">ready</span>
+            </div>
+            <div class="chatcol-body" id="ask-chat"></div>
+          </div>
+          <div class="resultcol">
+            <div class="resultcol-h">
+              <span id="ask-slug">@d3/choropleth</span>
+              <a id="ask-open" href="https://observablehq.com/@d3/choropleth" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="clip" style="min-height:460px">
+              <iframe id="ask-frame" height="500" title="Live result" loading="eager" src="https://observablehq.com/embed/@d3/choropleth?cells=chart"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ WHAT PEOPLE DO ============ -->
+<section class="band" id="do">
+  <div class="shell">
+    <div class="band-head">
+      <div class="eyebrow">What people do on Observable</div>
+      <h2>One tool, from a quick question to a production app.</h2>
+      <p>The same notebook that answers an ad-hoc question grows into a report, a live dashboard, a scheduled alert, or an embed. Nothing gets thrown away — every step is a shareable, persistent artifact.</p>
+    </div>
+
+    <div class="spectrum">
+      <div class="stage-row" style="--accent:var(--blue)">
+        <div class="stage-k"><span class="n">01</span><b>Ask</b></div>
+        <p>Write a quick query to test a theory. Unlike a scratch query in TablePlus, a notebook keeps the commentary and stays shareable and persistent.</p>
+        <div class="egs"><span class="eg">ad-hoc query</span><span class="eg">test a theory</span></div>
+      </div>
+      <div class="stage-row" style="--accent:var(--teal)">
+        <div class="stage-k"><span class="n">02</span><b>Explain</b></div>
+        <p>Write it up with commentary and annotations for a wider audience. Google Docs, but with code and data — and explorable explanations that make hard ideas interactive.</p>
+        <div class="egs"><span class="eg">analysis report</span><span class="eg">explorable explanation</span><span class="eg">tell a story</span></div>
+      </div>
+      <div class="stage-row" style="--accent:var(--amber)">
+        <div class="stage-k"><span class="n">03</span><b>Explore</b></div>
+        <p>Build a living interface others can operate — an auto-updating dashboard, a self-service explorer, a calculator or simulator anyone can come and check.</p>
+        <div class="egs"><span class="eg">dashboard</span><span class="eg">data app</span><span class="eg">explorer</span></div>
+      </div>
+      <div class="stage-row" style="--accent:var(--coral)">
+        <div class="stage-k"><span class="n">04</span><b>Automate</b></div>
+        <p>Schedule queries that run themselves, then post charts or alerts to Slack and email. Replace the manually assembled spreadsheet, screenshot, and slide deck.</p>
+        <div class="egs"><span class="eg">scheduled report</span><span class="eg">Slack alert</span><span class="eg">live data</span></div>
+      </div>
+      <div class="stage-row" style="--accent:var(--blue)">
+        <div class="stage-k"><span class="n">05</span><b>Ship</b></div>
+        <p>Sketch a bespoke visualization, then migrate it to production and embed it anywhere. Or just share a cool interactive toy — like Gist, but live.</p>
+        <div class="egs"><span class="eg">bespoke embed</span><span class="eg">prototype → prod</span><span class="eg">interactive toy</span></div>
+      </div>
+    </div>
+
+    <div class="builds">
+      <a class="build" href="#">Build a data app</a>
+      <a class="build" href="#">Build a dashboard</a>
+      <a class="build" href="#">Build an interactive report</a>
+      <a class="build" href="#">Build a data explorer</a>
+      <a class="build" href="#">Build a monitoring tool</a>
+      <a class="build" href="#">Build a calculator</a>
+      <a class="build" href="#">Build a simulator</a>
+      <a class="build" href="#">Build a model explorer</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="why" id="why">
+  <div class="shell">
+    <div class="band-head">
+      <div class="eyebrow">Why people use Observable</div>
+      <h2>It feels instant, and everything you need is already there.</h2>
+    </div>
+    <div class="whygrid">
+      <div class="whycard" style="--accent:var(--blue)">
+        <div class="k">Fast &amp; lightweight</div>
+        <h3>Just start writing</h3>
+        <p>A web-based environment with batteries included. No dev setup, no project to init — and every edit runs instantly, like a spreadsheet. Hot reloading on steroids.</p>
+      </div>
+      <div class="whycard" style="--accent:var(--teal)">
+        <div class="k">Batteries included</div>
+        <h3>Good opinions, built in</h3>
+        <p>The libraries, the data connectors, the primitives — the things you need are already there. D3 and Plot ship by default.</p>
+      </div>
+      <div class="whycard" style="--accent:var(--amber)">
+        <div class="k">Connects to everything</div>
+        <h3>Files, databases, APIs</h3>
+        <p>Polyglot by design — JavaScript, SQL, Markdown, HTML side by side. Self-serve, so anyone can explore without a ticket to the data team.</p>
+      </div>
+      <div class="whycard" style="--accent:var(--coral)">
+        <div class="k">Built-in collaboration</div>
+        <h3>Share instantly</h3>
+        <p>Real-time or async, with permission controls, sandboxing, and version history. Follow along and be inspired by your team and the community.</p>
+      </div>
+      <div class="whycard" style="--accent:var(--blue)">
+        <div class="k">Trustworthy</div>
+        <h3>Inspectable and auditable</h3>
+        <p>Every result is transparent — hover any value, trace any number to its source. Not a black box.</p>
+      </div>
+      <div class="whycard" style="--accent:var(--teal)">
+        <div class="k">Built-in agent</div>
+        <h3>An AI that sees your data</h3>
+        <p>The integrated agent runs code and inspects live values — it sees how data is distributed and what a chart actually rendered. Grounded, not guessing.</p>
+      </div>
+    </div>
+    <p class="versus">Instead of <b>local development</b>, a <b>chat window</b>, <b>Hex</b>, <b>Tableau</b>, or hiring a data analyst — one place that spans all of it.</p>
+  </div>
+</section>
+
+<!-- ============ PUBLIC DATA ============ -->
+<section class="data" id="data">
+  <div class="shell">
+    <div class="band-head">
+      <div class="eyebrow">Plug into open data</div>
+      <h2>The world's public data, a query away.</h2>
+      <p>Government and civic data sources are already open. Point a notebook at one and start asking — no download, no cleanup pipeline, no waiting on anyone.</p>
+    </div>
+    <div class="sources">
+      <a class="source" href="https://data.gov/" target="_blank" rel="noopener"><h4>Data.gov <span>US Federal</span></h4><p>Over 300,000 datasets across every federal agency — economy, energy, climate, health.</p></a>
+      <a class="source" href="https://data.census.gov/" target="_blank" rel="noopener"><h4>US Census <span>Demographics</span></h4><p>Population, income, housing and migration for every state, county, and tract.</p></a>
+      <a class="source" href="https://fred.stlouisfed.org/" target="_blank" rel="noopener"><h4>FRED <span>Economics</span></h4><p>800,000+ economic time series — mortgage rates, inflation, employment, GDP.</p></a>
+      <a class="source" href="https://opendata.cityofnewyork.us/" target="_blank" rel="noopener"><h4>NYC Open Data <span>Civic</span></h4><p>City payroll, 311 calls, permits, transit — a decade of a city, in the open.</p></a>
+      <a class="source" href="https://www.bls.gov/data/" target="_blank" rel="noopener"><h4>Bureau of Labor Statistics <span>Labor</span></h4><p>Unemployment, wages, and prices, down to the county level.</p></a>
+      <a class="source" href="https://data.worldbank.org/" target="_blank" rel="noopener"><h4>World Bank <span>Global</span></h4><p>Development indicators for every country — health, education, economy, environment.</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="shell">
+    <h2>Ask your first question.</h2>
+    <p>Start from a blank notebook or fork a public one. Both take about ten seconds.</p>
+    <div class="cta-row">
+      <a href="#" class="btn">Start a notebook — free</a>
+      <a href="#" class="btn btn-ghost">Explore examples</a>
+    </div>
+  </div>
+</section>
+
+<div class="note">
+  <div class="shell">
+    <h3>Proposal notes</h3>
+    <div class="note-grid">
+      <div><h4>The reframe</h4>This is the “do / why” direction: the campaign leads with a <b>question you ask</b>, not a chart you watch. The hero is an <code>Ask</code> box; clicking a public-data prompt runs the agent and swaps in a real live notebook answering it.</div>
+      <div><h4>Real data, real embeds</h4>All four demo answers are genuine public-data notebooks (BLS county unemployment, WHO life expectancy, NYC payroll, US Census). The agent's SQL is illustrative; the rendered chart is live.</div>
+      <div><h4>Structure</h4>Hero ask → the Ask→Ship spectrum (with the Build actions) → Why Observable (fast, batteries, collaboration, connects, trustworthy, agent, plus the “versus” line) → open-data sources → CTA.</div>
+      <div><h4>Open to confirm</h4>The chat SQL is scripted, not a live LLM call. The Plot/Databricks-deck metrics aren't on this page. Copy hews to your outline + Toph's phrasing; swap in Mike's exact “why” wording once his notebook is shareable.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Each prompt: question, illustrative code, and a REAL live notebook that answers it.
+  const PROMPTS = [
+    { q:"How does unemployment vary across US counties?",
+      source:"data.gov · BLS",
+      code:'<span class="tok-k">SELECT</span> county_fips, unemployment_rate\n<span class="tok-k">FROM</span> bls.local_area_unemployment\n<span class="tok-k">WHERE</span> period = <span class="tok-s">\'2024\'</span>',
+      slug:"@d3/choropleth", cells:"chart",
+      caption:"Every US county, shaded by unemployment rate. Hover any county to read its value." },
+    { q:"How long do people live, by country?",
+      source:"WHO",
+      code:'<span class="tok-k">SELECT</span> country, healthy_life_expectancy\n<span class="tok-k">FROM</span> who.hale\n<span class="tok-k">ORDER BY</span> healthy_life_expectancy <span class="tok-k">DESC</span>',
+      slug:"@d3/world-choropleth", cells:"chart",
+      caption:"Healthy life expectancy for every country. Find yours, then the one next door." },
+    { q:"What does New York City pay its employees?",
+      source:"NYC Open Data",
+      code:'<span class="tok-k">SELECT</span> agency, title, base_pay, ot_pay\n<span class="tok-k">FROM</span> nyc.citywide_payroll\n<span class="tok-k">WHERE</span> fiscal_year = <span class="tok-n">2025</span>',
+      slug:"@mpkhinda/nyc-city-pay", cells:"",
+      caption:"A decade of NYC agency pay. Toggle overtime and watch the agencies move." },
+    { q:"How does population vary by state?",
+      source:"US Census",
+      code:'<span class="tok-k">SELECT</span> state, population\n<span class="tok-k">FROM</span> census.acs_2023\n<span class="tok-k">ORDER BY</span> population <span class="tok-k">DESC</span>',
+      slug:"@d3/us-state-choropleth", cells:"chart",
+      caption:"Every US state on one map. Change the measure, change the story." }
+  ];
+
+  const chat = document.getElementById('ask-chat');
+  const statusEl = document.getElementById('ask-status');
+  const frame = document.getElementById('ask-frame');
+  const slugEl = document.getElementById('ask-slug');
+  const openEl = document.getElementById('ask-open');
+  const chips = [...document.querySelectorAll('#ask-chips .chip')];
+  let timers = [], running = false;
+
+  function typeInto(el, html, done) {
+    const parts = html.split(/(<[^>]+>)/).filter(Boolean);
+    let pi=0, ci=0, acc='';
+    const step = () => {
+      if (pi>=parts.length){ el.innerHTML=acc; done&&done(); return; }
+      const p=parts[pi];
+      if(p.startsWith('<')){acc+=p;pi++;} else if(ci<p.length){acc+=p[ci++];} else {ci=0;pi++;}
+      el.innerHTML=acc+'<span class="caret"></span>';
+      timers.push(setTimeout(step, p.startsWith('<')?0:11));
+    };
+    step();
+  }
+  function botThinking(){ const d=document.createElement('div'); d.className='msg bot'; d.innerHTML='<span class="typing"><i></i><i></i><i></i></span>'; chat.appendChild(d); return d; }
+
+  function run(i){
+    const p = PROMPTS[i];
+    chips.forEach((c,j)=>c.setAttribute('aria-pressed', j===i));
+    timers.forEach(clearTimeout); timers=[];
+    chat.innerHTML=''; statusEl.textContent='thinking';
+    // 1) user question
+    const u=document.createElement('div'); u.className='msg user'; u.textContent=p.q; chat.appendChild(u);
+    // 2) bot: pulling from source
+    timers.push(setTimeout(()=>{
+      const t1=botThinking();
+      timers.push(setTimeout(()=>{
+        t1.className='msg bot';
+        typeInto(t1, `Pulling from <b>${p.source}</b>…`, ()=>{
+          // 3) code cell
+          const cc=document.createElement('div'); cc.className='codecell';
+          cc.innerHTML='<div class="codecell-h">&lt;/&gt; SQL</div><pre></pre>';
+          chat.appendChild(cc);
+          typeInto(cc.querySelector('pre'), p.code, ()=>{
+            // 4) swap the live result
+            const q = p.cells ? `?cells=${p.cells}` : '';
+            frame.src = `https://observablehq.com/embed/${p.slug}${q}`;
+            slugEl.textContent = p.slug;
+            openEl.href = `https://observablehq.com/${p.slug}`;
+            // 5) bot caption
+            const t2=botThinking();
+            timers.push(setTimeout(()=>{ t2.className='msg bot'; typeInto(t2, p.caption, ()=>statusEl.textContent='done'); }, 700));
+          });
+        });
+      }, 650));
+    }, 500));
+  }
+
+  chips.forEach(c=>c.addEventListener('click', ()=>run(+c.dataset.i)));
+  document.getElementById('ask-go').addEventListener('click', ()=>run(0));
+  document.getElementById('ask-input').addEventListener('keydown', e=>{ if(e.key==='Enter') run(0); });
+
+  // kick off the first answer when the ask box scrolls into view
+  let started=false;
+  new IntersectionObserver((es,obs)=>{ if(es[0].isIntersecting && !started){ started=true; run(0); obs.disconnect(); } },{threshold:0, rootMargin:'0px 0px -10% 0px'}).observe(document.querySelector('.answer'));
+</script>
+
+</body>
+</html>
