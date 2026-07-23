@@ -148,30 +148,67 @@
   .art-badge.on { opacity:1; transform:none; color:var(--accent); background:color-mix(in srgb,var(--accent) 12%,var(--paper)); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent); }
   .art-body { position:relative; z-index:1; padding:16px; display:flex; flex-direction:column; gap:13px; min-height:326px; }
 
-  /* accumulated cells reveal with a spring; newest flashes an accent ring */
-  .art-el { opacity:0; max-height:0; overflow:hidden; transform:translateY(10px) scale(.99); transition:opacity .45s ease, transform .55s cubic-bezier(.34,1.3,.5,1), max-height .55s ease; }
-  .art-el.show { opacity:1; max-height:240px; transform:none; }
-  .art-el.just .art-cell, .art-el.just .art-chart, .art-el.just .art-input, .art-el.just .art-sched, .art-el.just .art-embed { animation:artFlash 1.2s cubic-bezier(.4,0,.2,1); }
-  @keyframes artFlash { 0%{ box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 45%,transparent);} 45%{ box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 16%,transparent);} 100%{ box-shadow:0 0 0 0 transparent;} }
-
-  /* a real notebook cell: accent left gutter */
-  .art-cell { border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:6px; overflow:hidden; background:var(--paper); }
-  .art-tag { display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); padding:5px 10px; border-bottom:1px solid var(--rule); background:var(--paper-dim); }
-  .art-cell code { display:block; font-family:var(--mono); font-size:11.5px; color:#2b3440; padding:10px 11px; }
+  /* the query cell is constant — same data, escalating result */
+  .art-const { border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:6px; overflow:hidden; background:var(--paper); }
+  .art-tag { display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-faint); padding:5px 10px; border-bottom:1px solid var(--rule); background:var(--paper-dim); }
+  .art-cell code { display:block; font-family:var(--mono); font-size:11.5px; color:#2b3440; padding:9px 11px; }
   .art-cell code .k { color:#8250df; }
-  .art-prose { margin:0; font-size:13px; line-height:1.55; color:var(--ink-soft); font-style:italic; padding-left:2px; }
-  .art-chart { border:1px solid var(--rule); border-radius:8px; padding:10px 12px; background:var(--paper); }
-  .art-chart svg { width:100%; height:auto; display:block; }
-  .art-chart .grid line { opacity:.7; }
-  .art-input { display:flex; align-items:center; gap:13px; border:1px solid var(--rule); border-radius:8px; padding:11px 13px; background:var(--paper); }
+
+  /* the result zone swaps its whole view per stage, with a spring cross-fade */
+  .art-result { position:relative; }
+  .rz { display:none; opacity:0; transform:translateY(8px); }
+  .rz.on { display:block; animation:rzIn .5s cubic-bezier(.34,1.25,.5,1) forwards; }
+  @keyframes rzIn { to { opacity:1; transform:none; } }
+  .rz > * + * { margin-top:11px; }
+
+  .rz-chart { width:100%; height:auto; display:block; border:1px solid var(--rule); border-radius:8px; padding:8px 10px; background:var(--paper); }
+  .rz-prose { margin:0; font-size:12.5px; line-height:1.5; color:var(--ink-soft); font-style:italic; }
+
+  /* 1 · ASK — the raw answer */
+  .rz-answer { display:flex; align-items:center; gap:20px; padding:14px 4px; }
+  .rz-big { font-size:clamp(44px,7vw,64px); font-weight:600; letter-spacing:-.05em; line-height:.9; color:var(--accent); }
+  .rz-big em { font-style:normal; font-size:.5em; color:var(--ink-soft); margin-left:2px; }
+  .rz-side { display:flex; flex-direction:column; gap:7px; }
+  .rz-lbl { font-size:14px; font-weight:600; color:var(--ink); }
+  .rz-spark { width:90px; height:24px; }
+  .rz-meta { font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); }
+
+  /* 3 · EXPLORE — interactive */
+  .rz-seg { display:inline-flex; border:1px solid var(--rule); border-radius:8px; overflow:hidden; font-family:var(--mono); font-size:11px; }
+  .rz-seg b, .rz-seg span { padding:6px 13px; font-weight:500; color:var(--ink-soft); }
+  .rz-seg b { background:var(--accent); color:#fff; }
+  .rz-seg span + span, .rz-seg b + span { border-left:1px solid var(--rule); }
+  .rz-cross { animation:crossSweep 4.5s ease-in-out infinite alternate; }
+  @keyframes crossSweep { 0%{ transform:translateX(-36px);} 100%{ transform:translateX(52px);} }
+  @media (prefers-reduced-motion:reduce){ .rz-cross { animation:none; } }
+  .art-input { display:flex; align-items:center; gap:13px; border:1px solid var(--rule); border-radius:8px; padding:10px 13px; background:var(--paper); }
   .art-lbl { font-size:12.5px; color:var(--ink); font-weight:500; }
   .art-slider { flex:1; height:5px; border-radius:4px; background:var(--rule); position:relative; }
-  .art-fill { position:absolute; left:0; top:0; bottom:0; width:64%; border-radius:4px; background:var(--accent); }
-  .art-slider i { position:absolute; left:64%; top:50%; transform:translate(-50%,-50%); width:15px; height:15px; border-radius:50%; background:#fff; border:2.5px solid var(--accent); box-shadow:0 1px 4px rgba(16,20,26,.28); }
-  .art-val { font-family:var(--mono); font-size:12px; color:var(--ink); background:var(--paper-dim); border:1px solid var(--rule); border-radius:5px; padding:2px 7px; }
-  .art-sched { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-soft); background:color-mix(in srgb,var(--accent) 7%,var(--paper)); border:1px solid color-mix(in srgb,var(--accent) 28%,var(--rule)); border-radius:8px; padding:10px 13px; }
-  .art-sched b { color:var(--ink); }
-  .art-embed { display:flex; align-items:center; gap:10px; border:1px dashed color-mix(in srgb,var(--accent) 45%,var(--rule)); border-radius:8px; padding:10px 13px; background:color-mix(in srgb,var(--accent) 4%,var(--paper)); }
+  .art-fill { position:absolute; left:0; top:0; bottom:0; width:100%; border-radius:4px; background:var(--accent); }
+  .art-slider i { position:absolute; right:-2px; top:50%; transform:translateY(-50%); width:15px; height:15px; border-radius:50%; background:#fff; border:2.5px solid var(--accent); box-shadow:0 1px 4px rgba(16,20,26,.28); }
+  .art-val { font-family:var(--mono); font-size:11.5px; color:var(--ink); background:var(--paper-dim); border:1px solid var(--rule); border-radius:5px; padding:2px 7px; white-space:nowrap; }
+
+  /* 4 · AUTOMATE — monitoring + Slack card */
+  .rz-kpi { display:flex; align-items:center; justify-content:space-between; gap:16px; border:1px solid var(--rule); border-radius:8px; padding:14px 16px; background:var(--paper); }
+  .rz-kpi-n { font-size:32px; font-weight:600; letter-spacing:-.04em; color:var(--ink); display:flex; flex-direction:column; gap:6px; }
+  .rz-delta { font-size:11px; font-weight:600; color:#0a7d33; background:color-mix(in srgb,#0a7d33 12%,var(--paper)); border-radius:100px; padding:2px 8px; width:max-content; font-family:var(--mono); }
+  .rz-spark2 { width:120px; height:40px; }
+  .rz-slack { display:flex; gap:10px; border:1px solid var(--rule); border-radius:8px; padding:11px 13px; background:var(--paper); }
+  .rz-av { flex:none; width:26px; height:26px; border-radius:6px; background:var(--paper-dim); border:1px solid var(--rule); display:grid; place-items:center; color:var(--ink); }
+  .rz-av svg { width:15px; height:15px; }
+  .rz-slack-b { min-width:0; }
+  .rz-who b { font-size:12.5px; } .rz-who i { font-style:normal; font-family:var(--mono); font-size:10px; color:var(--ink-faint); margin-left:6px; }
+  .rz-slack-b p { margin:3px 0 0; font-size:12.5px; line-height:1.45; color:var(--ink-soft); }
+  .rz-slack-b p b { color:var(--ink); }
+  .rz-link { color:var(--accent); font-weight:500; }
+
+  /* 5 · SHIP — a real dashboard app */
+  .rz-tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; }
+  .rz-tile { border:1px solid var(--rule); border-radius:8px; padding:11px 13px; background:var(--paper); }
+  .rz-tile b { display:block; font-size:20px; font-weight:600; letter-spacing:-.03em; color:var(--accent); }
+  .rz-tile span { font-size:11px; color:var(--ink-soft); }
+  .rz-chart-sm { padding:6px 0; }
+  .art-embed { display:flex; align-items:center; gap:10px; border:1px dashed color-mix(in srgb,var(--accent) 45%,var(--rule)); border-radius:8px; padding:9px 12px; background:color-mix(in srgb,var(--accent) 4%,var(--paper)); }
   .art-url { flex:1; font-family:var(--mono); font-size:11px; color:var(--accent); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .art-embtag { font-family:var(--mono); font-size:10px; color:var(--ink-soft); border:1px solid var(--rule); border-radius:5px; padding:3px 8px; background:var(--paper); }
 
@@ -315,34 +352,65 @@
               <span class="art-badge" id="art-badge"></span>
             </div>
           <div class="art-body">
-            <div class="art-el show" data-s="1">
-              <div class="art-cell"><span class="art-tag">&lt;/&gt; sql</span><code><span class="k">SELECT</span> date, rate <span class="k">FROM</span> fred.mortgage_30yr</code></div>
-            </div>
-            <div class="art-el" data-s="2">
-              <p class="art-prose">Rates climbed sharply through 2023, the steepest run-up in four decades…</p>
-              <div class="art-chart">
-                <svg viewBox="0 0 300 108" role="img" aria-label="Mortgage rate line chart">
-                  <g class="grid" stroke="var(--rule)" stroke-width="1">
-                    <line x1="34" y1="12" x2="296" y2="12"/><line x1="34" y1="40" x2="296" y2="40"/><line x1="34" y1="68" x2="296" y2="68"/><line x1="34" y1="94" x2="296" y2="94"/>
-                  </g>
-                  <g class="ax" fill="var(--ink-faint)" font-family="var(--mono)" font-size="8">
-                    <text x="30" y="15" text-anchor="end">8%</text><text x="30" y="43" text-anchor="end">6%</text><text x="30" y="71" text-anchor="end">4%</text><text x="30" y="97" text-anchor="end">2%</text>
-                    <text x="44" y="106">2019</text><text x="270" y="106">2024</text>
-                  </g>
-                  <polygon fill="var(--accent)" opacity=".09" points="44,86 78,82 112,74 146,58 180,40 214,26 248,32 296,20 296,94 44,94"/>
-                  <polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="44,86 78,82 112,74 146,58 180,40 214,26 248,32 296,20"/>
-                  <circle cx="296" cy="20" r="3.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>
+            <!-- the query is the constant: same data, escalating result -->
+            <div class="art-cell art-const"><span class="art-tag">&lt;/&gt; sql · fred.mortgage_30yr</span><code><span class="k">SELECT</span> date, rate <span class="k">FROM</span> fred.mortgage_30yr</code></div>
+            <div class="art-result" id="art-result">
+
+              <!-- 1 · ASK: the raw answer -->
+              <div class="rz" data-s="1">
+                <div class="rz-answer">
+                  <div class="rz-big">6.9<em>%</em></div>
+                  <div class="rz-side"><span class="rz-lbl">30-yr fixed, this week</span><svg class="rz-spark" viewBox="0 0 90 28" preserveAspectRatio="none"><polyline fill="none" stroke="var(--accent)" stroke-width="2" points="0,24 15,22 30,18 45,12 60,8 75,10 90,5"/></svg><span class="rz-meta">1,304 weekly observations · FRED</span></div>
+                </div>
+              </div>
+
+              <!-- 2 · EXPLAIN: annotated narrative chart -->
+              <div class="rz" data-s="2">
+                <p class="rz-prose">Rates climbed sharply through 2023 — the steepest run-up in four decades.</p>
+                <svg class="rz-chart" viewBox="0 0 300 120"><g stroke="var(--rule)" stroke-width="1" opacity=".7"><line x1="40" y1="30" x2="296" y2="30"/><line x1="40" y1="54" x2="296" y2="54"/><line x1="40" y1="78" x2="296" y2="78"/><line x1="40" y1="98" x2="296" y2="98"/></g><g fill="var(--ink-faint)" font-size="8" font-family="var(--mono)"><text x="36" y="33" text-anchor="end">8%</text><text x="36" y="57" text-anchor="end">6%</text><text x="36" y="81" text-anchor="end">4%</text><text x="36" y="101" text-anchor="end">2%</text></g>
+                  <polygon fill="var(--accent)" opacity=".08" points="40,104 40,96 76,90 112,80 148,62 184,42 220,28 256,34 296,22 296,104"/>
+                  <polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="40,96 76,90 112,80 148,62 184,42 220,28 256,34 296,22"/>
+                  <line x1="220" y1="28" x2="220" y2="10" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="2 2"/>
+                  <g transform="translate(150,2)"><rect width="118" height="16" rx="4" fill="var(--ink)"/><text x="8" y="11" fill="#fff" font-size="8.5" font-family="var(--mono)">Oct 2023 · 7.8% — 40-yr high</text></g>
+                  <circle cx="220" cy="28" r="3" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>
                 </svg>
               </div>
-            </div>
-            <div class="art-el" data-s="3">
-              <div class="art-input"><span class="art-lbl">Year</span><span class="art-slider"><span class="art-fill"></span><i></i></span><span class="art-val">2023</span></div>
-            </div>
-            <div class="art-el" data-s="4">
-              <div class="art-sched">⏱ Runs every morning · posts to <b>#data-team</b></div>
-            </div>
-            <div class="art-el" data-s="5">
-              <div class="art-embed"><span class="art-url">observablehq.com/@you/mortgage-rates</span><span class="art-embtag">&lt;/&gt; Embed</span></div>
+
+              <!-- 3 · EXPLORE: interactive -->
+              <div class="rz" data-s="3">
+                <div class="rz-seg"><b>Rate</b><span>YoY change</span><span>Real</span></div>
+                <svg class="rz-chart" viewBox="0 0 300 120"><g stroke="var(--rule)" stroke-width="1" opacity=".7"><line x1="40" y1="30" x2="296" y2="30"/><line x1="40" y1="54" x2="296" y2="54"/><line x1="40" y1="78" x2="296" y2="78"/><line x1="40" y1="98" x2="296" y2="98"/></g><g fill="var(--ink-faint)" font-size="8" font-family="var(--mono)"><text x="36" y="33" text-anchor="end">8%</text><text x="36" y="57" text-anchor="end">6%</text><text x="36" y="81" text-anchor="end">4%</text><text x="36" y="101" text-anchor="end">2%</text></g>
+                  <polygon fill="var(--accent)" opacity=".08" points="40,104 40,96 76,90 112,80 148,62 184,42 220,28 256,34 296,22 296,104"/>
+                  <polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="40,96 76,90 112,80 148,62 184,42 220,28 256,34 296,22"/>
+                  <g class="rz-cross"><line x1="184" y1="14" x2="184" y2="104" stroke="var(--ink-faint)" stroke-width="1"/><circle cx="184" cy="42" r="4" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><g transform="translate(150,18)"><rect width="70" height="16" rx="4" fill="var(--ink)"/><text x="8" y="11" fill="#fff" font-size="8.5" font-family="var(--mono)">2022 · 6.4%</text></g></g>
+                </svg>
+                <div class="art-input"><span class="art-lbl">Year</span><span class="art-slider"><span class="art-fill"></span><i></i></span><span class="art-val">2019–2024</span></div>
+              </div>
+
+              <!-- 4 · AUTOMATE: monitoring + Slack -->
+              <div class="rz" data-s="4">
+                <div class="rz-kpi">
+                  <div class="rz-kpi-n">6.9%<span class="rz-delta">▲ 0.3 pts WoW</span></div>
+                  <svg class="rz-spark2" viewBox="0 0 120 40" preserveAspectRatio="none"><polygon fill="var(--accent)" opacity=".1" points="0,36 20,33 40,27 60,17 80,10 100,14 120,6 120,40 0,40"/><polyline fill="none" stroke="var(--accent)" stroke-width="2" points="0,36 20,33 40,27 60,17 80,10 100,14 120,6"/></svg>
+                </div>
+                <div class="rz-slack">
+                  <span class="rz-av"><svg viewBox="0 0 19 19"><circle cx="9.5" cy="9.5" r="8.6" fill="none" stroke="currentColor" stroke-width="1.8"/><ellipse cx="9.5" cy="9.5" rx="3.4" ry="8.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+                  <div class="rz-slack-b"><span class="rz-who"><b>Rates Bot</b> <i>9:00 AM</i></span><p>📈 30-yr fixed rose to <b>6.9%</b> — up 0.3 pts this week. <span class="rz-link">View notebook →</span></p></div>
+                </div>
+              </div>
+
+              <!-- 5 · SHIP: a real dashboard app -->
+              <div class="rz" data-s="5">
+                <div class="rz-tiles"><div class="rz-tile"><b>6.9%</b><span>Today</span></div><div class="rz-tile"><b>7.8%</b><span>1-yr high</span></div><div class="rz-tile"><b>6.1%</b><span>1-yr low</span></div></div>
+                <svg class="rz-chart rz-chart-sm" viewBox="0 0 300 84">
+                  <g stroke="var(--rule)" stroke-width="1" opacity=".7"><line x1="0" y1="20" x2="300" y2="20"/><line x1="0" y1="46" x2="300" y2="46"/><line x1="0" y1="72" x2="300" y2="72"/></g>
+                  <polygon fill="var(--accent)" opacity=".08" points="0,74 0,66 40,60 80,50 120,36 160,22 200,14 240,20 300,10 300,74"/>
+                  <polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="0,66 40,60 80,50 120,36 160,22 200,14 240,20 300,10"/>
+                  <circle cx="300" cy="10" r="3.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>
+                </svg>
+                <div class="art-embed"><span class="art-url">observablehq.com/@you/mortgage-rates</span><span class="art-embtag">&lt;/&gt; Embed</span></div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -545,15 +613,15 @@
     const chipsEl = document.getElementById('grow-chips');
     const badge = document.getElementById('art-badge');
     const name = document.getElementById('art-name');
-    const els = [...grow.querySelectorAll('.art-el')];
+    const els = [...grow.querySelectorAll('.art-result .rz')];
     const ACCENTS = ['','var(--blue)','var(--teal)','var(--amber)','var(--coral)','var(--blue)'];
 
     const STAGES = {
-      1:{noun:'a query', name:'untitled.onb', badge:'', desc:'Write a quick query to test a theory. Unlike a scratch query in TablePlus, a notebook keeps the commentary — and is automatically a shareable, persistent artifact.', chips:['ad-hoc query','test a theory']},
-      2:{noun:'a report', name:'mortgage-rates.onb', badge:'', desc:'Write it up with commentary and annotations for a wider audience. Google Docs, but with code and data — and explorable explanations that make hard ideas interactive.', chips:['analysis report','explorable explanation','tell a story']},
-      3:{noun:'a dashboard', name:'mortgage-rates.onb', badge:'', desc:'Add inputs and it becomes a living interface anyone can operate — an auto-updating dashboard, a self-service explorer, a calculator or simulator.', chips:['dashboard','data app','explorer']},
-      4:{noun:'a pipeline', name:'mortgage-rates.onb', badge:'Scheduled', desc:'Schedule it to run itself, then post charts or alerts to Slack and email. Replace the manually assembled spreadsheet, screenshot, and slide deck.', chips:['scheduled report','Slack alert','live data']},
-      5:{noun:'an app', name:'mortgage-rates.onb', badge:'Published', desc:'Migrate the sketch to production and embed it anywhere — or just share a cool interactive toy. Like Gist, but live.', chips:['bespoke embed','prototype → prod','interactive toy']}
+      1:{noun:'an answer', name:'untitled.onb', badge:'', desc:'Write a quick query and get a number back. Unlike a scratch query in TablePlus, the notebook keeps your commentary — and is automatically a shareable, persistent artifact.', chips:['ad-hoc query','test a theory']},
+      2:{noun:'a report', name:'mortgage-rates.onb', badge:'', desc:'Turn the number into a story: a chart with annotations and prose for a wider audience. Google Docs, but with code and data.', chips:['analysis report','explorable explanation','tell a story']},
+      3:{noun:'a dashboard', name:'mortgage-rates.onb', badge:'Interactive', desc:'Add inputs and the chart becomes a living interface anyone can operate — brush it, switch measures, filter the range. A self-service explorer.', chips:['dashboard','data app','explorer']},
+      4:{noun:'a pipeline', name:'mortgage-rates.onb', badge:'Scheduled', desc:'Schedule it to run itself, then post the number and chart to Slack or email. Replace the manually assembled spreadsheet, screenshot, and slide deck.', chips:['scheduled report','Slack alert','live data']},
+      5:{noun:'an app', name:'mortgage-rates.onb', badge:'Published', desc:'Migrate the sketch to production and embed the whole dashboard anywhere — or just share a cool interactive toy. Like Gist, but live.', chips:['bespoke embed','prototype → prod','interactive toy']}
     };
 
     let cur = 1, timer = null;
@@ -568,12 +636,7 @@
       noun.textContent = st.noun; desc.textContent = st.desc; name.textContent = st.name;
       badge.textContent = st.badge; badge.classList.toggle('on', !!st.badge);
       chipsEl.innerHTML = st.chips.map(c=>`<span class="gc">${c}</span>`).join('');
-      els.forEach(el=>{
-        const es = +el.dataset.s;
-        const show = es <= i;
-        el.classList.toggle('show', show);
-        el.classList.toggle('just', show && es === i);
-      });
+      els.forEach(el=>{ el.classList.toggle('on', +el.dataset.s === i); });
     }
     nodes.forEach((n,idx)=> n.addEventListener('click', ()=>{ stopAuto(); set(idx+1); }));
     nodes.forEach((n,idx)=> n.addEventListener('mouseenter', ()=>{ stopAuto(); set(idx+1); }));
